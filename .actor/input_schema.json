@@ -1,0 +1,8 @@
+{
+  "title": "App Store Review Intelligence MCP Server",
+  "description": "This Actor runs in Standby mode as an MCP server and needs no input. Connect your MCP client to the /mcp endpoint of the Actor's Standby URL using your Apify API token.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {},
+  "required": []
+}

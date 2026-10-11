@@ -1,0 +1,20 @@
+{
+ "tools": [
+  "search_apps",
+  "get_app_reviews",
+  "review_insights",
+  "compare_apps"
+ ],
+ "search": [
+  [
+   "1232780281",
+   "Notion: Notes, Tasks, AI"
+  ],
+  [
+   "1607562761",
+   "Notion Calendar"
+  ]
+ ],
+ "reviews": 50,
+ "firstReview": "Terrible UI"
+}

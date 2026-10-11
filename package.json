@@ -1,0 +1,43 @@
+{
+  "name": "app-review-intel-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for App Store search, review retrieval, review insights and app comparison. No API keys required.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "app-review-intel-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
+    "start": "node dist/index.js",
+    "start:http": "node dist/index.js --http",
+    "test": "npm run build && node test/smoke.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "app-store",
+    "itunes",
+    "reviews",
+    "app-intelligence"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "apify": "^3.7.2",
+    "zod": "^4.6.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "^5.9.3"
+  }
+}

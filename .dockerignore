@@ -1,0 +1,7 @@
+node_modules
+dist
+demo/transcript.json
+.git
+.actor/storage
+storage
+npm-debug.log*

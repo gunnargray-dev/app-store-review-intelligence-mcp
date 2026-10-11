@@ -1,0 +1,64 @@
+[app-review-intel-mcp] running on stdio
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"term\": \"notion\",\n  \"country\": \"us\",\n  \"count\": 2,\n  \"apps\": [\n    {\n      \"id\": \"1232780281\",\n      \"name\": \"Notion: Notes, Tasks, AI\",\n      \"developer\": \"Notion Labs, Incorporated\",\n      \"developerId\": \"1232780280\",\n      \"bundleId\": \"notion.id\",\n      \"genre\": \"Productivity\",\n      \"price\": 0,\n      \"formattedPrice\": \"Free\",\n      \"currency\": \"USD\",\n      \"averageRating\": 4.78,\n      \"ratingCount\": 90368,\n      \"currentVersionAverageRating\": 4.78,\n      \"currentVersionRatingCount\": 90368,\n      \"version\": \"1.7.345\",\n      \"currentVersionReleaseDate\": \"2026-10-07T16:42:39Z\",\n      \"releaseDate\": \"2017-09-14T19:07:31Z\",\n      \"contentRating\": \"4+\",\n      \"sizeBytes\": 751456256,\n      \"minimumOsVersion\": \"18.0\",\n      \"url\": \"https://apps.apple.com/us/app/notion-notes-tasks-ai/id1232780281\",\n      \"icon\": \"https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/06/c6/c4/06c6c4ab-b156-76c0-352c-f1ee08eb8d22/AppIconProd-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/512x512bb.jpg\",\n      \"description\": \"Notion is an AI-powered all-in-one workspace that helps individuals and teams write notes, manage tasks, organize projects, and collaborate in one place. Whether you’re tracking personal to-do lists, writing and organizing class notes, or managing projects with a team, Notion helps users plan…\"\n    },\n    {\n      \"id\": \"1607562761\",\n      \"name\": \"Notion Calendar\",\n      \"developer\": \"Notion Labs, Incorporated\",\n      \"developerId\": \"1232780280\",\n      \"bundleId\": \"com.cron.calendar\",\n      \"genre\": \"Productivity\",\n      \"price\": 0,\n      \"formattedPrice\": \"Free\",\n      \"currency\": \"USD\",\n      \"averageRating\": 4.74,\n      \"ratingCount\": 7622,\n      \"currentVersionAverageRating\": 4.74,\n      \"currentVersionRatingCount\": 7622,\n      \"version\": \"1.92.0\",\n      \"currentVersionReleaseDate\": \"2026-07-30T19:50:59Z\",\n      \"releaseDate\": \"2022-12-15T08:00:00Z\",\n      \"contentRating\": \"4+\",\n      \"sizeBytes\": 43397120,\n      \"minimumOsVersion\": \"15.0\",\n      \"url\": \"https://apps.apple.com/us/app/notion-calendar/id1607562761\",\n      \"icon\": \"https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/0c/21/9c/0c219c10-40f7-69dd-8f7f-fb084fb2fc55/notion-calendar-0-0-1x_U007ephone-0-1-P3-85-220.png/512x512bb.jpg\",\n      \"description\": \"Notion Calendar lets you schedule meetings and control your time like never before. It deeply integrates with Google Calendar accounts so that all your events are synced. Along with speed, beauty, and light/dark modes, Notion Calendar includes powerful features: - CONNECTED TO NOTION — add Notion…\"\n    }\n  ]\n}"
+    }
+  ],
+  "structuredContent": {
+    "term": "notion",
+    "country": "us",
+    "count": 2,
+    "apps": [
+      {
+        "id": "1232780281",
+        "name": "Notion: Notes, Tasks, AI",
+        "developer": "Notion Labs, Incorporated",
+        "developerId": "1232780280",
+        "bundleId": "notion.id",
+        "genre": "Productivity",
+        "price": 0,
+        "formattedPrice": "Free",
+        "currency": "USD",
+        "averageRating": 4.78,
+        "ratingCount": 90368,
+        "currentVersionAverageRating": 4.78,
+        "currentVersionRatingCount": 90368,
+        "version": "1.7.345",
+        "currentVersionReleaseDate": "2026-10-07T16:42:39Z",
+        "releaseDate": "2017-09-14T19:07:31Z",
+        "contentRating": "4+",
+        "sizeBytes": 751456256,
+        "minimumOsVersion": "18.0",
+        "url": "https://apps.apple.com/us/app/notion-notes-tasks-ai/id1232780281",
+        "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/06/c6/c4/06c6c4ab-b156-76c0-352c-f1ee08eb8d22/AppIconProd-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/512x512bb.jpg",
+        "description": "Notion is an AI-powered all-in-one workspace that helps individuals and teams write notes, manage tasks, organize projects, and collaborate in one place. Whether you’re tracking personal to-do lists, writing and organizing class notes, or managing projects with a team, Notion helps users plan…"
+      },
+      {
+        "id": "1607562761",
+        "name": "Notion Calendar",
+        "developer": "Notion Labs, Incorporated",
+        "developerId": "1232780280",
+        "bundleId": "com.cron.calendar",
+        "genre": "Productivity",
+        "price": 0,
+        "formattedPrice": "Free",
+        "currency": "USD",
+        "averageRating": 4.74,
+        "ratingCount": 7622,
+        "currentVersionAverageRating": 4.74,
+        "currentVersionRatingCount": 7622,
+        "version": "1.92.0",
+        "currentVersionReleaseDate": "2026-07-30T19:50:59Z",
+        "releaseDate": "2022-12-15T08:00:00Z",
+        "contentRating": "4+",
+        "sizeBytes": 43397120,
+        "minimumOsVersion": "15.0",
+        "url": "https://apps.apple.com/us/app/notion-calendar/id1607562761",
+        "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/0c/21/9c/0c219c10-40f7-69dd-8f7f-fb084fb2fc55/notion-calendar-0-0-1x_U007ephone-0-1-P3-85-220.png/512x512bb.jpg",
+        "description": "Notion Calendar lets you schedule meetings and control your time like never before. It deeply integrates with Google Calendar accounts so that all your events are synced. Along with speed, beauty, and light/dark modes, Notion Calendar includes powerful features: - CONNECTED TO NOTION — add Notion…"
+      }
+    ]
+  }
+}

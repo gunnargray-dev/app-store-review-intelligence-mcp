@@ -1,0 +1,10 @@
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+const url=new URL("https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp");
+const t=new StreamableHTTPClientTransport(url,{requestInit:{headers:{Authorization:`Bearer ${process.env.APIFY_TOKEN}`}}});
+const c=new Client({name:"remote-test",version:"1"}); await c.connect(t);
+const out={tools:(await c.listTools()).tools.map(x=>x.name)};
+out.search=JSON.parse((await c.callTool({name:"search_apps",arguments:{term:"notion",limit:2}})).content[0].text).apps.map(a=>[a.id,a.name]);
+const r=await c.callTool({name:"get_app_reviews",arguments:{app_id:"389801252",pages:1}});
+const j=JSON.parse(r.content[0].text); out.reviews=j.count??j.reviews?.length; out.firstReview=j.reviews?.[0]?.title;
+console.log(JSON.stringify(out,null,1)); await c.close();
