@@ -1,7 +1,9 @@
 {
+  "$schema": "https://apify-projects.github.io/actor-json-schemas/output.json?v=0.3",
   "actorOutputSchemaVersion": 1,
   "title": "App Store Review Intelligence MCP Server output",
   "description": "The Actor does not write datasets. It serves a Model Context Protocol (Streamable HTTP) endpoint for MCP clients.",
+  "type": "object",
   "properties": {
     "mcpEndpoint": {
       "type": "string",

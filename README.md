@@ -1,46 +1,95 @@
-# App Store Review Intelligence MCP Server
+# App Store & Google Play Review Intelligence MCP Server
 
-> **Hosted version (no setup):** [apify.com/parallelstudio/app-store-review-intelligence-mcp](https://apify.com/parallelstudio/app-store-review-intelligence-mcp). Connect any MCP client to `https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp` with your Apify token, pay per call. This repo is the open-source code; you can also run it locally with `npm install && npm run build && npx app-review-intel-mcp` (stdio).
+**Ask your AI agent what users hate about any iOS or Android app, and what broke in the last update.** This [MCP](https://modelcontextprotocol.io) server searches the Apple App Store and Google Play, pulls recent reviews for any app (yours or a competitor's), and returns analysis your agent can use directly: top complaints with quotes, rating by version, **what got worse in the latest version**, and side-by-side competitor benchmarks. No API keys, no App Store Connect or Play Console access needed.
+
+> **Hosted (no setup):** [apify.com/parallelstudio/app-store-review-intelligence-mcp](https://apify.com/parallelstudio/app-store-review-intelligence-mcp). Connect any MCP client to `https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp` with your Apify token and pay per call. You can also run this open-source code locally over stdio: `npm install && npm run build && npx app-review-intel-mcp`.
+
+> **Google Play availability:** Google Play support is available today in the open-source local server (stdio or self-hosted HTTP). On the hosted Apify version it is **coming soon**; the hosted server currently covers the Apple App Store only and returns a "coming soon" error for Google Play ids. Everything below that mentions Google Play applies to the local version.
 
 <!-- mcp-name: io.github.gunnargray-dev/app-store-review-intelligence-mcp -->
 
-Give your AI agent live access to **Apple App Store reviews**. This [MCP](https://modelcontextprotocol.io) server searches the App Store, pulls customer reviews for any iOS app, and turns them into insights you can act on: rating distribution, average rating per app version, top complaint keywords, representative quotes, and side-by-side competitor comparisons.
+Works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and any client that supports MCP over Streamable HTTP.
 
-It works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and any other client that supports MCP over Streamable HTTP. You don't need an Apple account or an App Store Connect key, and you don't need to own the apps you analyze.
+## What you can ask
 
-## What you can do with it
-
-- **Find release regressions.** "Did ratings drop after version 582.0? What are people complaining about?"
-- **Research competitors.** "Compare Notion, Obsidian and Evernote. Which has the most negative recent reviews and why?"
-- **Prioritize your roadmap.** "Summarize the top 10 complaints in 1–2★ reviews across US, UK and Canada."
-- **Monitor sentiment.** Feed the latest reviews into your own agent workflow, reporting or alerting.
-- **Look up apps.** Search by keyword to get app ids, ratings, rating counts, prices and versions.
+- **"What broke in Instagram's last update?"** `review_insights` compares the newest version with the previous one: rating change, negative-share change, and the complaints that rose most, with quotes.
+- **"Top 10 complaints about Duolingo on Android vs iOS."** Same tool, either store. The store is inferred from the app id.
+- **"Compare Notion, Obsidian and Evernote. Who has the unhappiest users, and why?"** `compare_apps` gives one table with leaders per metric. You can mix Apple and Google Play ids.
+- **"Find the top meditation apps on Google Play."** `search_apps` returns ids, ratings, installs and prices.
+- **"Show me the latest reviews mentioning crashes."** `get_app_reviews` returns raw review text for your own analysis.
 
 ## Tools
 
-| Tool | What it does | Key parameters |
-|---|---|---|
-| `search_apps` | Searches the App Store by keyword. Returns id, name, developer, genre, price, average rating, rating count, current version, release dates, size, store URL and a short description. | `term`, `country` (default `us`), `limit` (1–50, default 10) |
-| `get_app_reviews` | Fetches normalized customer reviews: id, author, rating, title, body, app version, date and helpful votes. | `app_id`, `country`, `pages` (1–10, ~50 reviews each, default 1), `sort` (`mostrecent` \| `mosthelpful`) |
-| `review_insights` | Analyzes recent reviews across one or more storefronts. Returns rating distribution, average rating by version (newest first), top complaint keywords and phrases from 1–2★ reviews, and representative negative and positive quotes. | `app_id`, `countries` (1–10, default `["us"]`), `pages` (per country, default 3), `keyword_limit`, `quotes` |
-| `compare_apps` | Compares 2–10 apps side by side: store rating and count, price, size, current version, recent-review average, % negative and % positive, latest-version average, top complaints, and the leader for each metric. | `app_ids` (2–10), `country`, `pages` (per app, default 2) |
+| Tool | Use it when | Returns | Billing |
+|---|---|---|---|
+| `search_apps` | You have an app name or a category and need its id | id (Apple numeric id or Play package name), name, developer, rating, rating count, price, genre, version, URL; installs on Google Play | per call |
+| `review_insights` | **Start here** for any "why are users unhappy / what changed / summarize feedback" question | rating distribution, rating by version, top complaint phrases (share of 1–2★ reviews + quote), `versionDeltas` (latest vs previous version: rating change, rising complaints with quotes), sample quotes | flat per call |
+| `get_app_reviews` | You need the actual review text | reviews with rating, title (Apple), body, version, date, helpful votes; developer replies on Google Play | per review returned |
+| `compare_apps` | Competitor benchmark of 2–10 apps (Apple and Google can be mixed) | store rating & count, installs, price, version, recent average, % negative/positive, latest-version average, top 5 complaints, leaders | flat per call |
 
-`app_id` accepts a numeric id (`284882215`), `"id284882215"`, or a full App Store URL such as `https://apps.apple.com/us/app/facebook/id284882215`. `country` is any 2-letter storefront code (`us`, `gb`, `de`, `jp`…).
+**Parameters.** `app_id` accepts an Apple id (`284882215`, `id284882215`, or an apps.apple.com URL) or a Google Play package name (`com.instagram.android` or a play.google.com URL). `store` (`apple` | `google`) is optional because it's inferred from the id. On `search_apps` it defaults to `apple`. `country` is a 2-letter storefront code (`us`, `gb`, `de`…). `pages` is 1–10, about 50 reviews each. `lang` (Google Play only, default `en`) picks the review language. `review_insights` also takes `countries` (pool up to 10 storefronts), `since_version` (choose the version to compare from), `keyword_limit` and `quotes`.
 
-All tools are read-only. Errors come back as MCP tool errors (`isError: true`) with a clear message prefixed `invalid_input`, `upstream_error` or `internal_error`.
+All tools are read-only. Errors come back as MCP tool errors (`isError: true`), prefixed `invalid_input`, `upstream_error` or `internal_error`.
+
+## Example output
+
+`review_insights` `{ "app_id": "389801252", "countries": ["us", "gb"] }` (Instagram for iOS, real call, October 2026, trimmed):
+
+```json
+{
+  "sample": { "reviews": 300, "negativeReviews": 188, "byCountry": { "us": 150, "gb": 150 } },
+  "ratingDistribution": { "average": 2.42, "total": 300 },
+  "storeRating": { "averageRating": 4.69, "ratingCount": 29583259 },
+  "versionDeltas": {
+    "basis": "version",
+    "latest":   { "label": "450.1.0", "reviews": 210, "averageRating": 2.17, "negativeShare": 0.695 },
+    "previous": { "label": "previous versions 448.0.0–450.0.0", "reviews": 90, "averageRating": 3.0, "negativeShare": 0.467 },
+    "change": { "averageRating": -0.83, "negativeShare": 0.228 },
+    "whatGotWorse": [
+      { "phrase": "ipad", "status": "new", "latestShare": 0.24, "previousShare": 0, "change": 0.24,
+        "examples": [{ "rating": 1, "text": "iPad Update Ruined Reels. Tiny, unchangeable aspect ratio that hovers over the search page?…" }] },
+      { "phrase": "reels", "status": "increased", "latestShare": 0.281, "previousShare": 0.095, "change": 0.186 },
+      { "phrase": "full screen", "status": "new", "latestShare": 0.11, "previousShare": 0, "change": 0.11,
+        "examples": [{ "rating": 1, "text": "Broken UI in latest update. Can no longer see full screen reels in iPad. They now crop reels to square format…" }] }
+    ],
+    "confidence": "high",
+    "summary": "Version 450.1.0 (210 reviews) average 2.17★ vs 3.00★ for previous versions 448.0.0–450.0.0 (90 reviews), −0.83; negative share 69.5% vs 46.7% (+22.8 pp). Rising complaints: \"ipad\" (new, 24% of negative reviews), …"
+  },
+  "complaintKeywords": [
+    { "phrase": "reels", "reviews": 45, "share": 0.239, "example": "…" },
+    { "phrase": "ipad", "reviews": 35, "share": 0.186, "example": "…" },
+    { "phrase": "account", "reviews": 34, "share": 0.181, "example": "…" },
+    { "phrase": "full screen", "reviews": 16, "share": 0.085, "example": "…" }
+  ]
+}
+```
+
+`search_apps` `{ "term": "meditation", "store": "google", "limit": 3 }`:
+
+| id | name | developer | rating | installs |
+|---|---|---|---|---|
+| com.spotlightsix.zentimerlite2 | Insight Timer - Meditation App | Insight Network Inc | 4.70 | 10,000,000+ |
+| meditofoundation.medito | Medito: Meditation & Sleep | Medito for Mindfulness, Meditation and Sleep | 4.79 | 1,000,000+ |
+| com.getsomeheadspace.android | Headspace: Sleep & Meditation | Headspace for Meditation, Mindfulness and Sleep | 4.26 | 10,000,000+ |
+
+`compare_apps` `{ "app_ids": ["324684580", "com.spotify.music"], "pages": 1 }` compares Spotify on iOS and Android. It reports a 4.77 vs 4.35 store rating, a 4.18 vs 3.90 recent average, and 16% vs 28% negative reviews. Top Android complaints: premium, song, ads.
+
+See [`demo/transcript.md`](demo/transcript.md) for full, untrimmed responses from every tool.
 
 ## Pricing
 
-This Actor uses **pay-per-event** pricing. You pay only for successful tool calls. Calls that fail validation or can't reach Apple are not charged. Current prices are on the Actor's **Pricing** tab.
+Pay-per-event: you pay only for successful calls. Calls that fail validation or can't reach the store are not charged. Current prices are on the Actor's **Pricing** tab.
 
-| Event | Price | When it's charged | Count |
-|---|---|---|---|
-| `search-apps` | $0.002 | Each successful `search_apps` call | 1 per call |
-| `review` | $0.001 | Each review returned by `get_app_reviews` | 1 per review in the response (e.g. 50 reviews = 50 events; 0 reviews = no charge) |
-| `review-insights` | $0.03 | Each successful `review_insights` call | 1 per call, flat. Reviews analyzed internally are **not** charged as `review` events. |
-| `compare-apps` | $0.05 | Each successful `compare_apps` call | 1 per call, flat, however many apps or reviews are involved |
+| Event | Price | Charged for |
+|---|---|---|
+| `search-apps` | $0.002 | each App Store `search_apps` call |
+| `review` | $0.001 | each App Store review returned by `get_app_reviews` (50 reviews = 50 events; 0 = free) |
+| `review-insights` | $0.03 | each App Store `review_insights` call, flat. Reviews analyzed internally are **not** charged as `review` events |
+| `compare-apps` | $0.05 | each `compare_apps` call with only App Store apps, flat however many apps or reviews |
 
-**Tip:** if you only need aggregates, `review_insights` and `compare_apps` are much cheaper than pulling hundreds of raw reviews with `get_app_reviews`.
+Google Play is not available on the hosted server yet (coming soon), so there are no Google Play charges today. Run the open-source server locally to use Google Play now, free.
+
+**Tip:** `review_insights` and `compare_apps` cost the same however many reviews they analyze. For aggregates they are much cheaper than pulling hundreds of raw reviews.
 
 ## Connect your MCP client
 
@@ -112,114 +161,48 @@ claude mcp add --transport http app-store-reviews \
 ### Example prompts
 
 - "Find the Duolingo app id and summarize what users complained about in the last 300 US reviews."
-- "Show the average rating per version for Instagram across us, gb and ca. Did the latest release make things worse?"
+- "Did Instagram's latest iOS release make things worse? Use us, gb and ca."
+- "Compare Spotify on iOS and Android: which platform's users are unhappier, and about what?"
 - "Compare Spotify, Apple Music and YouTube Music on recent reviews and tell me each one's biggest complaint."
 
-## Example outputs
-
-These excerpts come from real calls (October 2026).
-
-**`search_apps`** `{ "term": "instagram", "limit": 5 }`
-
-| id | name | developer | rating | ratings | version |
-|---|---|---|---|---|---|
-| 389801252 | Instagram | Instagram, Inc. | 4.69 | 29,583,259 | 450.1.0 |
-| 835599320 | TikTok - Videos, Shop & LIVE | TIKTOK PTE. LTD. | 4.72 | 18,388,560 | 47.1.0 |
-| 447188370 | Snapchat | Snap, Inc. | 4.51 | 5,959,258 | 14.27.0.54 |
-| 284882215 | Facebook | Meta Platforms, Inc. | 4.53 | 28,709,088 | 582.0.0 |
-
-**`get_app_reviews`** `{ "app_id": "284882215", "pages": 2 }`, which is 100 reviews and charged as 100 `review` events:
-
-```json
-{
-  "appId": "284882215",
-  "country": "us",
-  "sort": "mostrecent",
-  "pagesRequested": 2,
-  "pagesFetched": 2,
-  "count": 100,
-  "reviews": [
-    {
-      "id": "14650422444",
-      "author": "SKILLEDTOMATO",
-      "rating": 2,
-      "title": "Stop auto refresh",
-      "body": "Stop auto refreshing my feeds",
-      "version": "582.0.0",
-      "date": "2026-10-10T09:26:21-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    }
-  ]
-}
-```
-
-**`review_insights`** `{ "app_id": "284882215", "countries": ["us", "gb"], "pages": 3 }` (summary):
-
-- Sample: 300 recent reviews (us 150, gb 150), 2026-10-01 → 2026-10-10. Store rating 4.53 over 28.7M ratings, but the sample average is **2.93**.
-- Rating by version: `582.0.0` averages 3.10 (43.8% negative); `581.0.0` averages 2.57 (59.8% negative).
-- Top complaints (n=147 negative reviews): **ads** (23 reviews), **friends** (17), **post** (15), **reels** (13), **ai** (13), **account** (9), **marketplace** (8)…
-- Quotes, each with rating, title, text, version, country and date:
-  > ★ **Trash**: "Hundreds of ads instead of seeing what my friends post…" (v582.0.0, us)
-
-**`compare_apps`** `{ "app_ids": ["284882215", "389801252"], "pages": 2 }` (trimmed):
-
-```json
-{
-  "country": "us",
-  "apps": [
-    { "id": "284882215", "name": "Facebook", "storeAverageRating": 4.53, "storeRatingCount": 28709088,
-      "recentReviewSample": 100, "recentAverageRating": 3.02, "recentNegativeShare": 0.44,
-      "latestVersionAverageRating": 3.02,
-      "topComplaints": [{ "phrase": "ads", "reviews": 8 }, { "phrase": "friends", "reviews": 6 }] },
-    { "id": "389801252", "name": "Instagram", "storeAverageRating": 4.69, "storeRatingCount": 29583259,
-      "recentReviewSample": 100, "recentAverageRating": 2.07, "recentNegativeShare": 0.72,
-      "latestVersionAverageRating": 2.07,
-      "topComplaints": [{ "phrase": "reels", "reviews": 21 }, { "phrase": "ipad", "reviews": 20 }] }
-  ],
-  "leaders": {
-    "storeAverageRating": { "id": "389801252", "name": "Instagram", "value": 4.69 },
-    "recentAverageRating": { "id": "284882215", "name": "Facebook", "value": 3.02 },
-    "lowestRecentNegativeShare": { "id": "284882215", "name": "Facebook", "value": 0.44 }
-  }
-}
-```
-
-## How complaint keywords are found
+## How complaint keywords and "what got worse" are computed
 
 The method is transparent and deterministic. It uses no LLM and no black-box model:
 
-1. Tokenize the title and body of each 1–2★ review.
-2. Build 1-, 2- and 3-word phrases made only of content words. Stopwords, review boilerplate ("app", "update", "star"…), numbers and words from the app's own name or developer are excluded.
-3. Rank phrases by **how many reviews mention them**, then by total mentions, so one long rant can't dominate.
-4. Drop redundant short phrases that a longer phrase already covers, such as "crashing" when "keeps crashing" covers it.
-5. Attach an example snippet for each phrase.
+1. Tokenize each 1–2★ review. Curly and straight apostrophes are treated the same.
+2. Build 1-, 2- and 3-word phrases made only of content words. Stopwords, filler ("never", "just", "still", "really", "keep"…), review boilerplate ("app", "update", "star"…), numbers and the app's own name and developer are excluded. Plurals and possessives are merged (`account`/`accounts`).
+3. Rank phrases by **how many reviews mention them**, so one long rant can't dominate. Multi-word phrases get a small boost.
+4. Drop redundant phrases. A word disappears when a longer phrase covers most of its mentions (`screen` → `full screen`), and near-duplicate phrases are merged.
+5. **Version deltas:** split the sample into the newest app version and the version(s) just before it, or use `since_version`. Compare average rating and negative share, then rank phrases by how much their share of negative reviews rose. If the sample holds a single version, fall back to the last 3 days (or 24 hours) vs earlier. If that's not possible either, say so and suggest more `pages` or `countries`. A `confidence` level reflects how many negative reviews each side has.
 
 ## Limitations
 
-- **At most 500 reviews per app, storefront and sort order.** Apple's public review feed serves 10 pages of 50 reviews. Insights describe *recent written reviews*, not the whole rating population. The store-wide average and rating count are reported separately.
-- **No historical archive.** The server returns what Apple serves now. To track trends over months, store results on your side.
-- **iOS / Mac App Store only.** Google Play is not supported.
-- **No developer replies** and no rating-only (unwritten) reviews. Apple's feed doesn't include them.
-- **Unofficial endpoints.** Apple's iTunes Search/Lookup APIs and RSS feed are public but undocumented for this use, so they can change or rate-limit. The server retries with backoff, caches responses for 5 minutes, and returns partial results with `warnings` when one page or storefront fails.
-- **English-centric keywords.** Reviews in any language are returned and counted, but the stopword list for complaint keywords is English.
+- **Recent reviews, not the whole history.** Up to 500 reviews per app, storefront and call (Apple's feed serves 10 pages of 50; the same cap applies to Google Play). Insights describe *recent written reviews*. The store-wide rating and count are reported separately.
+- **Busy apps cover only a few days.** For apps like Instagram, 150 reviews may span one day and a single version. `versionDeltas` then explains this and suggests more `pages` or `countries`.
+- **Unofficial endpoints.** Apple's iTunes Search/Lookup APIs and RSS feed, and Google Play's public web endpoints, are key-less but undocumented for this use. They can change or rate-limit. The server retries with backoff, caches responses for 5 minutes, and returns partial results with `warnings` when a page or storefront fails.
+- **Google Play specifics.** Reviews have no title, and filtering is by `lang` (default `en`) more than by country. Storefronts overlap, so `review_insights` de-duplicates reviews across countries. Many apps report "varies with device" instead of a version number. App size is not available.
+- **Apple specifics.** The feed has no developer replies and no rating-only (unwritten) reviews.
+- **English-centric keywords.** Reviews in any language are returned and counted, but the stopword list is mainly English, with basic Spanish, French and German.
 
 ## FAQ
 
-**Do I need an Apple developer account or API key?**
-No. All data comes from Apple's public endpoints. You only need an Apify account and token to call this hosted server.
+**Do I need an Apple developer account, Play Console access or an API key?**
+No. All data comes from public App Store and Google Play endpoints. You only need an Apify account and token to call this hosted server.
 
 **Can I analyze apps I don't own?**
-Yes. Any app listed on the App Store works, including competitors' apps.
+Yes. Any app listed on the App Store or Google Play works, including competitors' apps.
+
+**How do I analyze the Android version of an app?**
+Use its Google Play package name (`com.spotify.music`) or Play URL as `app_id`, or call `search_apps` with `store: "google"` to find it. This works in the open-source local server; on the hosted version Google Play support is coming soon.
 
 **Why is the sample average so different from the store rating?**
 The store rating covers every rating the app has ever had, including the many silent 5★ taps. The sample covers only the most recent *written* reviews, and people who write reviews are more often unhappy. The gap is useful: a sharp drop in the recent average usually points to a problem in a recent release.
 
 **How many reviews does `review_insights` analyze?**
-`pages × 50` per storefront, up to 500 per country. With `pages: 10` and 10 countries, that's up to 5,000 reviews in one call, charged as a single `review-insights` event.
+`pages × 50` per storefront, up to 500 per country. With `pages: 10` and 10 countries, that's up to 5,000 reviews in one call, charged as a single event.
 
 **Which countries are supported?**
-Any App Store storefront, by its 2-letter code. Reviews are separate per storefront, so pass several countries to `review_insights` for wider coverage.
+Any storefront, by its 2-letter code. App Store reviews are separate per storefront, so pass several countries to `review_insights` for wider coverage. On Google Play, use `lang` to get reviews in other languages.
 
 **Is any data stored?**
 No. The server is stateless. It keeps only a short in-memory response cache and writes nothing to datasets or key-value stores.
@@ -234,30 +217,33 @@ npm install
 npm run build
 npm start              # MCP over stdio
 npm run start:http     # Streamable HTTP at http://127.0.0.1:3000/mcp (GET / and /health = health check)
-npm test               # build + end-to-end smoke test against live Apple endpoints
+npm test               # build + unit checks + end-to-end smoke test against live Apple and Google Play endpoints
 ```
 
 | env var | default | purpose |
 |---|---|---|
 | `PORT` / `HOST` | `3000` / `127.0.0.1` | HTTP bind (`--http`); also `--port`, `--host` |
-| `HTTP_TIMEOUT_MS` | `15000` | per-request timeout to Apple |
+| `HTTP_TIMEOUT_MS` | `15000` | per-request timeout to Apple / Google Play |
 | `HTTP_MAX_RETRIES` | `2` | retries on 408/425/429/5xx/network errors |
 | `CACHE_TTL_MS` | `300000` | in-memory cache TTL (`0` disables) |
 | `BILLING` | _(unset)_; `apify` in the Docker image | `apify` enables `Actor.charge()` pay-per-event billing |
+| `GOOGLE_PLAY_ENABLED` | enabled; `false` in the Docker image | `false` hides Google Play from tool schemas and rejects Google Play ids with a "coming soon" error |
 
 **On Apify (Standby mode).** When `APIFY_IS_AT_HOME` is set, the server calls `Actor.init()`, forces HTTP mode, and listens on `0.0.0.0:$ACTOR_WEB_SERVER_PORT`, falling back to `ACTOR_STANDBY_PORT`, then `PORT`. `GET /` answers the Standby readiness probe and MCP is served at `/mcp`. The HTTP server has no authentication of its own: on Apify, the platform authenticates requests with your API token. If you self-host it beyond localhost, put it behind an auth proxy.
 
 ```
 .actor/        actor.json, input_schema.json (empty), output_schema.json (MCP endpoint)
-Dockerfile     apify/actor-node:20, multi-stage TypeScript build, BILLING=apify
+Dockerfile     apify/actor-node:20, multi-stage TypeScript build, BILLING=apify, GOOGLE_PLAY_ENABLED=false
 src/
   index.ts     entry: stdio or stateless Streamable HTTP; Apify Standby wiring
   server.ts    MCP tool registrations (zod schemas, error mapping, billing)
-  itunes.ts    Apple API client: timeout, retry, cache, feed parsing
-  insights.ts  distribution, by-version stats, n-gram keywords, quote sampling
+  http.ts      shared HTTP client: timeout, retry, cache
+  itunes.ts    Apple API client: search, lookup, review feed parsing
+  googleplay.ts Google Play client: search, app details, reviews (batchexecute)
+  insights.ts  distribution, by-version stats, n-gram keywords, version deltas, quotes
   billing.ts   chargeEvent() → Actor.charge() when BILLING=apify
   util.ts      errors, cache, concurrency limiter, input normalization
-test/smoke.mjs end-to-end test via the MCP SDK client (stdio + HTTP)
+test/smoke.mjs unit checks + end-to-end test via the MCP SDK client (stdio + HTTP)
 ```
 
 ## License

@@ -1,7 +1,7 @@
 {
   "name": "app-review-intel-mcp",
-  "version": "1.0.0",
-  "description": "MCP server for App Store search, review retrieval, review insights and app comparison. No API keys required.",
+  "version": "1.1.0",
+  "description": "MCP server for App Store and Google Play reviews: search apps, fetch reviews, surface top complaints and what got worse in the latest version, and compare competitors. No API keys.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -23,11 +23,22 @@
   },
   "keywords": [
     "mcp",
+    "mcp-server",
     "model-context-protocol",
     "app-store",
-    "itunes",
-    "reviews",
-    "app-intelligence"
+    "google-play",
+    "play-store",
+    "ios",
+    "android",
+    "app-reviews",
+    "review-analysis",
+    "app-store-reviews",
+    "google-play-reviews",
+    "competitor-analysis",
+    "aso",
+    "user-feedback",
+    "claude",
+    "ai-agents"
   ],
   "license": "MIT",
   "private": true,

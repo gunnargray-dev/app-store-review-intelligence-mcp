@@ -2,10 +2,10 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.gunnargray-dev/app-store-review-intelligence-mcp",
   "title": "App Store Review Intelligence",
-  "description": "Search the Apple App Store, fetch iOS reviews, get insights by version, and compare apps.",
+  "description": "Search the App Store, fetch iOS reviews, find top complaints and what got worse, compare apps.",
   "repository": {"url": "https://github.com/gunnargray-dev/app-store-review-intelligence-mcp", "source": "github"},
   "websiteUrl": "https://apify.com/parallelstudio/app-store-review-intelligence-mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "remotes": [
     {
       "type": "streamable-http",

@@ -25,6 +25,9 @@ COPY --chown=myuser:myuser . ./
 # Charge pay-per-event via Actor.charge() on the Apify platform.
 ENV BILLING=apify
 
+# Google Play (play-* billing events) is not priced on Apify yet: serve App Store only.
+ENV GOOGLE_PLAY_ENABLED=false
+
 # Streamable HTTP mode. Under APIFY_IS_AT_HOME the server binds
 # 0.0.0.0:$ACTOR_WEB_SERVER_PORT and serves MCP at /mcp.
 CMD ["node", "dist/index.js", "--http"]

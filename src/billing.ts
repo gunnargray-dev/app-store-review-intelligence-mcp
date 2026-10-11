@@ -25,6 +25,17 @@ export const BillingEvents = {
   INSIGHTS: "review-insights",
   /** One successful compare_apps call (flat; no per-review or per-app charge). */
   COMPARE: "compare-apps",
+
+  // Google Play (store: "google"). Separate events so Apple pricing is untouched.
+  // PROPOSED: these must be added to the Apify pay-per-event config before release.
+  /** One successful search_apps call with store="google". */
+  PLAY_SEARCH: "play-search",
+  /** One Google Play review returned by get_app_reviews (count = reviews in the response). */
+  PLAY_REVIEW: "play-review",
+  /** One successful review_insights call for a Google Play app (flat). */
+  PLAY_INSIGHTS: "play-review-insights",
+  /** One successful compare_apps call that includes at least one Google Play app (flat, replaces compare-apps). */
+  PLAY_COMPARE: "play-compare-apps",
 } as const;
 
 export type BillingEventName = (typeof BillingEvents)[keyof typeof BillingEvents];

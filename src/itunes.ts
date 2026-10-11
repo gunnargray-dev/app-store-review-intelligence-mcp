@@ -5,12 +5,8 @@
  *  - Customer reviews RSS (JSON):
  *      https://itunes.apple.com/{country}/rss/customerreviews/page={n}/id={id}/sortby={sort}/json
  */
-import { TtlCache, UpstreamError, mapLimit, sleep } from "./util.js";
-
-const USER_AGENT = "app-review-intel-mcp/1.0 (+https://modelcontextprotocol.io)";
-const TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS ?? 15_000);
-const MAX_RETRIES = Number(process.env.HTTP_MAX_RETRIES ?? 2);
-const CACHE_TTL_MS = Number(process.env.CACHE_TTL_MS ?? 5 * 60_000);
+import { fetchText } from "./http.js";
+import { UpstreamError, mapLimit } from "./util.js";
 
 /** Apple serves at most 10 pages (≈50 reviews each) of the review feed. */
 export const MAX_REVIEW_PAGES = 10;
@@ -40,6 +36,8 @@ export interface AppSummary {
   url: string | null;
   icon: string | null;
   description: string | null;
+  /** Google Play only: install bucket such as "1,000,000+". */
+  installs?: string | null;
 }
 
 export interface Review {
@@ -53,57 +51,24 @@ export interface Review {
   voteSum: number;
   voteCount: number;
   country: string;
+  /** Google Play only: the developer's public reply, if any. */
+  developerReply?: string | null;
 }
 
-const cache = new TtlCache<unknown>(CACHE_TTL_MS, 500);
-
-function isRetryableStatus(status: number): boolean {
-  return status === 408 || status === 425 || status === 429 || status >= 500;
-}
-
-/** GET a JSON document with timeout, retry (exponential backoff + jitter) and caching. */
-export async function fetchJson<T = unknown>(url: string): Promise<T> {
-  const cached = cache.get(url);
-  if (cached !== undefined) return cached as T;
-
-  let lastErr: unknown;
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-    if (attempt > 0) await sleep(400 * 2 ** (attempt - 1) + Math.random() * 250);
-    try {
-      const res = await fetch(url, {
-        headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-      });
-      if (!res.ok) {
-        const err = new UpstreamError(`Apple API responded ${res.status} ${res.statusText}`, res.status, url);
-        if (isRetryableStatus(res.status)) {
-          lastErr = err;
-          continue;
-        }
-        throw err;
-      }
-      const text = await res.text();
-      let data: T;
-      try {
-        data = JSON.parse(text) as T;
-      } catch {
-        // Apple occasionally returns an HTML error page with 200; treat as transient.
-        lastErr = new UpstreamError("Apple API returned a non-JSON response", res.status, url);
-        continue;
-      }
-      cache.set(url, data);
-      return data;
-    } catch (err) {
-      if (err instanceof UpstreamError && err.status !== undefined && !isRetryableStatus(err.status)) throw err;
-      const name = (err as { name?: string })?.name;
-      lastErr =
-        name === "TimeoutError" || name === "AbortError"
-          ? new UpstreamError(`Request to Apple timed out after ${TIMEOUT_MS} ms`, undefined, url)
-          : err;
-    }
+const isJson = (text: string) => {
+  try {
+    JSON.parse(text);
+    return true;
+  } catch {
+    // Apple occasionally returns an HTML error page with 200; treat as transient.
+    return false;
   }
-  if (lastErr instanceof UpstreamError) throw lastErr;
-  throw new UpstreamError(`Network error contacting Apple: ${String((lastErr as Error)?.message ?? lastErr)}`, undefined, url);
+};
+
+/** GET a JSON document from Apple with timeout, retry and caching. */
+export async function fetchJson<T = unknown>(url: string): Promise<T> {
+  const text = await fetchText(url, { source: "Apple API", headers: { Accept: "application/json" }, validate: isJson });
+  return JSON.parse(text) as T;
 }
 
 // ---------------------------------------------------------------------------
