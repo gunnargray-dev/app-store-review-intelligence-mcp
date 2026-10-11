@@ -4,3 +4,4 @@ storage/
 storage/
 .env
 *.log
+distribution/
