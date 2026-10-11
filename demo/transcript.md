@@ -1,6 +1,6 @@
 # app-review-intel-mcp — smoke test transcript
 
-Generated 2026-10-11T22:20:21.887Z by `test/smoke.mjs` against live Apple and Google Play endpoints. Server: **app-review-intel-mcp 1.1.0** over stdio.
+Generated 2026-10-11T22:31:01.489Z by `test/smoke.mjs` against live Apple and Google Play endpoints. Server: **app-review-intel-mcp 1.1.0** over stdio.
 
 **Assertions: 103/103 passed.**
 
@@ -19,7 +19,7 @@ Generated 2026-10-11T22:20:21.887Z by `test/smoke.mjs` against live Apple and Go
 
 ### `search_apps` ⚠️ (error)
 
-Arguments: `{"term":"instagram","store":"google"}` · 7 ms
+Arguments: `{"term":"instagram","store":"google"}` · 6 ms
 
 > MCP error -32602: Input validation error: Invalid arguments for tool search_apps: Google Play support is coming soon on the hosted version; use the open-source local server (https://github.com/gunnargray-dev/app-store-review-intelligence-mcp) for Google Play today. at store
 
@@ -37,19 +37,19 @@ Arguments: `{"app_id":"https://play.google.com/store/apps/details?id=com.instagr
 
 ### `review_insights` ⚠️ (error)
 
-Arguments: `{"app_id":"com.instagram.android"}` · 2 ms
+Arguments: `{"app_id":"com.instagram.android"}` · 1 ms
 
 > Error (invalid_input): Google Play support is coming soon on the hosted version; use the open-source local server (https://github.com/gunnargray-dev/app-store-review-intelligence-mcp) for Google Play today.
 
 ### `review_insights` ⚠️ (error)
 
-Arguments: `{"app_id":"284882215","store":"google"}` · 1 ms
+Arguments: `{"app_id":"284882215","store":"google"}` · 2 ms
 
 > MCP error -32602: Input validation error: Invalid arguments for tool review_insights: Google Play support is coming soon on the hosted version; use the open-source local server (https://github.com/gunnargray-dev/app-store-review-intelligence-mcp) for Google Play today. at store
 
 ### `compare_apps` ⚠️ (error)
 
-Arguments: `{"app_ids":["284882215","com.spotify.music"]}` · 1 ms
+Arguments: `{"app_ids":["284882215","com.spotify.music"]}` · 2 ms
 
 > Error (invalid_input): Google Play support is coming soon on the hosted version; use the open-source local server (https://github.com/gunnargray-dev/app-store-review-intelligence-mcp) for Google Play today.
 
@@ -61,7 +61,7 @@ Arguments: `{"app_id":"not-an-id"}` · 2 ms
 
 ### `search_apps` 
 
-Arguments: `{"term":"instagram","country":"us","limit":5}` · 413 ms
+Arguments: `{"term":"instagram","country":"us","limit":5}` · 113 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
@@ -166,7 +166,7 @@ Arguments: `{"term":"instagram","country":"us","limit":5}` · 413 ms
 
 ### `search_apps` 
 
-Arguments: `{"term":"facebook","limit":3}` · 90 ms
+Arguments: `{"term":"facebook","limit":3}` · 36 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
@@ -263,11 +263,11 @@ Arguments: `{"term":"facebook","limit":3}` · 90 ms
 
 ### `search_apps` 
 
-Arguments: `{"term":"instagram","store":"google","limit":5}` · 535 ms
+Arguments: `{"term":"instagram","store":"google","limit":5}` · 337 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
-| com.instagram.android | Instagram | Instagram | 3.99 | 169,625,588 | – |
+| com.instagram.android | Instagram | Instagram | 3.99 | 169,625,590 | – |
 | com.instagram.airwave | Instagram | Instagram | 3.97 | 1,000,000+ | – |
 | com.instagram.barcelona | Threads | Instagram | 4 | 500,000,000+ | – |
 | com.instagram.moonshot | Instants, an Instagram app | Instagram | 4.61 | 5,000,000+ | – |
@@ -293,7 +293,7 @@ Arguments: `{"term":"instagram","store":"google","limit":5}` · 535 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 3.99,
-      "ratingCount": 169625588,
+      "ratingCount": 169625590,
       "contentRating": "Teen",
       "url": "https://play.google.com/store/apps/details?id=com.instagram.android",
       "icon": "https://play-lh.googleusercontent.com/yHi59jmO_lVamcyJ1i3rM1_E8bAiAspShnGjjURq05ipQQSUksO3QVEsXTegRSqul038-4YNA7O644XAcx251Q",
@@ -363,7 +363,7 @@ Arguments: `{"term":"instagram","store":"google","limit":5}` · 535 ms
 
 ### `search_apps` 
 
-Arguments: `{"term":"meditation","store":"google","limit":8}` · 447 ms
+Arguments: `{"term":"meditation","store":"google","limit":8}` · 338 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
@@ -457,7 +457,7 @@ Arguments: `{"term":"meditation","store":"google","limit":8}` · 447 ms
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"284882215","country":"us","pages":2,"sort":"mostrecent"}` · 100 ms
+Arguments: `{"app_id":"284882215","country":"us","pages":2,"sort":"mostrecent"}` · 369 ms
 
 App **284882215** (apple) · us · sort=mostrecent · pages fetched 2/2 · **100 reviews**
 
@@ -625,7 +625,7 @@ _(first 5 of 100 shown)_
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"389801252","country":"us","pages":2,"sort":"mostrecent"}` · 149 ms
+Arguments: `{"app_id":"389801252","country":"us","pages":2,"sort":"mostrecent"}` · 448 ms
 
 App **389801252** (apple) · us · sort=mostrecent · pages fetched 2/2 · **100 reviews**
 
@@ -762,7 +762,7 @@ _(first 5 of 100 shown)_
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"https://apps.apple.com/us/app/instagram/id389801252","sort":"mosthelpful"}` · 331 ms
+Arguments: `{"app_id":"https://apps.apple.com/us/app/instagram/id389801252","sort":"mosthelpful"}` · 529 ms
 
 App **389801252** (apple) · us · sort=mosthelpful · pages fetched 1/1 · **50 reviews**
 
@@ -823,7 +823,7 @@ _(first 5 of 50 shown)_
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"com.spotify.music","pages":2}` · 165 ms
+Arguments: `{"app_id":"com.spotify.music","pages":2}` · 138 ms
 
 App **com.spotify.music** (google) · us · sort=mostrecent · pages fetched 2/2 · **100 reviews**
 
@@ -952,7 +952,7 @@ _(first 5 of 100 shown)_
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"https://play.google.com/store/apps/details?id=com.instagram.android&hl=en","sort":"mosthelpful"}` · 182 ms
+Arguments: `{"app_id":"https://play.google.com/store/apps/details?id=com.instagram.android&hl=en","sort":"mosthelpful"}` · 127 ms
 
 App **com.instagram.android** (google) · us · sort=mosthelpful · pages fetched 1/1 · **50 reviews**
 
@@ -1046,11 +1046,11 @@ _(first 5 of 50 shown)_
 
 ### `review_insights` 
 
-Arguments: `{"app_id":"284882215","countries":["us","gb"],"pages":3}` · 181 ms
+Arguments: `{"app_id":"284882215","countries":["us","gb"],"pages":3}` · 691 ms
 
 **Facebook** (284882215, apple) — sample of 300 recent reviews {"us":150,"gb":150}, 2026-10-01 → 2026-10-10
 
-Store rating: **4.53** over 28,697,057 ratings · Sample average: **2.93**
+Store rating: **4.53** over 28,709,088 ratings · Sample average: **2.93**
 
 | ★ | count | % |
 |---|---|---|
@@ -1126,7 +1126,7 @@ Store rating: **4.53** over 28,697,057 ratings · Sample average: **2.93**
     "developer": "Meta Platforms, Inc.",
     "genre": "Social Networking",
     "averageRating": 4.53,
-    "ratingCount": 28697057,
+    "ratingCount": 28709088,
     "version": "582.0.0",
     "currentVersionReleaseDate": "2026-10-07T14:52:01Z",
     "url": "https://apps.apple.com/us/app/facebook/id284882215"
@@ -1167,7 +1167,7 @@ Store rating: **4.53** over 28,697,057 ratings · Sample average: **2.93**
   },
   "storeRating": {
     "averageRating": 4.53,
-    "ratingCount": 28697057
+    "ratingCount": 28709088
   },
   "ratingByVersion": [
     {
@@ -1278,7 +1278,7 @@ Store rating: **4.53** over 28,697,057 ratings · Sample average: **2.93**
 
 ### `review_insights` 
 
-Arguments: `{"app_id":"389801252","countries":["us","gb"],"pages":3}` · 146 ms
+Arguments: `{"app_id":"389801252","countries":["us","gb"],"pages":3}` · 922 ms
 
 **Instagram** (389801252, apple) — sample of 300 recent reviews {"us":150,"gb":150}, 2026-09-26 → 2026-10-10
 
@@ -1512,11 +1512,11 @@ Store rating: **4.69** over 29,583,259 ratings · Sample average: **2.42**
 
 ### `review_insights` 
 
-Arguments: `{"app_id":"com.instagram.android","pages":6,"quotes":2}` · 523 ms
+Arguments: `{"app_id":"com.instagram.android","pages":6,"quotes":2}` · 751 ms
 
 **Instagram** (com.instagram.android, google) — sample of 300 recent reviews {"us":300}, 2026-10-08 → 2026-10-08
 
-Store rating: **3.99** over 169,625,092 ratings · Sample average: **4.02**
+Store rating: **3.99** over 169,625,581 ratings · Sample average: **4.02**
 
 | ★ | count | % |
 |---|---|---|
@@ -1594,7 +1594,7 @@ Store rating: **3.99** over 169,625,092 ratings · Sample average: **4.02**
     "developer": "Instagram",
     "genre": "Social",
     "averageRating": 3.99,
-    "ratingCount": 169625092,
+    "ratingCount": 169625581,
     "version": null,
     "currentVersionReleaseDate": "2026-10-05T12:58:25.000Z",
     "installs": "5,000,000,000+",
@@ -1635,7 +1635,7 @@ Store rating: **3.99** over 169,625,092 ratings · Sample average: **4.02**
   },
   "storeRating": {
     "averageRating": 3.99,
-    "ratingCount": 169625092
+    "ratingCount": 169625581
   },
   "ratingByVersion": [
     {
@@ -1751,7 +1751,7 @@ Store rating: **3.99** over 169,625,092 ratings · Sample average: **4.02**
 
 ### `compare_apps` 
 
-Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 88 ms
+Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 27 ms
 
 | metric | 284882215 (apple) | 389801252 (apple) |
 |---|---|---|
@@ -1936,14 +1936,14 @@ Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 8
 
 ### `compare_apps` 
 
-Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 478 ms
+Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 510 ms
 
 | metric | 324684580 (apple) | com.spotify.music (google) |
 |---|---|---|
 | name | Spotify: Music and Podcasts | Spotify: Music and Podcasts |
 | developer | Spotify | Spotify AB |
 | store rating | 4.77 | 4.35 |
-| store rating count | 42,514,293 | 36,464,603 |
+| store rating count | 42,514,293 | 36,464,797 |
 | installs | – | 1,000,000,000+ |
 | current version | 9.1.90 | – |
 | released | 2026-10-08 | 2026-10-07 |
@@ -2021,7 +2021,7 @@ Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 478 ms
       "genre": "Music & Audio",
       "price": "Free",
       "storeAverageRating": 4.35,
-      "storeRatingCount": 36464603,
+      "storeRatingCount": 36464797,
       "installs": "1,000,000,000+",
       "currentVersion": null,
       "currentVersionReleaseDate": "2026-10-07T06:27:03.000Z",
@@ -2136,7 +2136,7 @@ Arguments: `{"app_ids":["284882215"]}` · 2 ms
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"999999999999"}` · 191 ms
+Arguments: `{"app_id":"999999999999"}` · 71 ms
 
 App **999999999999** (apple) · us · sort=mostrecent · pages fetched 0/1 · **0 reviews**
 
@@ -2163,7 +2163,7 @@ _No reviews returned. The app may not exist in this storefront or has no written
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"com.example.does.not.exist.zz"}` · 159 ms
+Arguments: `{"app_id":"com.example.does.not.exist.zz"}` · 103 ms
 
 App **com.example.does.not.exist.zz** (google) · us · sort=mostrecent · pages fetched 0/1 · **0 reviews**
 
@@ -2196,7 +2196,7 @@ Arguments: `{"app_id":"com.spotify.music","store":"apple"}` · 2 ms
 
 ### `review_insights` ⚠️ (error)
 
-Arguments: `{"app_id":"284882215","store":"google"}` · 1 ms
+Arguments: `{"app_id":"284882215","store":"google"}` · 2 ms
 
 > Error (invalid_input): Invalid Google Play app id "284882215". Use the package name (e.g. com.instagram.android) or a play.google.com/store/apps/details?id=… URL.
 
@@ -2204,7 +2204,7 @@ Arguments: `{"app_id":"284882215","store":"google"}` · 1 ms
 
 ```json
 {
-  "url": "http://127.0.0.1:42929/mcp",
+  "url": "http://127.0.0.1:40771/mcp",
   "health": {
     "status": "ok",
     "name": "app-review-intel-mcp",

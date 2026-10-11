@@ -26,7 +26,6 @@ COPY --chown=myuser:myuser . ./
 ENV BILLING=apify
 
 # Google Play (play-* billing events) is not priced on Apify yet: serve App Store only.
-ENV GOOGLE_PLAY_ENABLED=false
 
 # Streamable HTTP mode. Under APIFY_IS_AT_HOME the server binds
 # 0.0.0.0:$ACTOR_WEB_SERVER_PORT and serves MCP at /mcp.

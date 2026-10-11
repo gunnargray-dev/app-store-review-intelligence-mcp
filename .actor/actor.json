@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "app-store-review-intelligence-mcp",
-  "title": "App Store Review Intelligence MCP Server",
-  "description": "MCP server for AI agents: search the Apple App Store, pull iOS app reviews, find top complaints and what got worse in the latest version, and compare competitors. No API keys. Works with Claude, Cursor, VS Code and any MCP client.",
+  "title": "App Store & Google Play Review Intelligence MCP Server",
+  "description": "MCP server for AI agents: search the App Store and Google Play, pull iOS and Android reviews, find top complaints and what got worse in the latest version, and compare competitors across stores. No API keys. Works with Claude, Cursor, VS Code and any MCP client.",
   "version": "1.1",
   "buildTag": "latest",
   "usesStandbyMode": true,

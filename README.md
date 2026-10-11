@@ -4,7 +4,7 @@
 
 > **Hosted (no setup):** [apify.com/parallelstudio/app-store-review-intelligence-mcp](https://apify.com/parallelstudio/app-store-review-intelligence-mcp). Connect any MCP client to `https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp` with your Apify token and pay per call. You can also run this open-source code locally over stdio: `npm install && npm run build && npx app-review-intel-mcp`.
 
-> **Google Play availability:** Google Play support is available today in the open-source local server (stdio or self-hosted HTTP). On the hosted Apify version it is **coming soon**; the hosted server currently covers the Apple App Store only and returns a "coming soon" error for Google Play ids. Everything below that mentions Google Play applies to the local version.
+> **Now with Google Play:** every tool works on both the Apple App Store and Google Play, including iOS-vs-Android comparisons.
 
 <!-- mcp-name: io.github.gunnargray-dev/app-store-review-intelligence-mcp -->
 
@@ -87,7 +87,7 @@ Pay-per-event: you pay only for successful calls. Calls that fail validation or 
 | `review-insights` | $0.03 | each App Store `review_insights` call, flat. Reviews analyzed internally are **not** charged as `review` events |
 | `compare-apps` | $0.05 | each `compare_apps` call with only App Store apps, flat however many apps or reviews |
 
-Google Play is not available on the hosted server yet (coming soon), so there are no Google Play charges today. Run the open-source server locally to use Google Play now, free.
+Google Play calls are billed as separate events at the same prices: `play-search` $0.002 per search, `play-review` $0.001 per review, `play-review-insights` $0.03 per call, `play-compare-apps` $0.05 per comparison that includes any Google Play app.
 
 **Tip:** `review_insights` and `compare_apps` cost the same however many reviews they analyze. For aggregates they are much cheaper than pulling hundreds of raw reviews.
 
@@ -193,7 +193,7 @@ No. All data comes from public App Store and Google Play endpoints. You only nee
 Yes. Any app listed on the App Store or Google Play works, including competitors' apps.
 
 **How do I analyze the Android version of an app?**
-Use its Google Play package name (`com.spotify.music`) or Play URL as `app_id`, or call `search_apps` with `store: "google"` to find it. This works in the open-source local server; on the hosted version Google Play support is coming soon.
+Use its Google Play package name (`com.spotify.music`) or Play URL as `app_id`, or call `search_apps` with `store: "google"` to find it.
 
 **Why is the sample average so different from the store rating?**
 The store rating covers every rating the app has ever had, including the many silent 5★ taps. The sample covers only the most recent *written* reviews, and people who write reviews are more often unhappy. The gap is useful: a sharp drop in the recent average usually points to a problem in a recent release.
@@ -227,13 +227,13 @@ npm test               # build + unit checks + end-to-end smoke test against liv
 | `HTTP_MAX_RETRIES` | `2` | retries on 408/425/429/5xx/network errors |
 | `CACHE_TTL_MS` | `300000` | in-memory cache TTL (`0` disables) |
 | `BILLING` | _(unset)_; `apify` in the Docker image | `apify` enables `Actor.charge()` pay-per-event billing |
-| `GOOGLE_PLAY_ENABLED` | enabled; `false` in the Docker image | `false` hides Google Play from tool schemas and rejects Google Play ids with a "coming soon" error |
+| `GOOGLE_PLAY_ENABLED` | enabled | `false` hides Google Play from tool schemas and rejects Google Play ids with a "coming soon" error |
 
 **On Apify (Standby mode).** When `APIFY_IS_AT_HOME` is set, the server calls `Actor.init()`, forces HTTP mode, and listens on `0.0.0.0:$ACTOR_WEB_SERVER_PORT`, falling back to `ACTOR_STANDBY_PORT`, then `PORT`. `GET /` answers the Standby readiness probe and MCP is served at `/mcp`. The HTTP server has no authentication of its own: on Apify, the platform authenticates requests with your API token. If you self-host it beyond localhost, put it behind an auth proxy.
 
 ```
 .actor/        actor.json, input_schema.json (empty), output_schema.json (MCP endpoint)
-Dockerfile     apify/actor-node:20, multi-stage TypeScript build, BILLING=apify, GOOGLE_PLAY_ENABLED=false
+Dockerfile     apify/actor-node:20, multi-stage TypeScript build, BILLING=apify
 src/
   index.ts     entry: stdio or stateless Streamable HTTP; Apify Standby wiring
   server.ts    MCP tool registrations (zod schemas, error mapping, billing)

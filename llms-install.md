@@ -11,4 +11,4 @@ Option B, local stdio (free, no keys):
 
 Tools: search_apps (find app ids), review_insights (start here: complaints, rating by version, what got worse in the latest version), get_app_reviews (raw review text), compare_apps (2-10 apps).
 App ids: Apple numeric id (284882215). No API keys needed.
-Google Play (package names like com.instagram.android, search_apps store "google", mixed Apple/Google compare_apps) works in Option B (local) only; it is coming soon on the hosted server.
+Google Play (package names like com.instagram.android, search_apps store "google", mixed Apple/Google compare_apps) is supported in both options.
