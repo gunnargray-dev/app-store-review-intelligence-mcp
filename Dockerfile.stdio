@@ -1,8 +1,17 @@
-# Local / Glama stdio image — not used by Apify (see ./Dockerfile).
+# Local / Glama stdio image (not used by Apify; see ./Dockerfile).
+# Builds from source so it works on a fresh clone (dist/ is not committed).
+FROM node:20-bookworm-slim AS build
+WORKDIR /app
+COPY package*.json tsconfig.json ./
+RUN npm ci --audit=false --fund=false
+COPY src ./src
+RUN npm run build
+
 FROM node:20-bookworm-slim
 WORKDIR /app
+ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm ci --omit=dev --omit=optional --audit=false --fund=false
-COPY dist ./dist
+COPY --from=build /app/dist ./dist
 # Default: MCP over stdio (what Glama introspection expects)
 CMD ["node", "dist/index.js"]
