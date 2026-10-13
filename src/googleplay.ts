@@ -229,7 +229,13 @@ export async function lookupPlayApp(appId: string, country: string, lang: string
   }
   for (const blob of initDataBlobs(html)) {
     const d = at(blob, 1, 2);
-    if (Array.isArray(d) && typeof at(d, 0, 0) === "string" && Array.isArray(at(d, 51))) {
+    // Prefer blobs with a rating histogram (index 51). Some apps omit it (new/unrated or
+    // truncated detail arrays); fall back when title + developer/installs are present.
+    if (
+      Array.isArray(d) &&
+      typeof at(d, 0, 0) === "string" &&
+      (Array.isArray(at(d, 51)) || typeof at(d, 68, 0) === "string" || typeof at(d, 13, 0) === "string")
+    ) {
       return normalizeDetail(d, appId);
     }
   }
