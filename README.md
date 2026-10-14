@@ -74,9 +74,9 @@ All tools are read-only. Errors come back as MCP tool errors (`isError: true`), 
 
 `compare_apps` `{ "app_ids": ["324684580", "com.spotify.music"], "pages": 1 }` compares Spotify on iOS and Android. It reports a 4.77 vs 4.35 store rating, a 4.18 vs 3.90 recent average, and 16% vs 28% negative reviews. Top Android complaints: premium, song, ads.
 
-See [`demo/transcript.md`](demo/transcript.md) for full, untrimmed responses from every tool.
+See [`demo/transcript.md`](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/demo/transcript.md) for full, untrimmed responses from every tool.
 
-**Step-by-step recipes** (release check, competitor teardown, iOS vs Android, a weekly watch in Claude Code) with real results and per-workflow cost: [`docs/workflows.md`](docs/workflows.md).
+**Step-by-step recipes** (release check, competitor teardown, iOS vs Android, a weekly watch in Claude Code) with real results and per-workflow cost: [`docs/workflows.md`](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md).
 
 ## Pricing
 
@@ -162,7 +162,14 @@ claude mcp add --transport http app-store-reviews \
 
 ### Example prompts
 
-More, with real outputs, in [`docs/workflows.md`](docs/workflows.md).
+Four ready-made workflows, with the prompt, tool calls and real results in [`docs/workflows.md`](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md):
+
+| Workflow | Tools | Cost on the hosted server |
+|---|---|---|
+| [Release check](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md#1-release-check-did-our-last-update-make-things-worse): did our last update make things worse? | `review_insights` | $0.03 |
+| [Competitor teardown](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md#2-competitor-teardown-before-a-roadmap-or-pricing-decision) before a roadmap or pricing call | `search_apps`, `compare_apps` | $0.052 |
+| [iOS vs Android](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md#3-ios-vs-android-are-users-on-one-platform-unhappier): which platform is unhappier? | `compare_apps` | $0.05 |
+| [Weekly review watch](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md#4-weekly-review-watch-in-claude-code) in Claude Code (cron + `claude -p`) | `review_insights` | $0.06 per week |
 
 - "Find the Duolingo app id and summarize what users complained about in the last 300 US reviews."
 - "Did Instagram's latest iOS release make things worse? Use us, gb and ca."
