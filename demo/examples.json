@@ -1,0 +1,1113 @@
+{
+  "generatedAt": "2026-10-14T17:29:54.008Z",
+  "calls": [
+    {
+      "name": "review_insights",
+      "args": {
+        "app_id": "570060128",
+        "countries": [
+          "us",
+          "gb",
+          "ca"
+        ],
+        "pages": 2
+      },
+      "isError": false,
+      "data": {
+        "app": {
+          "id": "570060128",
+          "name": "Duolingo: Learn Languages",
+          "developer": "Duolingo, Inc",
+          "genre": "Education",
+          "averageRating": 4.72,
+          "ratingCount": 5504507,
+          "version": "7.144.0",
+          "currentVersionReleaseDate": "2026-10-12T16:03:34Z",
+          "url": "https://apps.apple.com/us/app/duolingo-learn-languages/id570060128"
+        },
+        "store": "apple",
+        "sample": {
+          "reviews": 300,
+          "negativeReviews": 71,
+          "positiveReviews": 201,
+          "pagesFetched": 6,
+          "byCountry": {
+            "us": 100,
+            "gb": 100,
+            "ca": 100
+          },
+          "dateRange": {
+            "from": "2026-10-07T16:13:36-07:00",
+            "to": "2026-10-13T07:19:01-07:00"
+          },
+          "note": "Sample = most recent written reviews from Apple's RSS feed; it is not the full store rating population."
+        },
+        "ratingDistribution": {
+          "counts": {
+            "1": 49,
+            "2": 22,
+            "3": 28,
+            "4": 45,
+            "5": 156
+          },
+          "percent": {
+            "1": 16.3,
+            "2": 7.3,
+            "3": 9.3,
+            "4": 15,
+            "5": 52
+          },
+          "average": 3.79,
+          "total": 300
+        },
+        "storeRating": {
+          "averageRating": 4.72,
+          "ratingCount": 5504507
+        },
+        "ratingByVersion": [
+          {
+            "version": "7.144.0",
+            "reviews": 122,
+            "averageRating": 3.72,
+            "negativeShare": 0.238,
+            "firstSeen": "2026-10-12T09:16:47-07:00",
+            "lastSeen": "2026-10-13T07:19:01-07:00"
+          },
+          {
+            "version": "7.143.1",
+            "reviews": 148,
+            "averageRating": 3.9,
+            "negativeShare": 0.223,
+            "firstSeen": "2026-10-09T06:08:03-07:00",
+            "lastSeen": "2026-10-12T09:56:11-07:00"
+          },
+          {
+            "version": "7.143.0",
+            "reviews": 17,
+            "averageRating": 4.06,
+            "negativeShare": 0.176,
+            "firstSeen": "2026-10-08T15:27:09-07:00",
+            "lastSeen": "2026-10-09T05:02:20-07:00"
+          },
+          {
+            "version": "7.142.0",
+            "reviews": 12,
+            "averageRating": 2.75,
+            "negativeShare": 0.5,
+            "firstSeen": "2026-10-07T16:13:36-07:00",
+            "lastSeen": "2026-10-08T13:07:58-07:00"
+          },
+          {
+            "version": "7.58.1",
+            "reviews": 1,
+            "averageRating": 4,
+            "negativeShare": 0,
+            "firstSeen": "2026-10-12T18:36:52-07:00",
+            "lastSeen": "2026-10-12T18:36:52-07:00"
+          }
+        ],
+        "versionDeltas": {
+          "basis": "version",
+          "latest": {
+            "label": "7.144.0",
+            "versions": [
+              "7.144.0"
+            ],
+            "reviews": 122,
+            "negativeReviews": 29,
+            "averageRating": 3.72,
+            "negativeShare": 0.238,
+            "dateRange": {
+              "from": "2026-10-12T09:16:47-07:00",
+              "to": "2026-10-13T07:19:01-07:00"
+            }
+          },
+          "previous": {
+            "label": "previous version 7.143.1",
+            "versions": [
+              "7.143.1"
+            ],
+            "reviews": 148,
+            "negativeReviews": 33,
+            "averageRating": 3.9,
+            "negativeShare": 0.223,
+            "dateRange": {
+              "from": "2026-10-09T06:08:03-07:00",
+              "to": "2026-10-12T09:56:11-07:00"
+            }
+          },
+          "change": {
+            "averageRating": -0.18,
+            "negativeShare": 0.015
+          },
+          "whatGotWorse": [
+            {
+              "phrase": "learning",
+              "status": "increased",
+              "latestShare": 0.276,
+              "previousShare": 0.121,
+              "change": 0.155,
+              "latestReviews": 8,
+              "previousReviews": 4,
+              "examples": [
+                {
+                  "rating": 1,
+                  "title": "energy is the worst thing.",
+                  "text": "…d Duolingo but ever since they added the energy, it’s no point in learning it anymore, you need to PAY to learn languages. that’s all I have to say.",
+                  "author": "marialolzzzz",
+                  "version": "7.144.0",
+                  "date": "2026-10-13T07:19:01-07:00",
+                  "country": "gb"
+                },
+                {
+                  "rating": 2,
+                  "title": "The app changed",
+                  "text": "…ged the structure of the course making it more of a game and less learning. Canceled my subscription after almost 700 day streak. Sad these changes happened, they ruined a great app.",
+                  "author": "GeorgieOneOh",
+                  "version": "7.144.0",
+                  "date": "2026-10-13T04:40:50-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "energy",
+              "status": "increased",
+              "latestShare": 0.207,
+              "previousShare": 0.061,
+              "change": 0.146,
+              "latestReviews": 6,
+              "previousReviews": 2,
+              "examples": [
+                {
+                  "rating": 1,
+                  "title": "getting nickeled and dimed",
+                  "text": "…nt notifications, like 2 very short lessons a day (because get 21 energy each day and a lesson costs like 10 ) and after you are not a beginner you really don’t get much. Don’t get it ever. Btw if you",
+                  "author": "AngusJock7",
+                  "version": "7.144.0",
+                  "date": "2026-10-13T05:53:18-07:00",
+                  "country": "us"
+                },
+                {
+                  "rating": 1,
+                  "title": "Worse Than Ever",
+                  "text": "Worse Than Ever. Ugghhh. Now you have to have ‘energy’ to keep using the app. Along with the annoying ads which take up almost as much time as the lessons, this has become a bad user experience. Movin",
+                  "author": "Indy_5000",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T18:46:54-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "ad",
+              "status": "increased",
+              "latestShare": 0.138,
+              "previousShare": 0.03,
+              "change": 0.108,
+              "latestReviews": 4,
+              "previousReviews": 1,
+              "examples": [
+                {
+                  "rating": 1,
+                  "title": "Out of Patience",
+                  "text": "…ce. Every time you finish a lesson, you now have to go through an ad, and several power-ups/gimmicks that are frankly a waste of time. One was enough but now it’s a monthly challenge, a weird puzzle,",
+                  "author": "jseller13",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T17:11:18-07:00",
+                  "country": "ca"
+                },
+                {
+                  "rating": 1,
+                  "title": "Pay to Learn",
+                  "text": "…try to learn languages but every lesson I do, I have to watch an ad about upgrading to Duolingo plus or Max with REAL MONEY. Another problem is the energy bar in the corner. I want to keep learning b",
+                  "author": "(Çømęntęr)",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T15:35:47-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "grammar",
+              "status": "new",
+              "latestShare": 0.103,
+              "previousShare": 0,
+              "change": 0.103,
+              "latestReviews": 3,
+              "previousReviews": 0,
+              "examples": [
+                {
+                  "rating": 2,
+                  "title": "Great for Practice, but Lacking in Teaching and Increasingly Frustrating",
+                  "text": "…oy the app, I find that it lacks proper explanations of important grammar concepts, particularly verb conjugations & the differences between masculine and feminine words. Rather than simply having use",
+                  "author": "Dreafrancs",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T18:18:08-07:00",
+                  "country": "ca"
+                },
+                {
+                  "rating": 2,
+                  "title": "Grammar",
+                  "text": "Grammar. There is no explanation for use. Pronouns, nouns and prepositions.",
+                  "author": ":/;)534",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T16:27:29-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "ruined",
+              "status": "new",
+              "latestShare": 0.103,
+              "previousShare": 0,
+              "change": 0.103,
+              "latestReviews": 3,
+              "previousReviews": 0,
+              "examples": [
+                {
+                  "rating": 2,
+                  "title": "Update sucks",
+                  "text": "…w vocabulary. How they pushed the update is so not thoughtful and ruined the learning experience.",
+                  "author": "blackcat creater",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T22:18:34-07:00",
+                  "country": "us"
+                },
+                {
+                  "rating": 1,
+                  "title": "Ruined",
+                  "text": "Ruined. Energy ruins the experience. I learned a lot of Spanish until they changed it to using energy. Now this app is 5 minutes of advertisements and 5 minutes of learning.",
+                  "author": "Just use AI instead",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T18:01:07-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "experience",
+              "status": "new",
+              "latestShare": 0.103,
+              "previousShare": 0,
+              "change": 0.103,
+              "latestReviews": 3,
+              "previousReviews": 0,
+              "examples": [
+                {
+                  "rating": 2,
+                  "title": "Update sucks",
+                  "text": "…ey pushed the update is so not thoughtful and ruined the learning experience.",
+                  "author": "blackcat creater",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T22:18:34-07:00",
+                  "country": "us"
+                },
+                {
+                  "rating": 1,
+                  "title": "Worse Than Ever",
+                  "text": "…up almost as much time as the lessons, this has become a bad user experience. Moving onto other apps.",
+                  "author": "Indy_5000",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T18:46:54-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "minutes",
+              "status": "new",
+              "latestShare": 0.103,
+              "previousShare": 0,
+              "change": 0.103,
+              "latestReviews": 3,
+              "previousReviews": 0,
+              "examples": [
+                {
+                  "rating": 1,
+                  "title": "Waste of time",
+                  "text": "…ally used this app for a year long period before and was doing 15 minutes lesson at least every other day. It doesn’t teach you anything. It’s a waste of time and the only thing you can say is if you’",
+                  "author": "Minmaidjuice",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T19:14:13-07:00",
+                  "country": "us"
+                },
+                {
+                  "rating": 1,
+                  "title": "Ruined",
+                  "text": "Ruined. Energy ruins the experience. I learned a lot of Spanish until they changed it to using energy. Now this app is 5 minutes of advertisements and 5 minutes of learning.",
+                  "author": "Just use AI instead",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T18:01:07-07:00",
+                  "country": "us"
+                }
+              ]
+            },
+            {
+              "phrase": "message",
+              "status": "new",
+              "latestShare": 0.069,
+              "previousShare": 0,
+              "change": 0.069,
+              "latestReviews": 2,
+              "previousReviews": 0,
+              "examples": [
+                {
+                  "rating": 2,
+                  "title": "Uggg",
+                  "text": "Uggg. Sends me more message than bestie who text every ten seconds keeps me up at night with notifications one at 11:47 I was really tired in the morning almost missed work",
+                  "author": "Let me be right",
+                  "version": "7.144.0",
+                  "date": "2026-10-13T06:50:45-07:00",
+                  "country": "us"
+                },
+                {
+                  "rating": 1,
+                  "title": "No customer service",
+                  "text": "No customer service. I had a month of the app being glitchy and couldn’t get anyone to respond to my messages. There is no phone number to contact, only the email that doesn’t get answered. Because…",
+                  "author": "Waytomakethisimpossible",
+                  "version": "7.144.0",
+                  "date": "2026-10-12T21:53:18-07:00",
+                  "country": "us"
+                }
+              ]
+            }
+          ],
+          "whatImproved": [
+            {
+              "phrase": "support",
+              "status": "gone",
+              "latestShare": 0,
+              "previousShare": 0.121,
+              "change": -0.121,
+              "latestReviews": 0,
+              "previousReviews": 4
+            },
+            {
+              "phrase": "wrong",
+              "status": "decreased",
+              "latestShare": 0.034,
+              "previousShare": 0.152,
+              "change": -0.117,
+              "latestReviews": 1,
+              "previousReviews": 5
+            },
+            {
+              "phrase": "year",
+              "status": "decreased",
+              "latestShare": 0.069,
+              "previousShare": 0.182,
+              "change": -0.113,
+              "latestReviews": 2,
+              "previousReviews": 6
+            },
+            {
+              "phrase": "junior's toy hunt",
+              "status": "gone",
+              "latestShare": 0,
+              "previousShare": 0.091,
+              "change": -0.091,
+              "latestReviews": 0,
+              "previousReviews": 3
+            },
+            {
+              "phrase": "year old",
+              "status": "gone",
+              "latestShare": 0,
+              "previousShare": 0.091,
+              "change": -0.091,
+              "latestReviews": 0,
+              "previousReviews": 3
+            }
+          ],
+          "confidence": "medium",
+          "summary": "Version 7.144.0 (122 reviews) average 3.72★ vs 3.90★ for previous version 7.143.1 (148 reviews), −0.18; negative share 23.8% vs 22.3% (+1.5 pp). Rising complaints: \"learning\" (+15.5 pp, 27.6% of negative reviews), \"energy\" (+14.6 pp, 20.7% of negative reviews), \"ad\" (+10.8 pp, 13.8% of negative reviews).",
+          "notes": []
+        },
+        "complaintKeywords": [
+          {
+            "phrase": "lesson",
+            "n": 1,
+            "reviews": 16,
+            "share": 0.225,
+            "tf": 21,
+            "example": "…scription now as you won’t have enough energy to do more than one lesson a day and won’t get to do all the lessons without subscription access. They have also transitioned from being an app that suppo"
+          },
+          {
+            "phrase": "learning",
+            "n": 1,
+            "reviews": 13,
+            "share": 0.183,
+            "tf": 14,
+            "example": "…cess. They have also transitioned from being an app that supports learning to one that attempts to be so annoying to its users through its own adds for plus and super Duolingo so that you pay for a su"
+          },
+          {
+            "phrase": "year",
+            "n": 1,
+            "reviews": 9,
+            "share": 0.127,
+            "tf": 10,
+            "example": "…in your advertising said every month $14 but you guys charge per year and I don’t like that and I’m gonna cancel it because I would like to pay monthly not yearly"
+          },
+          {
+            "phrase": "pay",
+            "n": 1,
+            "reviews": 9,
+            "share": 0.127,
+            "tf": 10,
+            "example": "…sers through its own adds for plus and super Duolingo so that you pay for a subscription to avoid the annoyance. Greedy company. And not for the people."
+          },
+          {
+            "phrase": "energy",
+            "n": 1,
+            "reviews": 8,
+            "share": 0.113,
+            "tf": 14,
+            "example": "…entirely dependent on a subscription now as you won’t have enough energy to do more than one lesson a day and won’t get to do all the lessons without subscription access. They have also transitioned f"
+          },
+          {
+            "phrase": "words",
+            "n": 1,
+            "reviews": 7,
+            "share": 0.099,
+            "tf": 8,
+            "example": "…anslate the sentence,\" show me the sentence, but the buttons with words to answer are no longer visible to VO."
+          },
+          {
+            "phrase": "answer",
+            "n": 1,
+            "reviews": 6,
+            "share": 0.085,
+            "tf": 12,
+            "example": "…he sentence,\" show me the sentence, but the buttons with words to answer are no longer visible to VO."
+          },
+          {
+            "phrase": "wrong",
+            "n": 1,
+            "reviews": 6,
+            "share": 0.085,
+            "tf": 8,
+            "example": "…So Duolingo seems like a really nice way to learn for free right?Wrong. The problem is if you’re not on their paying tier you have to sit through and add after every lesson. Well ok if that’s it but"
+          },
+          {
+            "phrase": "subscription",
+            "n": 1,
+            "reviews": 6,
+            "share": 0.085,
+            "tf": 8,
+            "example": "…a lot in the last few years. It’s almost entirely dependent on a subscription now as you won’t have enough energy to do more than one lesson a day and won’t get to do all the lessons without subscrip"
+          },
+          {
+            "phrase": "pieces",
+            "n": 1,
+            "reviews": 5,
+            "share": 0.07,
+            "tf": 10,
+            "example": "Gamification. When I started using the app, it was geared toward learning a language. Now it seems to be more of a game to get users focused on collecting puzzle pieces rather than learning."
+          },
+          {
+            "phrase": "chess",
+            "n": 1,
+            "reviews": 5,
+            "share": 0.07,
+            "tf": 9,
+            "example": "Chess game 10/13/2026. It seems like the bot favor it’s self at times, there are times I clearly won and it will say stalemate/ draw and/or it will stop me from making certain decisions or moves when"
+          },
+          {
+            "phrase": "changed",
+            "n": 1,
+            "reviews": 5,
+            "share": 0.07,
+            "tf": 8,
+            "example": "Too many adds. The app has changed a lot in the last few years. It’s almost entirely dependent on a subscription now as you won’t have enough energy to do more than one lesson a day and won’t get to d"
+          },
+          {
+            "phrase": "game",
+            "n": 1,
+            "reviews": 5,
+            "share": 0.07,
+            "tf": 7,
+            "example": "…They also changed the structure of the course making it more of a game and less learning. Canceled my subscription after almost 700 day streak. Sad these changes happened, they ruined a great app."
+          },
+          {
+            "phrase": "ad",
+            "n": 1,
+            "reviews": 5,
+            "share": 0.07,
+            "tf": 7,
+            "example": "…ount of energy but when that runs out you either have to watch an ad or get premium. As for the premium not everyone can afford it. I used to be someone who loved Duolingo but ever since they added th"
+          },
+          {
+            "phrase": "free",
+            "n": 1,
+            "reviews": 5,
+            "share": 0.07,
+            "tf": 6,
+            "example": "…ay, no warnings were received; lesson learnt: never be tempted by free trials from this grasping, greedy company."
+          }
+        ],
+        "quotes": {
+          "negative": [
+            {
+              "rating": 1,
+              "title": "Too many adds",
+              "text": "The app has changed a lot in the last few years. It’s almost entirely dependent on a subscription now as you won’t have enough energy to do more than one lesson a day and won’t get to do all the lessons without subscription access. They have also transitioned from being an app…",
+              "author": "Maybe a big fan",
+              "version": "7.143.1",
+              "date": "2026-10-11T22:33:12-07:00",
+              "country": "ca"
+            },
+            {
+              "rating": 1,
+              "title": "My advised",
+              "text": "It’s good everything but when you charge the me for the subscription, why in the middle of the learning you need the money again for getting time more it’s a kind of rip off and in your advertising said every month $14 but you guys charge per year and I don’t like that and I’m…",
+              "author": "ufndjshdj",
+              "version": "7.143.1",
+              "date": "2026-10-11T12:54:02-07:00",
+              "country": "ca"
+            },
+            {
+              "rating": 1,
+              "title": "Newest version is completely inaccessible with VoiceOver",
+              "text": "The latest version that was just released completely breaks accessibility with VoiceOver. The version just before it worked well. I tried the newest version on both iOS 17 and iOS 27. I had to use an old version on my iPad to be able to do a lesson today because the new version…",
+              "author": "Underground River",
+              "version": "7.143.1",
+              "date": "2026-10-10T19:13:28-07:00",
+              "country": "ca"
+            }
+          ],
+          "positive": [
+            {
+              "rating": 4,
+              "title": "Really duo is this the best you could do",
+              "text": "Duolingo is the best place to learn a new language but this last challenge was so hard to complete because I was getting sooooooooooooooooooooooooooooooooooooooooooo much duplicate pieces",
+              "author": "Simply apps",
+              "version": "7.144.0",
+              "date": "2026-10-13T07:15:04-07:00",
+              "country": "us"
+            },
+            {
+              "rating": 5,
+              "title": "The bird is evil",
+              "text": "You should definitely download the game, but don’t talk to a bird too much he’ll become evil",
+              "author": "Dwxsni",
+              "version": "7.144.0",
+              "date": "2026-10-13T07:07:16-07:00",
+              "country": "us"
+            },
+            {
+              "rating": 5,
+              "title": "Thank you",
+              "text": "This is the best game ever it is so fun to lean to speak Spanish and lean to play chess.😂",
+              "author": "Masonwittwer",
+              "version": "7.144.0",
+              "date": "2026-10-13T07:02:57-07:00",
+              "country": "us"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "search_apps",
+      "args": {
+        "term": "habit tracker",
+        "limit": 5
+      },
+      "isError": false,
+      "data": {
+        "term": "habit tracker",
+        "store": "apple",
+        "country": "us",
+        "count": 4,
+        "apps": [
+          {
+            "id": "1438388363",
+            "name": "Habit Tracker",
+            "developer": "Inner Grow Limited",
+            "developerId": "1828382777",
+            "bundleId": "com.davetech.habit",
+            "genre": "Productivity",
+            "price": 0,
+            "formattedPrice": "Free",
+            "currency": "USD",
+            "averageRating": 4.79,
+            "ratingCount": 147904,
+            "currentVersionAverageRating": 4.79,
+            "currentVersionRatingCount": 147904,
+            "version": "2.25.3",
+            "currentVersionReleaseDate": "2026-10-13T21:34:08Z",
+            "releaseDate": "2019-01-31T09:10:14Z",
+            "contentRating": "4+",
+            "sizeBytes": 316903424,
+            "minimumOsVersion": "15.0",
+            "url": "https://apps.apple.com/us/app/habit-tracker/id1438388363",
+            "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/07/83/9e/07839e08-06ab-54f4-8ea5-a0a9ea9843aa/AppIcon-pink-gr-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
+            "description": "Habit Tracker: A simple daily planner to schedule and track your routine, making it easy to build lasting habits. Join 15M+ happy users, achieve your goals, and make every day count! More than a self-care companion, it lets you share with others to grow and improve together. ----Useful…"
+          },
+          {
+            "id": "6443918070",
+            "name": "Habit Tracker - HabitKit",
+            "developer": "Sebastian Roehl",
+            "developerId": "1602956482",
+            "bundleId": "com.roehl.habitkit",
+            "genre": "Productivity",
+            "price": 0,
+            "formattedPrice": "Free",
+            "currency": "USD",
+            "averageRating": 4.84,
+            "ratingCount": 2481,
+            "currentVersionAverageRating": 4.84,
+            "currentVersionRatingCount": 2481,
+            "version": "1.18.2",
+            "currentVersionReleaseDate": "2026-10-13T07:41:12Z",
+            "releaseDate": "2022-11-26T08:00:00Z",
+            "contentRating": "4+",
+            "sizeBytes": 232469504,
+            "minimumOsVersion": "15.0",
+            "url": "https://apps.apple.com/us/app/habit-tracker-habitkit/id6443918070",
+            "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b9/42/78/b94278db-d651-13d5-f0f4-d7fe2a0eead7/NewAppIcon-0-0-1x_U007ephone-0-1-85-220.png/512x512bb.jpg",
+            "description": "Big life changes do not start big. They start with one small habit, done today, done again tomorrow. HabitKit turns those daily wins into a colorful grid of tiles, one square for every day you show up, so you can finally see yourself becoming the person you want to be. That visible progress is the…"
+          },
+          {
+            "id": "1547137474",
+            "name": "Onrise: Habit Tracker & Focus",
+            "developer": "Maximilian Munker",
+            "developerId": "983733173",
+            "bundleId": "me.onrise",
+            "genre": "Productivity",
+            "price": 0,
+            "formattedPrice": "Free",
+            "currency": "USD",
+            "averageRating": 4.84,
+            "ratingCount": 2589,
+            "currentVersionAverageRating": 4.84,
+            "currentVersionRatingCount": 2589,
+            "version": "1.1.9",
+            "currentVersionReleaseDate": "2026-08-25T14:24:43Z",
+            "releaseDate": "2021-01-03T08:00:00Z",
+            "contentRating": "4+",
+            "sizeBytes": 20473856,
+            "minimumOsVersion": "13.0",
+            "url": "https://apps.apple.com/us/app/onrise-habit-tracker-focus/id1547137474",
+            "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/23/08/7f/23087fb9-5ddc-bc14-4574-18a2b13fb909/AppIcon-0-0-1x_U007epad-0-8-0-85-220.png/512x512bb.jpg",
+            "description": "Onrise helps you to build beneficial habits, provides a Pomodoro timer to work more effectively and increase productivity, and a journal to keep track of everything. Standing on the latest research about behavior design and productivity, Onrise is your guide to achieving your goals. Give it a try…"
+          },
+          {
+            "id": "1528595748",
+            "name": "Finch: Self-Care Pet",
+            "developer": "Finch Care Public Benefit Corporation",
+            "developerId": "1528595750",
+            "bundleId": "com.finch.finch",
+            "genre": "Health & Fitness",
+            "price": 0,
+            "formattedPrice": "Free",
+            "currency": "USD",
+            "averageRating": 4.95,
+            "ratingCount": 763560,
+            "currentVersionAverageRating": 4.95,
+            "currentVersionRatingCount": 763560,
+            "version": "3.73.226",
+            "currentVersionReleaseDate": "2026-10-14T09:08:29Z",
+            "releaseDate": "2021-05-12T07:00:00Z",
+            "contentRating": "4+",
+            "sizeBytes": 547371008,
+            "minimumOsVersion": "15.6",
+            "url": "https://apps.apple.com/us/app/finch-self-care-pet/id1528595748",
+            "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c0/84/33/c084332e-9768-dc25-eb33-70dda9536897/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
+            "description": "Meet your new self-care best friend! Finch is a self-care pet app that helps you feel prepared and positive, one day at a time. Take care of your pet by taking care of yourself! Choose from a wide variety of self-care exercises personalized for you. THE BEST DAILY SELF-CARE APP Struggling with…"
+          }
+        ]
+      }
+    },
+    {
+      "name": "compare_apps",
+      "args": {
+        "app_ids": [
+          "1438388363",
+          "1547137474",
+          "1528595748"
+        ],
+        "pages": 2
+      },
+      "isError": false,
+      "data": {
+        "country": "us",
+        "apps": [
+          {
+            "id": "1438388363",
+            "store": "apple",
+            "found": true,
+            "name": "Habit Tracker",
+            "developer": "Inner Grow Limited",
+            "genre": "Productivity",
+            "price": "Free",
+            "storeAverageRating": 4.79,
+            "storeRatingCount": 147904,
+            "currentVersion": "2.25.3",
+            "currentVersionReleaseDate": "2026-10-13T21:34:08Z",
+            "sizeMB": 302.2,
+            "recentReviewSample": 100,
+            "recentAverageRating": 4.01,
+            "recentNegativeShare": 0.22,
+            "recentPositiveShare": 0.72,
+            "latestVersion": "2.25.3",
+            "latestVersionAverageRating": null,
+            "latestVersionReviewCount": 0,
+            "ratingDistribution": {
+              "1": 16,
+              "2": 6,
+              "3": 6,
+              "4": 5,
+              "5": 67
+            },
+            "reviewDateRange": {
+              "from": "2026-07-24T18:31:53-07:00",
+              "to": "2026-10-12T15:31:04-07:00"
+            },
+            "topComplaints": [
+              {
+                "phrase": "pay",
+                "reviews": 4,
+                "share": 0.182
+              },
+              {
+                "phrase": "years",
+                "reviews": 3,
+                "share": 0.136
+              },
+              {
+                "phrase": "stopped working",
+                "reviews": 2,
+                "share": 0.091
+              },
+              {
+                "phrase": "widget",
+                "reviews": 2,
+                "share": 0.091
+              },
+              {
+                "phrase": "family",
+                "reviews": 2,
+                "share": 0.091
+              }
+            ]
+          },
+          {
+            "id": "1547137474",
+            "store": "apple",
+            "found": true,
+            "name": "Onrise: Habit Tracker & Focus",
+            "developer": "Maximilian Munker",
+            "genre": "Productivity",
+            "price": "Free",
+            "storeAverageRating": 4.84,
+            "storeRatingCount": 2589,
+            "currentVersion": "1.1.9",
+            "currentVersionReleaseDate": "2026-08-25T14:24:43Z",
+            "sizeMB": 19.5,
+            "recentReviewSample": 100,
+            "recentAverageRating": 4.4,
+            "recentNegativeShare": 0.06,
+            "recentPositiveShare": 0.89,
+            "latestVersion": "1.1.9",
+            "latestVersionAverageRating": 4.8,
+            "latestVersionReviewCount": 5,
+            "ratingDistribution": {
+              "1": 5,
+              "2": 1,
+              "3": 5,
+              "4": 27,
+              "5": 62
+            },
+            "reviewDateRange": {
+              "from": "2024-11-26T20:35:44-07:00",
+              "to": "2026-09-30T15:11:32-07:00"
+            },
+            "topComplaints": [
+              {
+                "phrase": "feature",
+                "reviews": 2,
+                "share": 0.333
+              },
+              {
+                "phrase": "create",
+                "reviews": 2,
+                "share": 0.333
+              },
+              {
+                "phrase": "months",
+                "reviews": 2,
+                "share": 0.333
+              },
+              {
+                "phrase": "free",
+                "reviews": 2,
+                "share": 0.333
+              },
+              {
+                "phrase": "set",
+                "reviews": 2,
+                "share": 0.333
+              }
+            ]
+          },
+          {
+            "id": "1528595748",
+            "store": "apple",
+            "found": true,
+            "name": "Finch: Self-Care Pet",
+            "developer": "Finch Care Public Benefit Corporation",
+            "genre": "Health & Fitness",
+            "price": "Free",
+            "storeAverageRating": 4.95,
+            "storeRatingCount": 763560,
+            "currentVersion": "3.73.226",
+            "currentVersionReleaseDate": "2026-10-14T09:08:29Z",
+            "sizeMB": 522,
+            "recentReviewSample": 100,
+            "recentAverageRating": 4.69,
+            "recentNegativeShare": 0.05,
+            "recentPositiveShare": 0.93,
+            "latestVersion": "3.73.226",
+            "latestVersionAverageRating": null,
+            "latestVersionReviewCount": 0,
+            "ratingDistribution": {
+              "1": 4,
+              "2": 1,
+              "3": 2,
+              "4": 8,
+              "5": 85
+            },
+            "reviewDateRange": {
+              "from": "2026-10-07T10:11:11-07:00",
+              "to": "2026-10-13T04:33:49-07:00"
+            },
+            "topComplaints": [
+              {
+                "phrase": "items",
+                "reviews": 2,
+                "share": 0.4
+              },
+              {
+                "phrase": "week",
+                "reviews": 2,
+                "share": 0.4
+              },
+              {
+                "phrase": "refund",
+                "reviews": 2,
+                "share": 0.4
+              },
+              {
+                "phrase": "lost",
+                "reviews": 2,
+                "share": 0.4
+              },
+              {
+                "phrase": "hope",
+                "reviews": 2,
+                "share": 0.4
+              }
+            ]
+          }
+        ],
+        "leaders": {
+          "storeAverageRating": {
+            "id": "1528595748",
+            "store": "apple",
+            "name": "Finch: Self-Care Pet",
+            "value": 4.95
+          },
+          "storeRatingCount": {
+            "id": "1528595748",
+            "store": "apple",
+            "name": "Finch: Self-Care Pet",
+            "value": 763560
+          },
+          "recentAverageRating": {
+            "id": "1528595748",
+            "store": "apple",
+            "name": "Finch: Self-Care Pet",
+            "value": 4.69
+          },
+          "lowestRecentNegativeShare": {
+            "id": "1528595748",
+            "store": "apple",
+            "name": "Finch: Self-Care Pet",
+            "value": 0.05
+          },
+          "latestVersionAverageRating": null
+        }
+      }
+    },
+    {
+      "name": "compare_apps",
+      "args": {
+        "app_ids": [
+          "570060128",
+          "com.duolingo"
+        ],
+        "pages": 2
+      },
+      "isError": false,
+      "data": {
+        "country": "us",
+        "apps": [
+          {
+            "id": "570060128",
+            "store": "apple",
+            "found": true,
+            "name": "Duolingo: Learn Languages",
+            "developer": "Duolingo, Inc",
+            "genre": "Education",
+            "price": "Free",
+            "storeAverageRating": 4.72,
+            "storeRatingCount": 5504507,
+            "currentVersion": "7.144.0",
+            "currentVersionReleaseDate": "2026-10-12T16:03:34Z",
+            "sizeMB": 492.5,
+            "recentReviewSample": 100,
+            "recentAverageRating": 3.73,
+            "recentNegativeShare": 0.23,
+            "recentPositiveShare": 0.66,
+            "latestVersion": "7.144.0",
+            "latestVersionAverageRating": 3.73,
+            "latestVersionReviewCount": 99,
+            "ratingDistribution": {
+              "1": 16,
+              "2": 7,
+              "3": 11,
+              "4": 20,
+              "5": 46
+            },
+            "reviewDateRange": {
+              "from": "2026-10-12T14:56:33-07:00",
+              "to": "2026-10-13T07:15:04-07:00"
+            },
+            "topComplaints": [
+              {
+                "phrase": "learning",
+                "reviews": 7,
+                "share": 0.304
+              },
+              {
+                "phrase": "lesson",
+                "reviews": 4,
+                "share": 0.174
+              },
+              {
+                "phrase": "energy",
+                "reviews": 4,
+                "share": 0.174
+              },
+              {
+                "phrase": "game",
+                "reviews": 3,
+                "share": 0.13
+              },
+              {
+                "phrase": "ruined",
+                "reviews": 3,
+                "share": 0.13
+              }
+            ]
+          },
+          {
+            "id": "com.duolingo",
+            "store": "google",
+            "found": true,
+            "name": "Duolingo: Learn Languages",
+            "developer": "Duolingo",
+            "genre": "Education",
+            "price": "Free",
+            "storeAverageRating": 4.74,
+            "storeRatingCount": 50941319,
+            "installs": "500,000,000+",
+            "currentVersion": null,
+            "currentVersionReleaseDate": "2026-10-12T16:38:11.000Z",
+            "sizeMB": null,
+            "recentReviewSample": 100,
+            "recentAverageRating": 4.5,
+            "recentNegativeShare": 0.1,
+            "recentPositiveShare": 0.87,
+            "latestVersion": "6.101.2",
+            "latestVersionAverageRating": 4,
+            "latestVersionReviewCount": 1,
+            "ratingDistribution": {
+              "1": 4,
+              "2": 6,
+              "3": 3,
+              "4": 10,
+              "5": 77
+            },
+            "reviewDateRange": {
+              "from": "2026-10-13T16:10:33.000Z",
+              "to": "2026-10-13T17:29:24.000Z"
+            },
+            "topComplaints": [
+              {
+                "phrase": "lessons",
+                "reviews": 3,
+                "share": 0.3
+              },
+              {
+                "phrase": "learning",
+                "reviews": 3,
+                "share": 0.3
+              },
+              {
+                "phrase": "ads",
+                "reviews": 3,
+                "share": 0.3
+              },
+              {
+                "phrase": "streak",
+                "reviews": 3,
+                "share": 0.3
+              },
+              {
+                "phrase": "energy",
+                "reviews": 2,
+                "share": 0.2
+              }
+            ]
+          }
+        ],
+        "leaders": {
+          "storeAverageRating": {
+            "id": "com.duolingo",
+            "store": "google",
+            "name": "Duolingo: Learn Languages",
+            "value": 4.74
+          },
+          "storeRatingCount": {
+            "id": "com.duolingo",
+            "store": "google",
+            "name": "Duolingo: Learn Languages",
+            "value": 50941319
+          },
+          "recentAverageRating": {
+            "id": "com.duolingo",
+            "store": "google",
+            "name": "Duolingo: Learn Languages",
+            "value": 4.5
+          },
+          "lowestRecentNegativeShare": {
+            "id": "com.duolingo",
+            "store": "google",
+            "name": "Duolingo: Learn Languages",
+            "value": 0.1
+          },
+          "latestVersionAverageRating": {
+            "id": "com.duolingo",
+            "store": "google",
+            "name": "Duolingo: Learn Languages",
+            "value": 4
+          }
+        }
+      }
+    }
+  ]
+}

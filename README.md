@@ -76,6 +76,8 @@ All tools are read-only. Errors come back as MCP tool errors (`isError: true`), 
 
 See [`demo/transcript.md`](demo/transcript.md) for full, untrimmed responses from every tool.
 
+**Step-by-step recipes** (release check, competitor teardown, iOS vs Android, a weekly watch in Claude Code) with real results and per-workflow cost: [`docs/workflows.md`](docs/workflows.md).
+
 ## Pricing
 
 Pay-per-event: you pay only for successful calls. Calls that fail validation or can't reach the store are not charged. Current prices are on the Actor's **Pricing** tab.
@@ -159,6 +161,8 @@ claude mcp add --transport http app-store-reviews \
 ```
 
 ### Example prompts
+
+More, with real outputs, in [`docs/workflows.md`](docs/workflows.md).
 
 - "Find the Duolingo app id and summarize what users complained about in the last 300 US reviews."
 - "Did Instagram's latest iOS release make things worse? Use us, gb and ca."
