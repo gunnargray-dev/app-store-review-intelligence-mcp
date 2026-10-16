@@ -80,12 +80,12 @@ See [`demo/transcript.md`](https://github.com/gunnargray-dev/app-store-review-in
 
 ## Pricing
 
-Pay-per-event: you pay only for successful calls. Calls that fail validation or can't reach the store are not charged. Current prices are on the Actor's **Pricing** tab.
+Pay-per-event: tool events are charged only for successful calls. Calls that fail validation or can't reach the store are not charged as tool events. Apify also charges its standard **Actor start** event ($0.00005 per GB of memory, minimum one event) each time a server instance starts. At the default 512 MB standby memory that's $0.00005 per start, and one running instance serves many calls before it idles out. The **Pricing** tab on this Actor is the authoritative list of current prices.
 
 | Event | Price | Charged for |
 |---|---|---|
 | `search-apps` | $0.002 | each App Store `search_apps` call |
-| `review` | $0.001 | each App Store review returned by `get_app_reviews` (50 reviews = 50 events; 0 = free) |
+| `review` | $0.001 | each App Store review returned by `get_app_reviews` (50 reviews = 50 events; 0 reviews = no `review` events) |
 | `review-insights` | $0.03 | each App Store `review_insights` call, flat. Reviews analyzed internally are **not** charged as `review` events |
 | `compare-apps` | $0.05 | each `compare_apps` call with only App Store apps, flat however many apps or reviews |
 
@@ -164,7 +164,7 @@ claude mcp add --transport http app-store-reviews \
 
 Four ready-made workflows, with the prompt, tool calls and real results in [`docs/workflows.md`](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md):
 
-| Workflow | Tools | Cost on the hosted server |
+| Workflow | Tools | Tool-event cost on the hosted server (plus the Actor start fee above) |
 |---|---|---|
 | [Release check](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md#1-release-check-did-our-last-update-make-things-worse): did our last update make things worse? | `review_insights` | $0.03 |
 | [Competitor teardown](https://github.com/gunnargray-dev/app-store-review-intelligence-mcp/blob/main/docs/workflows.md#2-competitor-teardown-before-a-roadmap-or-pricing-decision) before a roadmap or pricing call | `search_apps`, `compare_apps` | $0.052 |
