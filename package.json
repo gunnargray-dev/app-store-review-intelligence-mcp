@@ -1,6 +1,6 @@
 {
   "name": "app-review-intel-mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "MCP server for App Store and Google Play reviews: search apps, fetch reviews, surface top complaints and what got worse in the latest version, and compare competitors. No API keys.",
   "type": "module",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
     "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
     "start": "node dist/index.js",
     "start:http": "node dist/index.js --http",
-    "test": "npm run build && node test/smoke.mjs",
+    "test": "npm run build && node test/itunes-empty.mjs && node test/smoke.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "engines": {

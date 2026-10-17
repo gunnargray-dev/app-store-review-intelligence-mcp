@@ -126,6 +126,14 @@ function loadReviews(
     : fetchReviews(app.id, country, pages, sort);
 }
 
+const EMPTY_FEED_WARNING =
+  "Apple's public review feed returned empty pages for this app, so the sample is partial (fewer reviews than requested).";
+const NO_REVIEWS_WARNING = "No reviews returned. The app may not exist in this storefront or has no written reviews.";
+
+/** True when Apple's feed dropped pages and the sample came back empty or under half the requested size. */
+const feedSparse = (res: { reviews: unknown[]; pagesRequested: number; emptyPages?: number }) =>
+  (res.emptyPages ?? 0) > 0 && res.reviews.length < (res.pagesRequested * 50) / 2;
+
 const SAMPLE_NOTE: Record<Store, string> = {
   apple: "Sample = most recent written reviews from Apple's RSS feed; it is not the full store rating population.",
   google: "Sample = most recent written reviews from Google Play in the requested language; it is not the full store rating population.",
@@ -304,13 +312,16 @@ export function createServer(): McpServer {
         pagesRequested: res.pagesRequested,
         pagesFetched: res.pagesFetched,
         count: res.reviews.length,
-        ...(res.reviews.length === 0
-          ? {
-              note:
-                "No reviews returned. The app may not exist in this storefront or has no written reviews." +
-                (app.store === "google" ? " If this is an Apple bundle id, use the numeric App Store id instead." : ""),
-            }
-          : {}),
+        ...(res.emptyPages ? { emptyPages: res.emptyPages } : {}),
+        ...(feedSparse(res) && res.reviews.length > 0
+          ? { note: EMPTY_FEED_WARNING }
+          : res.reviews.length === 0
+            ? {
+                note:
+                  (feedSparse(res) ? EMPTY_FEED_WARNING + " Otherwise the app may not exist in this storefront." : NO_REVIEWS_WARNING) +
+                  (app.store === "google" ? " If this is an Apple bundle id, use the numeric App Store id instead." : ""),
+              }
+            : {}),
         ...(res.errors.length ? { warnings: res.errors } : {}),
         reviews: res.reviews.map((r) => ({
           id: r.id,
@@ -403,6 +414,7 @@ export function createServer(): McpServer {
       const positives = reviews.filter((r) => r.rating >= 4);
       const dist = ratingDistribution(reviews);
       const pagesFetched = perCountry.reduce((s, p) => s + p.pagesFetched, 0);
+      const emptyPages = perCountry.reduce((s, p) => s + ((p as { emptyPages?: number }).emptyPages ?? 0), 0);
       const nameStop = nameStopwords(app?.name, app?.developer);
 
       const keywords = topKeywords(negatives, {
@@ -419,7 +431,8 @@ export function createServer(): McpServer {
         ...failed.map((f) => `${f.country}: ${f.error}`),
         ...perCountry.flatMap((p) => p.errors.map((e) => `${p.country}: ${e}`)),
       ];
-      if (reviews.length === 0) warnings.push("No reviews returned. The app may not exist in this storefront or has no written reviews.");
+      if (perCountry.some((p) => feedSparse(p)) && (app || reviews.length > 0)) warnings.push(EMPTY_FEED_WARNING);
+      else if (reviews.length === 0) warnings.push(NO_REVIEWS_WARNING);
 
       return ok({
         app: appBrief(app) ?? { id },
@@ -429,6 +442,7 @@ export function createServer(): McpServer {
           negativeReviews: negatives.length,
           positiveReviews: positives.length,
           pagesFetched,
+          ...(target.store === "apple" ? { emptyPages } : {}),
           byCountry: Object.fromEntries(perCountry.map((p) => [p.country, p.reviews.length])),
           dateRange: dateRange(reviews),
           note: SAMPLE_NOTE[target.store],

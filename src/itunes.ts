@@ -191,15 +191,25 @@ export async function fetchReviewPage(
 export interface ReviewFetchResult {
   reviews: Review[];
   pagesRequested: number;
+  /** Pages that contributed at least one review. */
   pagesFetched: number;
+  /** Apple only: pages that came back successfully but with no entries (the public feed drops pages at random). */
+  emptyPages?: number;
   errors: string[];
 }
 
+const REVIEWS_PER_PAGE = 50;
+const PAGE_CONCURRENCY = 3;
+
 /**
  * Fetch up to `pages` pages of reviews. Pages are fetched with limited
- * concurrency; once an empty page is seen, later pages are dropped (the feed
- * is exhausted). Per-page failures are collected rather than thrown unless
- * every page fails.
+ * concurrency. Apple's feed returns empty pages at random, so an empty page
+ * does not end the feed: every non-empty page is kept. If the requested pages
+ * yield fewer than half of pages*50 reviews, the remaining pages (up to
+ * MAX_REVIEW_PAGES, so never more than 10 requests in total) are probed in
+ * batches until the requested amount is reached; the result is capped at
+ * pages*50 reviews. Per-page failures are collected rather than thrown unless
+ * every requested page fails.
  */
 export async function fetchReviews(
   appId: string,
@@ -207,32 +217,60 @@ export async function fetchReviews(
   pages: number,
   sort: ReviewSort,
 ): Promise<ReviewFetchResult> {
-  const pageNums = Array.from({ length: Math.min(pages, MAX_REVIEW_PAGES) }, (_, i) => i + 1);
-  const results = await mapLimit(pageNums, 3, async (p) => {
+  const requested = Math.min(pages, MAX_REVIEW_PAGES);
+  const wanted = requested * REVIEWS_PER_PAGE;
+  const fetchPage = async (p: number) => {
     try {
       return { page: p, reviews: await fetchReviewPage(appId, country, p, sort), error: null as string | null };
     } catch (err) {
       return { page: p, reviews: [] as Review[], error: `page ${p}: ${(err as Error).message}` };
     }
-  });
+  };
+
+  const results = await mapLimit(
+    Array.from({ length: requested }, (_, i) => i + 1),
+    PAGE_CONCURRENCY,
+    fetchPage,
+  );
 
   const errors = results.flatMap((r) => (r.error ? [r.error] : []));
   if (errors.length === results.length && results.length > 0) {
     throw new UpstreamError(`All review page requests failed for app ${appId} (${country}): ${errors[0]}`);
   }
 
+  const total = () => results.reduce((s, r) => s + r.reviews.length, 0);
+  if (total() < wanted / 2) {
+    for (let next = requested + 1; next <= MAX_REVIEW_PAGES && total() < wanted; next += PAGE_CONCURRENCY) {
+      const batch = [];
+      for (let p = next; p < next + PAGE_CONCURRENCY && p <= MAX_REVIEW_PAGES; p++) batch.push(p);
+      const probed = await mapLimit(batch, PAGE_CONCURRENCY, fetchPage);
+      for (const r of probed) {
+        if (r.error) errors.push(r.error);
+        else results.push(r);
+      }
+    }
+  }
+  results.sort((a, b) => a.page - b.page);
+
   const seen = new Set<string>();
   const reviews: Review[] = [];
   let pagesFetched = 0;
+  let emptyPages = 0;
   for (const r of results) {
-    if (!r.error && r.reviews.length === 0) break; // end of feed
-    if (!r.error) pagesFetched++;
+    if (r.error) continue;
+    if (r.reviews.length === 0) {
+      emptyPages++;
+      continue;
+    }
+    const before = reviews.length;
     for (const rev of r.reviews) {
+      if (reviews.length >= wanted) break;
       const key = rev.id || `${rev.author}|${rev.date}|${rev.title}`;
       if (seen.has(key)) continue;
       seen.add(key);
       reviews.push(rev);
     }
+    if (reviews.length > before) pagesFetched++;
   }
-  return { reviews, pagesRequested: pageNums.length, pagesFetched, errors };
+  return { reviews, pagesRequested: requested, pagesFetched, emptyPages, errors };
 }
