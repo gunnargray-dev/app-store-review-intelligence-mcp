@@ -103,13 +103,12 @@ https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp
 
 Authenticate with your [Apify API token](https://console.apify.com/settings/integrations) by sending it as `Authorization: Bearer <APIFY_TOKEN>`.
 
-### Claude Desktop, Cursor, Windsurf (JSON config)
+### Cursor (`~/.cursor/mcp.json` or `.cursor/mcp.json`)
 
 ```json
 {
   "mcpServers": {
     "app-store-reviews": {
-      "type": "http",
       "url": "https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp",
       "headers": {
         "Authorization": "Bearer <APIFY_TOKEN>"
@@ -119,7 +118,24 @@ Authenticate with your [Apify API token](https://console.apify.com/settings/inte
 }
 ```
 
-If your client only supports stdio servers, bridge with [`mcp-remote`](https://www.npmjs.com/package/mcp-remote):
+### Windsurf (`~/.codeium/windsurf/mcp_config.json`)
+
+```json
+{
+  "mcpServers": {
+    "app-store-reviews": {
+      "serverUrl": "https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp",
+      "headers": {
+        "Authorization": "Bearer <APIFY_TOKEN>"
+      }
+    }
+  }
+}
+```
+
+### Claude Desktop (`claude_desktop_config.json`)
+
+Claude Desktop's config file only launches local (stdio) servers, so bridge to the hosted endpoint with [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) (needs Node.js). The same block works in any other client that only supports stdio:
 
 ```json
 {
@@ -136,6 +152,16 @@ If your client only supports stdio servers, bridge with [`mcp-remote`](https://w
   }
 }
 ```
+
+### Clients that can't send headers
+
+Apify also accepts the token as a `token` query parameter, so a client that only takes a URL can use:
+
+```
+https://parallelstudio--app-store-review-intelligence-mcp.apify.actor/mcp?token=<APIFY_TOKEN>
+```
+
+Prefer the `Authorization` header when your client supports it: a token in a URL can end up in logs. A [scoped Apify token](https://docs.apify.com/integrations/api) limits the damage if it leaks.
 
 ### Claude Code
 
