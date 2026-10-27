@@ -350,7 +350,8 @@ export function createServer(): McpServer {
         "quote), versionDeltas (latest version vs earlier: rating change, negative-share change, rising complaints " +
         "with quotes; falls back to last 3 days vs earlier), and sample quotes. Use for \"why are users unhappy " +
         "with X\", \"what broke in the last update\", \"top complaints about X\", \"summarize feedback\". One flat " +
-        "price per call regardless of pages/countries." + (play ? " Apple and Google Play." : ""),
+        "price per call regardless of pages/countries. For the review text itself use get_app_reviews; to benchmark " +
+        "several apps at once use compare_apps." + (play ? " Apple and Google Play." : ""),
       inputSchema: {
         app_id: appIdParam,
         ...playParams,
@@ -476,7 +477,7 @@ export function createServer(): McpServer {
         "complaints) and per-metric leaders. " +
         (play ? "Apple ids and Google Play package names can be mixed (e.g. iOS vs Android of the same app). " : "") +
         'Examples: "Notion vs Evernote", "which meditation app has the happiest users". One flat price per call. ' +
-        "Get ids from search_apps first.",
+        "Get ids from search_apps first. For one app in depth (version deltas, more quotes) use review_insights instead.",
       inputSchema: {
         app_ids: z
           .array(appIdParam)
