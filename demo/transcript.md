@@ -1,6 +1,6 @@
 # app-review-intel-mcp — smoke test transcript
 
-Generated 2026-10-11T22:31:01.489Z by `test/smoke.mjs` against live Apple and Google Play endpoints. Server: **app-review-intel-mcp 1.1.0** over stdio.
+Generated 2026-10-27T22:11:41.162Z by `test/smoke.mjs` against live Apple and Google Play endpoints. Server: **app-review-intel-mcp 1.1.3** over stdio.
 
 **Assertions: 103/103 passed.**
 
@@ -10,16 +10,16 @@ Generated 2026-10-11T22:31:01.489Z by `test/smoke.mjs` against live Apple and Go
   - params: `term`* (string), `store` (string), `lang` (string), `country` (string), `limit` (integer)
 - **`get_app_reviews`** — Fetch raw reviews for one app: rating, title (Apple only), text, app version, date, helpful votes (Google adds developer replies). Use when the user wants to read or quote actual reviews or you need text for custom analysis. For summaries, complaints or "what broke", call review_insights instead: it is one flat-priced call. Billed per review returned (~50 per page; default 1 page). Max 10 pages ≈ 500 reviews.
   - params: `app_id`* (integer|string), `store` (string), `lang` (string), `country` (string), `pages` (integer), `sort` (string)
-- **`review_insights`** — Best first call for any question about an app's user feedback. Analyses recent reviews and returns: rating distribution, average rating per app version, top complaint phrases from 1-2★ reviews (share + example quote), versionDeltas (latest version vs earlier: rating change, negative-share change, rising complaints with quotes; falls back to last 3 days vs earlier), and sample quotes. Use for "why are users unhappy with X", "what broke in the last update", "top complaints about X", "summarize feedback". One flat price per call regardless of pages/countries. Apple and Google Play.
+- **`review_insights`** — Best first call for any question about an app's user feedback. Analyses recent reviews and returns: rating distribution, average rating per app version, top complaint phrases from 1-2★ reviews (share + example quote), versionDeltas (latest version vs earlier: rating change, negative-share change, rising complaints with quotes; falls back to last 3 days vs earlier), and sample quotes. Use for "why are users unhappy with X", "what broke in the last update", "top complaints about X", "summarize feedback". One flat price per call regardless of pages/countries. For the review text itself use get_app_reviews; to benchmark several apps at once use compare_apps. Apple and Google Play.
   - params: `app_id`* (integer|string), `store` (string), `lang` (string), `countries` (array), `pages` (integer), `since_version` (string), `keyword_limit` (integer), `quotes` (integer)
-- **`compare_apps`** — Benchmark 2-10 apps in one storefront for competitor analysis: store rating, rating count, price, current version & release date (Google adds installs), plus recent-review metrics (sample average, % negative / positive, latest-version average, top 5 complaints) and per-metric leaders. Apple ids and Google Play package names can be mixed (e.g. iOS vs Android of the same app). Examples: "Notion vs Evernote", "which meditation app has the happiest users". One flat price per call. Get ids from search_apps first.
+- **`compare_apps`** — Benchmark 2-10 apps in one storefront for competitor analysis: store rating, rating count, price, current version & release date (Google adds installs), plus recent-review metrics (sample average, % negative / positive, latest-version average, top 5 complaints) and per-metric leaders. Apple ids and Google Play package names can be mixed (e.g. iOS vs Android of the same app). Examples: "Notion vs Evernote", "which meditation app has the happiest users". One flat price per call. Get ids from search_apps first. For one app in depth (version deltas, more quotes) use review_insights instead.
   - params: `app_ids`* (array), `country` (string), `lang` (string), `pages` (integer)
 
 ## Calls
 
 ### `search_apps` ⚠️ (error)
 
-Arguments: `{"term":"instagram","store":"google"}` · 6 ms
+Arguments: `{"term":"instagram","store":"google"}` · 5 ms
 
 > MCP error -32602: Input validation error: Invalid arguments for tool search_apps: Google Play support is coming soon on the hosted version; use the open-source local server (https://github.com/gunnargray-dev/app-store-review-intelligence-mcp) for Google Play today. at store
 
@@ -55,21 +55,21 @@ Arguments: `{"app_ids":["284882215","com.spotify.music"]}` · 2 ms
 
 ### `get_app_reviews` ⚠️ (error)
 
-Arguments: `{"app_id":"not-an-id"}` · 2 ms
+Arguments: `{"app_id":"not-an-id"}` · 1 ms
 
 > Error (invalid_input): Invalid app_id "not-an-id". Use the numeric App Store id (e.g. 284882215) or an apps.apple.com URL.
 
 ### `search_apps` 
 
-Arguments: `{"term":"instagram","country":"us","limit":5}` · 113 ms
+Arguments: `{"term":"instagram","country":"us","limit":5}` · 72 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
-| 389801252 | Instagram | Instagram, Inc. | 4.69 | 29,583,259 | 450.1.0 |
-| 835599320 | TikTok - Videos, Shop & LIVE | TIKTOK PTE. LTD. | 4.72 | 18,388,560 | 47.1.0 |
-| 447188370 | Snapchat | Snap, Inc. | 4.51 | 5,959,258 | 14.27.0.54 |
-| 284882215 | Facebook | Meta Platforms, Inc. | 4.53 | 28,709,088 | 582.0.0 |
-| 544007664 | YouTube | Google LLC | 4.67 | 49,370,129 | 21.41.5 |
+| 389801252 | Instagram | Instagram, Inc. | 4.69 | 29,644,344 | 453.0 |
+| 835599320 | TikTok - Videos, Shop & LIVE | TIKTOK PTE. LTD. | 4.72 | 18,407,475 | 47.5.0 |
+| 447188370 | Snapchat | Snap, Inc. | 4.51 | 6,044,782 | 14.29.0.57 |
+| 284882215 | Facebook | Meta Platforms, Inc. | 4.53 | 28,928,101 | 584.1 |
+| 544007664 | YouTube | Google LLC | 4.66 | 49,609,276 | 21.42.4 |
 
 <details><summary>Raw response</summary>
 
@@ -91,17 +91,17 @@ Arguments: `{"term":"instagram","country":"us","limit":5}` · 113 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 4.69,
-      "ratingCount": 29583259,
+      "ratingCount": 29644344,
       "currentVersionAverageRating": 4.69,
-      "currentVersionRatingCount": 29583259,
-      "version": "450.1.0",
-      "currentVersionReleaseDate": "2026-10-06T12:29:07Z",
+      "currentVersionRatingCount": 29644344,
+      "version": "453.0",
+      "currentVersionReleaseDate": "2026-10-26T12:40:24Z",
       "releaseDate": "2010-10-06T08:12:41Z",
       "contentRating": "12+",
-      "sizeBytes": 623194112,
+      "sizeBytes": 671668224,
       "minimumOsVersion": "16.3",
       "url": "https://apps.apple.com/us/app/instagram/id389801252",
-      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/30/17/93/30179310-7a32-f8b3-5b31-a01addf6c367/Prod-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/512x512bb.jpg",
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/44/b0/cc/44b0cc3a-e91f-2824-d98f-3e5e095a73f3/Prod-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/512x512bb.jpg",
       "description": "Little moments lead to big friendships. Share yours on Instagram. — From Meta Connect with friends, find other fans, and see what people around you are up to and into. Explore your interests and post what's going on, from your daily moments to life's highlights. Share what you’re up to and into: -…"
     },
     {
@@ -115,17 +115,17 @@ Arguments: `{"term":"instagram","country":"us","limit":5}` · 113 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 4.72,
-      "ratingCount": 18388560,
+      "ratingCount": 18407475,
       "currentVersionAverageRating": 4.72,
-      "currentVersionRatingCount": 18388560,
-      "version": "47.1.0",
-      "currentVersionReleaseDate": "2026-10-07T18:18:07Z",
+      "currentVersionRatingCount": 18407475,
+      "version": "47.5.0",
+      "currentVersionReleaseDate": "2026-10-26T21:46:05Z",
       "releaseDate": "2014-04-02T22:44:45Z",
       "contentRating": "12+",
-      "sizeBytes": 1054171136,
-      "minimumOsVersion": "14.0",
+      "sizeBytes": 1072171008,
+      "minimumOsVersion": "15.0",
       "url": "https://apps.apple.com/us/app/tiktok-videos-shop-live/id835599320",
-      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d8/f0/b2/d8f0b203-3968-dd77-07ff-70134b89f7c1/TikTok_AppIcon26-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/19/60/31/1960312d-f882-d651-6ea6-53a3179dee9b/TikTok_AppIcon26-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
       "description": "TikTok is the global discovery platform for videos, streaming on LIVE, shopping, and more. Our mission is to inspire creativity and bring joy. Over a billion people come to TikTok to share what they love, learn new things, and find ideas that make everyday life more interesting. Your experience on…"
     },
     {
@@ -139,17 +139,17 @@ Arguments: `{"term":"instagram","country":"us","limit":5}` · 113 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 4.51,
-      "ratingCount": 5959258,
+      "ratingCount": 6044782,
       "currentVersionAverageRating": 4.51,
-      "currentVersionRatingCount": 5959258,
-      "version": "14.27.0.54",
-      "currentVersionReleaseDate": "2026-10-07T11:10:27Z",
+      "currentVersionRatingCount": 6044782,
+      "version": "14.29.0.57",
+      "currentVersionReleaseDate": "2026-10-21T11:02:14Z",
       "releaseDate": "2011-07-13T23:51:40Z",
       "contentRating": "12+",
-      "sizeBytes": 423038976,
+      "sizeBytes": 424671232,
       "minimumOsVersion": "15.0",
       "url": "https://apps.apple.com/us/app/snapchat/id447188370",
-      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cc/aa/03/ccaa03e2-6d86-915d-bdd9-1b052354a544/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b7/86/e1/b786e10d-8be0-20c7-6978-8d3c13c24a90/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
       "description": "Snapchat is a fast and fun way to share the moment with your friends and family SNAP • Snapchat opens right to the Camera — just tap to take a photo, or press and hold for video. • Express yourself with Lenses, Filters, Bitmoji and more! • Try out new Lenses daily created by the Snapchat…"
     },
     {
@@ -158,21 +158,21 @@ Arguments: `{"term":"instagram","country":"us","limit":5}` · 113 ms
       "developer": "Meta Platforms, Inc.",
       "developerId": "284882218",
       "bundleId": "com.facebook.Facebook",
-      "genre": "Social Netwo
-… (truncated, 2289 more chars — see transcript.json)
+      "genre": "Social N
+… (truncated, 2291 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `search_apps` 
 
-Arguments: `{"term":"facebook","limit":3}` · 36 ms
+Arguments: `{"term":"facebook","limit":3}` · 21 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
-| 284882215 | Facebook | Meta Platforms, Inc. | 4.53 | 28,709,088 | 582.0.0 |
-| 454638411 | Messenger | Meta Platforms, Inc. | 4.66 | 13,766,613 | 582.0.0 |
-| 389801252 | Instagram | Instagram, Inc. | 4.69 | 29,583,259 | 450.1.0 |
+| 284882215 | Facebook | Meta Platforms, Inc. | 4.53 | 28,928,101 | 584.1 |
+| 454638411 | Messenger | Meta Platforms, Inc. | 4.66 | 13,879,941 | 584.0.0 |
+| 389801252 | Instagram | Instagram, Inc. | 4.69 | 29,644,344 | 453.0 |
 
 <details><summary>Raw response</summary>
 
@@ -194,17 +194,17 @@ Arguments: `{"term":"facebook","limit":3}` · 36 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 4.53,
-      "ratingCount": 28709088,
+      "ratingCount": 28928101,
       "currentVersionAverageRating": 4.53,
-      "currentVersionRatingCount": 28709088,
-      "version": "582.0.0",
-      "currentVersionReleaseDate": "2026-10-07T14:52:01Z",
+      "currentVersionRatingCount": 28928101,
+      "version": "584.1",
+      "currentVersionReleaseDate": "2026-10-23T09:58:23Z",
       "releaseDate": "2019-02-05T08:00:00Z",
       "contentRating": "12+",
-      "sizeBytes": 513508352,
+      "sizeBytes": 529373184,
       "minimumOsVersion": "15.1",
       "url": "https://apps.apple.com/us/app/facebook/id284882215",
-      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8a/a0/a8/8aa0a82f-fcd1-b9b4-f664-28b5389f2886/Icon-Production-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/512x512bb.jpg",
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5d/a6/7a/5da67a2d-6bdd-b95b-86d7-a201d6979b35/Icon-Production-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/512x512bb.jpg",
       "description": "Where real people propel your curiosity. Whether you’re thrifting gear, showing reels to that group who gets it, or sharing laughs over fun images reimagined by AI, Facebook helps you make things happen like no other social network. Explore and expand your interests: * Shop Marketplace for hidden…"
     },
     {
@@ -218,17 +218,17 @@ Arguments: `{"term":"facebook","limit":3}` · 36 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 4.66,
-      "ratingCount": 13766613,
+      "ratingCount": 13879941,
       "currentVersionAverageRating": 4.66,
-      "currentVersionRatingCount": 13766613,
-      "version": "582.0.0",
-      "currentVersionReleaseDate": "2026-10-06T08:36:20Z",
+      "currentVersionRatingCount": 13879941,
+      "version": "584.0.0",
+      "currentVersionReleaseDate": "2026-10-17T16:36:30Z",
       "releaseDate": "2011-08-09T19:49:28Z",
       "contentRating": "12+",
-      "sizeBytes": 273359872,
+      "sizeBytes": 294721536,
       "minimumOsVersion": "15.1",
       "url": "https://apps.apple.com/us/app/messenger/id454638411",
-      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/86/e4/23/86e423d8-1d2d-737d-d1c3-e6a79bb137c2/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/512x512bb.jpg",
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/29/c1/59/29c15941-228e-4139-22f7-2b0c6adf49b2/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/512x512bb.jpg",
       "description": "Messenger is a free messaging app that helps you connect with anyone, anywhere. Stay in touch with your friends and family, explore your interests with people like you, build your community, and share your vibe beyond words, all in one app. CHAT AND CALL ANYONE, ANYWHERE Find and connect with your…"
     },
     {
@@ -242,17 +242,17 @@ Arguments: `{"term":"facebook","limit":3}` · 36 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 4.69,
-      "ratingCount": 29583259,
+      "ratingCount": 29644344,
       "currentVersionAverageRating": 4.69,
-      "currentVersionRatingCount": 29583259,
-      "version": "450.1.0",
-      "currentVersionReleaseDate": "2026-10-06T12:29:07Z",
+      "currentVersionRatingCount": 29644344,
+      "version": "453.0",
+      "currentVersionReleaseDate": "2026-10-26T12:40:24Z",
       "releaseDate": "2010-10-06T08:12:41Z",
       "contentRating": "12+",
-      "sizeBytes": 623194112,
+      "sizeBytes": 671668224,
       "minimumOsVersion": "16.3",
       "url": "https://apps.apple.com/us/app/instagram/id389801252",
-      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/30/17/93/30179310-7a32-f8b3-5b31-a01addf6c367/Prod-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/512x512bb.jpg",
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/44/b0/cc/44b0cc3a-e91f-2824-d98f-3e5e095a73f3/Prod-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/512x512bb.jpg",
       "description": "Little moments lead to big friendships. Share yours on Instagram. — From Meta Connect with friends, find other fans, and see what people around you are up to and into. Explore your interests and post what's going on, from your daily moments to life's highlights. Share what you’re up to and into: -…"
     }
   ]
@@ -263,15 +263,15 @@ Arguments: `{"term":"facebook","limit":3}` · 36 ms
 
 ### `search_apps` 
 
-Arguments: `{"term":"instagram","store":"google","limit":5}` · 337 ms
+Arguments: `{"term":"instagram","store":"google","limit":5}` · 290 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
-| com.instagram.android | Instagram | Instagram | 3.99 | 169,625,590 | – |
-| com.instagram.airwave | Instagram | Instagram | 3.97 | 1,000,000+ | – |
+| com.instagram.android | Instagram | Instagram | 3.99 | 169,486,506 | – |
+| com.instagram.airwave | Instagram | Instagram | 3.86 | 5,000,000+ | – |
 | com.instagram.barcelona | Threads | Instagram | 4 | 500,000,000+ | – |
-| com.instagram.moonshot | Instants, an Instagram app | Instagram | 4.61 | 5,000,000+ | – |
-| com.snapchat.android | Snapchat | Snap Inc | 4.2 | 1,000,000,000+ | – |
+| com.instagram.moonshot | Instants, an Instagram app | Instagram | 4.58 | 5,000,000+ | – |
+| com.snapchat.android | Snapchat | Snap Inc | 4.18 | 1,000,000,000+ | – |
 
 <details><summary>Raw response</summary>
 
@@ -293,7 +293,7 @@ Arguments: `{"term":"instagram","store":"google","limit":5}` · 337 ms
       "formattedPrice": "Free",
       "currency": "USD",
       "averageRating": 3.99,
-      "ratingCount": 169625590,
+      "ratingCount": 169486506,
       "contentRating": "Teen",
       "url": "https://play.google.com/store/apps/details?id=com.instagram.android",
       "icon": "https://play-lh.googleusercontent.com/yHi59jmO_lVamcyJ1i3rM1_E8bAiAspShnGjjURq05ipQQSUksO3QVEsXTegRSqul038-4YNA7O644XAcx251Q",
@@ -310,12 +310,12 @@ Arguments: `{"term":"instagram","store":"google","limit":5}` · 337 ms
       "price": 0,
       "formattedPrice": "Free",
       "currency": "USD",
-      "averageRating": 3.97,
+      "averageRating": 3.86,
       "contentRating": "Teen",
       "url": "https://play.google.com/store/apps/details?id=com.instagram.airwave",
       "icon": "https://play-lh.googleusercontent.com/bh871pyeIpMnJxGYKmTJCm-5VwIYrPUYhHQcCky0B-DpsMoPCWVSDKz0Ic7MLsGuLmS4F_-iE6BilqsUM2DloA",
-      "description": "Introducing Instagram for TV, bringing Reels from your favorite creators to the big screen. Watch, laugh, and enjoy together with friends and family from the comfort of your couch. With Instagram for TV, you can: • Watch Reels with others on the big screen, the easiest way to enjoy content…",
-      "installs": "1,000,000+",
+      "description": "Instagram, now on your TV. Watch the creators and content you love on Instagram, now on the biggest screen in your home. Enjoy Reels, watch longer videos with friends, catch live shows, and discover something new, all from your TV. - Watch your favorite creators on the big screen - Discover…",
+      "installs": "5,000,000+",
       "currentVersionAverageRating": null
     },
     {
@@ -344,7 +344,7 @@ Arguments: `{"term":"instagram","store":"google","limit":5}` · 337 ms
       "price": 0,
       "formattedPrice": "Free",
       "currency": "USD",
-      "averageRating": 4.61,
+      "averageRating": 4.58,
       "contentRating": "Teen",
       "url": "https://play.google.com/store/apps/details?id=com.instagram.moonshot",
       "icon": "https://play-lh.googleusercontent.com/jY3m_SwenXTDzXJFno6H3LYVEUSXGOuDoHQcpuonuq3_kEMsc6nGCo3ytPN1oULjwqpmLMXKUmppOuRDa1DqmA",
@@ -355,26 +355,26 @@ Arguments: `{"term":"instagram","store":"google","limit":5}` · 337 ms
     {
       "id": "com.snapchat.android",
       "name": "Snapchat",
-      "developer": "Sn
-… (truncated, 846 more chars — see transcript.json)
+      "developer": "S
+… (truncated, 848 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `search_apps` 
 
-Arguments: `{"term":"meditation","store":"google","limit":8}` · 338 ms
+Arguments: `{"term":"meditation","store":"google","limit":8}` · 319 ms
 
 | id | name | developer | rating | ratings | version |
 |---|---|---|---|---|---|
 | com.spotlightsix.zentimerlite2 | Insight Timer - Meditation App | Insight Network Inc | 4.7 | 10,000,000+ | – |
-| meditofoundation.medito | Medito: Meditation & Sleep | Medito for Mindfulness, Meditation and Sleep | 4.79 | 1,000,000+ | – |
-| com.getsomeheadspace.android | Headspace: Sleep & Meditation | Headspace for Meditation, Mindfulness and Sleep | 4.26 | 10,000,000+ | – |
-| com.elevatelabs.geonosis | Balance: Meditation & Sleep | The Mind Company | 4.64 | 1,000,000+ | – |
+| meditofoundation.medito | Medito: Meditation & Sleep | Medito for Mindfulness, Meditation and Sleep | 4.78 | 1,000,000+ | – |
+| com.getsomeheadspace.android | Headspace: Sleep & Meditation | Headspace for Meditation, Mindfulness and Sleep | 4.25 | 10,000,000+ | – |
+| com.elevatelabs.geonosis | Balance: Meditation & Sleep | The Mind Company | 4.63 | 1,000,000+ | – |
+| uk.co.serenity.guided.meditation | Serenity: Guided Meditation | Olson Meditation and Mindfulness Apps | 4.83 | 1,000,000+ | – |
 | com.simplehabit.simplehabitapp | Simple Habit: Meditation | Ingenio, LLC | 4.59 | 1,000,000+ | – |
-| uk.co.serenity.guided.meditation | Serenity: Guided Meditation | Olson Meditation and Mindfulness Apps | 4.84 | 1,000,000+ | – |
 | com.calm.android | Calm - Sleep, Meditate, Relax | Calm.com, Inc. | 4.48 | 50,000,000+ | – |
-| net.workoutinc.tai_chi_meditation | Tai Chi Meditation & Breath | 7M Limited | 4.72 | 1,000+ | – |
+| com.subconscious.thrive | Atom: Meditation for Beginners | Atom : Being Present | 4.72 | 1,000,000+ | – |
 
 <details><summary>Raw response</summary>
 
@@ -398,7 +398,7 @@ Arguments: `{"term":"meditation","store":"google","limit":8}` · 338 ms
       "contentRating": "Everyone",
       "url": "https://play.google.com/store/apps/details?id=com.spotlightsix.zentimerlite2",
       "icon": "https://play-lh.googleusercontent.com/H7MMtGtHuKqoT73wpfXXuqBgufaw3k03jUG58cqwJ1KITPU6nY8c1cvdAYCNcZY7xRwKwi-G3W6yltje3VbMnfY",
-      "description": "* Apps of the Year Winner - TIME magazine and Women's Health * * Happiest App in the World - Tristan Harris * The number 1 free meditation app. Guided meditations, sleep music tracks and talks led by the top meditation and mindfulness experts, neuroscientists, psychologists and teachers from…",
+      "description": "The world’s most popular wellness app. * Apps of the Year Winner - TIME magazine and Women's Health * * More time is spent on Insight Timer than on all other wellbeing apps combined * * Happiest App in the World - Tristan Harris * The number 1 free meditation app. Guided meditations, sleep music…",
       "installs": "10,000,000+",
       "currentVersionAverageRating": null
     },
@@ -411,7 +411,7 @@ Arguments: `{"term":"meditation","store":"google","limit":8}` · 338 ms
       "price": 0,
       "formattedPrice": "Free",
       "currency": "USD",
-      "averageRating": 4.79,
+      "averageRating": 4.78,
       "contentRating": "Everyone",
       "url": "https://play.google.com/store/apps/details?id=meditofoundation.medito",
       "icon": "https://play-lh.googleusercontent.com/3GKenq_HBUYKA__-5oSy9wU0n3wWUYvaqcDg-tu3Di9MwsXkyPD9Gu3pdx9M8WJ8hK4bsfxKSdNTtckeKycywg",
@@ -428,7 +428,7 @@ Arguments: `{"term":"meditation","store":"google","limit":8}` · 338 ms
       "price": 0,
       "formattedPrice": "Free",
       "currency": "USD",
-      "averageRating": 4.26,
+      "averageRating": 4.25,
       "contentRating": "Everyone",
       "url": "https://play.google.com/store/apps/details?id=com.getsomeheadspace.android",
       "icon": "https://play-lh.googleusercontent.com/kp_QagG6AodramfhZ7-ErzFuA86QOUAZDIYl5KlBlnPr0Lb_ys98unvi5Ej_MWo5Kr8TRIkNz46IxISRyXot",
@@ -445,29 +445,29 @@ Arguments: `{"term":"meditation","store":"google","limit":8}` · 338 ms
       "price": 0,
       "formattedPrice": "Free",
       "currency": "USD",
-      "averageRating": 4.64,
+      "averageRating": 4.63,
       "contentRating": "Everyone",
       "url": "https://play.google.com/store/apps/details?id=com.elevatelabs.geonosis",
       "icon": "https://play-lh.googleusercontent.com/L2T8QvQ-2Bjko4G2-OFYrbxR9ar3dvvXsIwB-G7nQSMzRr3aB9s9o8gLDBjaOAn6JgLuwu2KcD8EYht8kJTx",
-      "description": "Get support for whatever 2026 brings and build habits for lifelong mental health. Enhance your mental health, reduce daily anxiety and stress, improve your sleep, and increase focus with the Balance Meditation and Sleep app. Balance is a personalized program, like having a persona
-… (truncated, 4075 more chars — see transcript.json)
+      "description": "Get support for whatever 2026 brings and build habits for lifelong mental health. Enhance your mental health, reduce daily anxiety and stress, improve your sleep, and increase focus with the Balance Meditation and Sleep app. Balance is a personalized program, like having a per
+… (truncated, 4067 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"284882215","country":"us","pages":2,"sort":"mostrecent"}` · 369 ms
+Arguments: `{"app_id":"284882215","country":"us","pages":2,"sort":"mostrecent"}` · 345 ms
 
 App **284882215** (apple) · us · sort=mostrecent · pages fetched 2/2 · **100 reviews**
 
 | rating | version | date | title | body |
 |---|---|---|---|---|
-| ★★ | 582.0.0 | 2026-10-10 | Stop auto refresh | Stop auto refreshing my feeds |
-| ★★★★ | 582.0.0 | 2026-10-10 | 🚌🎬 | BusAction |
-| ★★★★★ | 582.0.0 | 2026-10-10 | Delicioso | Delicias 100% natural |
-| ★★★★★ | 582.0.0 | 2026-10-10 | Dope | It’s dope |
-| ★ | 582.0.0 | 2026-10-10 | Most volatile ad and algorithm out there | Trash, absolute trash |
+| ★★★★★ | 584.1 | 2026-10-26 | A tool!!! | Facebook can be used as an excellent tool in the right hands 💪🏾 |
+| ★★★★★ | 584.1 | 2026-10-26 | Highly recommended | Have never listen to any therapist who explains symptoms and solutions on such ground level . Highly recommended a true soul person and ther… |
+| ★ | 584.1 | 2026-10-26 | Ban acc cmm | Thề mà cái acc đang dùng ngon tự dưng ban cmn acc là thế nào? Sống hãm l thế, bộ kh biết nhìn lại cái mình làm à? Ở đó mà xét duyệt tài khoả… |
+| ★★★★★ | 584.1 | 2026-10-26 | Facebook | I like face book |
+| ★ | 584.1 | 2026-10-26 | Never Ending Interruption and Irrelevanance | I just want to catch up with Friends and follow my interests. However, Facebook bombards the user with constant advertising and irrelevant r… |
 
 _(first 5 of 100 shown)_
 
@@ -484,158 +484,139 @@ _(first 5 of 100 shown)_
   "count": 100,
   "reviews": [
     {
-      "id": "14650422444",
-      "author": "SKILLEDTOMATO",
+      "id": "14713744080",
+      "author": "Lightbulb Jr.",
+      "rating": 5,
+      "title": "A tool!!!",
+      "body": "Facebook can be used as an excellent tool in the right hands 💪🏾",
+      "version": "584.1",
+      "date": "2026-10-26T06:55:52-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713731049",
+      "author": "afifapyooo",
+      "rating": 5,
+      "title": "Highly recommended",
+      "body": "Have never listen to any therapist who explains symptoms and solutions on such ground level . Highly recommended a true soul person and therapist 💓💓",
+      "version": "584.1",
+      "date": "2026-10-26T06:52:07-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713726921",
+      "author": "convkcuaAven",
+      "rating": 1,
+      "title": "Ban acc cmm",
+      "body": "Thề mà cái acc đang dùng ngon tự dưng ban cmn acc là thế nào? Sống hãm l thế, bộ kh biết nhìn lại cái mình làm à? Ở đó mà xét duyệt tài khoản cái dais, gửi cho cũng có mở đ đâu, toàn đ duyệt xong ban cmn acc vĩnh viễn.",
+      "version": "584.1",
+      "date": "2026-10-26T06:50:57-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713721449",
+      "author": "Gorafira",
+      "rating": 5,
+      "title": "Facebook",
+      "body": "I like face book",
+      "version": "584.1",
+      "date": "2026-10-26T06:49:23-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713700943",
+      "author": "2 DEUCES",
+      "rating": 1,
+      "title": "Never Ending Interruption and Irrelevanance",
+      "body": "I just want to catch up with Friends and follow my interests. However, Facebook bombards the user with constant advertising and irrelevant reels etc.  you have to be a masochist to get on this app because it punishes you the entire time you use it and even after.",
+      "version": "584.1",
+      "date": "2026-10-26T06:43:30-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713677894",
+      "author": "Bejdjejehejebejshwu",
+      "rating": 3,
+      "title": "Anuncios",
+      "body": "Mucho anuncios no como antes",
+      "version": "584.1",
+      "date": "2026-10-26T06:36:54-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713659759",
+      "author": "Way to difficult",
       "rating": 2,
-      "title": "Stop auto refresh",
-      "body": "Stop auto refreshing my feeds",
-      "version": "582.0.0",
-      "date": "2026-10-10T09:26:21-07:00",
+      "title": "Too many adds",
+      "body": "It’s always trying to show me things I’ve already bought or have no interest in",
+      "version": "584.1",
+      "date": "2026-10-26T06:31:42-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650350809",
-      "author": "BusAction 🚌🎬",
-      "rating": 4,
-      "title": "🚌🎬",
-      "body": "BusAction",
-      "version": "582.0.0",
-      "date": "2026-10-10T09:05:59-07:00",
+      "id": "14713653595",
+      "author": "Shade412 Productions",
+      "rating": 1,
+      "title": "This app sucks",
+      "body": "Hate your app so much wish you would get shut down",
+      "version": "584.1",
+      "date": "2026-10-26T06:29:57-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650308845",
-      "author": "yehmed",
+      "id": "14713547618",
+      "author": "Masump8",
+      "rating": 1,
+      "title": "Profile reel button",
+      "body": "This app can not load all the reels of a profile,whats wrong with ipados facebook app?",
+      "version": "584.1",
+      "date": "2026-10-26T05:59:27-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713535800",
+      "author": "Bando bullies",
       "rating": 5,
-      "title": "Delicioso",
-      "body": "Delicias 100% natural",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:54:15-07:00",
+      "title": "Thank you",
+      "body": "Thank you for allowing the rest of the world to use you guys‘s platform, which helps spray information gang information and keep families connected. Thank you very much.",
+      "version": "584.1",
+      "date": "2026-10-26T05:56:02-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650302823",
-      "author": "TortillianExtinction757",
-      "rating": 5,
-      "title": "Dope",
-      "body": "It’s dope",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:52:35-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650301928",
-      "author": "beiendndown",
+      "id": "14713479340",
+      "author": "frustrsted#2",
       "rating": 1,
-      "title": "Most volatile ad and algorithm out there",
-      "body": "Trash, absolute trash",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:52:19-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650259877",
-      "author": "Manuel-503",
-      "rating": 5,
-      "title": "Me Encanta Facebook",
-      "body": "Es una plataforma con muchas opciones para una gran variedad de personas con un muy buen contenido muy recomendado 👌💯",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:40:33-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650246189",
-      "author": "I had a nickname once",
-      "rating": 1,
-      "title": "Grumpy old man",
-      "body": "AI slop",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:36:45-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650244949",
-      "author": "Forced Euphoria",
-      "rating": 1,
-      "title": "Can’t get in",
-      "body": "They send you an EMAIL (SMS is better) code that doesn’t actually log you.",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:36:24-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650239269",
-      "author": "mikefitz98",
-      "rating": 1,
-      "title": "You banned my friend",
-      "body": "You banned my friend. And scam",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:34:48-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650236569",
-      "author": "22ghaha",
-      "rating": 1,
-      "title": "Why is there no option when making a post on your phone to tag a person???",
-      "body": "Bbb",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:34:05-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650234829",
-      "author": "Microsoft Ib",
-      "rating": 5,
-      "title": "Coverage",
-      "body": "Wider range compared to other social media platforms",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:33:37-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650218846",
-      "author": "N.Y.human",
-      "rating": 1,
-      "title": "Thought police",
-      "body": "Facebook uses algorithms which key on words which they often  misinterpret, leading to unwarranted account restrictions, based on the rules cited. When a user appeals the ruling, the decision is rarely rescinded.",
-      "version": "582.0.0",
-      "date": "2026-10-10T08:29:14-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650165169",
-      "author": "MLnine
-… (truncated, 33294 more chars — see transcript.json)
+      "title": "Not working",
+
+… (truncated, 36291 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"389801252","country":"us","pages":2,"sort":"mostrecent"}` · 448 ms
+Arguments: `{"app_id":"389801252","country":"us","pages":2,"sort":"mostrecent"}` · 477 ms
 
 App **389801252** (apple) · us · sort=mostrecent · pages fetched 2/2 · **100 reviews**
 
 | rating | version | date | title | body |
 |---|---|---|---|---|
-| ★ | 450.1.0 | 2026-10-10 | Terrible UI | Nobody likes this app. It makes sharing simple things really difficult.  But that is the trap. They make it difficult to keep people on the … |
-| ★ | 450.1.0 | 2026-10-10 | Fix Reels!!!  Tiny window | New update puts videos in a tiny window on iPad. Horrible update. Makes app unusable on iPad. Fix it back to the way it was!!!🤬🥵😡🤬🥵😡 |
-| ★★★★★ | 450.1.0 | 2026-10-10 | The best app | What can I say it’s IG!!!!!🔥🔥🔥🔥🔥 |
-| ★★★★★ | 450.1.0 | 2026-10-10 | Best app | codes_gotthekeys followed me I will follow back instantly and let’s grow anyone that see this please help me get followers |
-| ★ | 450.1.0 | 2026-10-10 | . | The new ‘Shop the Look’ button is ruining Reels. It sits right where you double-tap to like a video, so I keep accidentally tapping it and o… |
+| ★★★★★ | 453.0 | 2026-10-26 | Great | I love this app |
+| ★ | 453.0 | 2026-10-26 | Bugs | So many bugs im about to be crazy |
+| ★★★★★ | 453.0 | 2026-10-26 | Adding More Profile Pictures | why did you delete this feature?? it is the best thing ever. please add it back. im begging |
+| ★★ | 453.0 | 2026-10-26 | Duo optimization only | I hope that what has been put out isn’t the final optimization for instagram on the duo. The bar on the right side of the screen is terrible… |
+| ★ | 453.0 | 2026-10-26 | Trouble | Why i cant use instagram plus |
 
 _(first 5 of 100 shown)_
 
@@ -652,117 +633,129 @@ _(first 5 of 100 shown)_
   "count": 100,
   "reviews": [
     {
-      "id": "14650422295",
-      "author": "Oh Von Braun",
-      "rating": 1,
-      "title": "Terrible UI",
-      "body": "Nobody likes this app. It makes sharing simple things really difficult.  But that is the trap. They make it difficult to keep people on the platform for their shareholders to profit from. Look for alternatives asap",
-      "version": "450.1.0",
-      "date": "2026-10-10T09:26:18-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650404979",
-      "author": "mmd9604",
-      "rating": 1,
-      "title": "Fix Reels!!!  Tiny window",
-      "body": "New update puts videos in a tiny window on iPad. Horrible update. Makes app unusable on iPad. Fix it back to the way it was!!!🤬🥵😡🤬🥵😡",
-      "version": "450.1.0",
-      "date": "2026-10-10T09:21:22-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650373815",
-      "author": "Marquez89",
+      "id": "14713748258",
+      "author": "BrianTheTruth",
       "rating": 5,
-      "title": "The best app",
-      "body": "What can I say it’s IG!!!!!🔥🔥🔥🔥🔥",
-      "version": "450.1.0",
-      "date": "2026-10-10T09:12:28-07:00",
+      "title": "Great",
+      "body": "I love this app",
+      "version": "453.0",
+      "date": "2026-10-26T06:57:04-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650338019",
-      "author": "Joseisthe8",
+      "id": "14713744034",
+      "author": "Hotelindiaaaaaaaaaaaaaaaa",
+      "rating": 1,
+      "title": "Bugs",
+      "body": "So many bugs im about to be crazy",
+      "version": "453.0",
+      "date": "2026-10-26T06:55:52-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713732942",
+      "author": "Alwesy",
       "rating": 5,
-      "title": "Best app",
-      "body": "codes_gotthekeys followed me I will follow back instantly and let’s grow anyone that see this please help me get followers",
-      "version": "450.1.0",
-      "date": "2026-10-10T09:02:24-07:00",
+      "title": "Adding More Profile Pictures",
+      "body": "why did you delete this feature?? it is the best thing ever. please add it back. im begging",
+      "version": "453.0",
+      "date": "2026-10-26T06:52:40-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650333233",
-      "author": "Loji667",
+      "id": "14713727658",
+      "author": "m4$$on",
+      "rating": 2,
+      "title": "Duo optimization only",
+      "body": "I hope that what has been put out isn’t the final optimization for instagram on the duo. The bar on the right side of the screen is terrible and when opened in horizontal mode there’s so much wasted space.",
+      "version": "453.0",
+      "date": "2026-10-26T06:51:10-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713671761",
+      "author": "바이옴 나무",
       "rating": 1,
-      "title": ".",
-      "body": "The new ‘Shop the Look’ button is ruining Reels. It sits right where you double-tap to like a video, so I keep accidentally tapping it and opening shopping pages instead of liking. Please move it away from the like zone, remove it entirely, or at least give users the option to turn it off.",
-      "version": "450.1.0",
-      "date": "2026-10-10T09:01:05-07:00",
+      "title": "Trouble",
+      "body": "Why i cant use instagram plus",
+      "version": "453.0",
+      "date": "2026-10-26T06:35:12-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650280134",
-      "author": "strry.n1ght",
-      "rating": 4,
-      "title": "I’m irritated",
-      "body": "I have not gotten instants or any updates of the new updates and half the time I’m straight up just not able to repost 🫩🫩",
-      "version": "450.1.0",
-      "date": "2026-10-10T08:46:15-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650263336",
-      "author": "Saloniiiee",
+      "id": "14713641477",
+      "author": "Chococatinc",
       "rating": 1,
-      "title": "Worst app !!!!",
-      "body": "Absolutely terrible experience! Instagram suspends accounts without proper explanations and provides zero helpful customer support. Even after submitting an appeal and verifying my identity, there is no resolution. Years of memories and connections can disappear, and Instagram doesn’t even care enough to respond. Worst customer service ever!",
-      "version": "450.1.0",
-      "date": "2026-10-10T08:41:32-07:00",
+      "title": "Ai suggested search is a privacy invasion",
+      "body": "The ai suggested search under a reel now shows the location which reduces privacy. There is no way to turn it off and I don’t want everyone knowing my potential location.",
+      "version": "452.0.0",
+      "date": "2026-10-26T06:26:27-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650228003",
-      "author": "Thick Bob :)",
-      "rating": 3,
-      "title": "Remove that new shop similar button",
-      "body": "I love ig reels but that new button is so annoying",
-      "version": "450.1.0",
-      "date": "2026-10-10T08:31:46-07:00",
+      "id": "14713615175",
+      "author": "Patdalegend",
+      "rating": 5,
+      "title": "Thankful , Thank You Guys",
+      "body": "I just think it’s a lifestyle ya know !! & if you treat it right it will in due time adapt & it’s your world whatever you put your mind to it comes to life Instagram been apart of a lot of journeys thanks for the support and memories and love",
+      "version": "453.0",
+      "date": "2026-10-26T06:18:54-07:00",
       "helpfulVotes": 0,
       "totalVotes": 0
     },
     {
-      "id": "14650210165",
-      "author": "cj de la O",
-      "rating": 4,
-      "title": "Glitchy",
-      "body": "I wish The Gram would fix some of the glitches on the REELS section, and be more open to fixing fraud!",
-      "version": "450.1.0",
-      "date": "2026-10-10T08:26:51-07:00",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "14650201277",
-      "author": "katandcats",
+      "id": "14713527169",
+      "author": "Diddy sophomore",
       "rating": 1,
-      "title": 
-… (truncated, 37233 more chars — see transcript.json)
+      "title": "Hey ig",
+      "body": "You ruined my life😓🙁",
+      "version": "453.0",
+      "date": "2026-10-26T05:53:28-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713509065",
+      "author": "5674347",
+      "rating": 1,
+      "title": "over stepping",
+      "body": "we should have a choice in if we are used for AI. looking for a new app",
+      "version": "452.0.0",
+      "date": "2026-10-26T05:48:06-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713496118",
+      "author": "bitoonon",
+      "rating": 1,
+      "title": "Remove Ads",
+      "body": "Get rid of these irrelevant ads, that provide no benefit to users. \n\nNo purpose in clicking “I’ve seen too many ads recently” because they continue to push even more ads, thereafter.",
+      "version": "452.0.0",
+      "date": "2026-10-26T05:44:15-07:00",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "14713475719",
+      "author": "Robb stark.",
+      "rating": 1,
+      "title": "it's awful",
+      "body": "There is an issue in the DM’s because when I send a p
+… (truncated, 37345 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"https://apps.apple.com/us/app/instagram/id389801252","sort":"mosthelpful"}` · 529 ms
+Arguments: `{"app_id":"https://apps.apple.com/us/app/instagram/id389801252","sort":"mosthelpful"}` · 29 ms
 
 App **389801252** (apple) · us · sort=mosthelpful · pages fetched 1/1 · **50 reviews**
 
@@ -823,17 +816,17 @@ _(first 5 of 50 shown)_
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"com.spotify.music","pages":2}` · 138 ms
+Arguments: `{"app_id":"com.spotify.music","pages":2}` · 167 ms
 
 App **com.spotify.music** (google) · us · sort=mostrecent · pages fetched 2/2 · **100 reviews**
 
 | rating | version | date | title | body |
 |---|---|---|---|---|
-| ★★ | 9.1.90.2270 | 2026-10-10 |  | I love spotify. Even without paid subscriptions, the app is still enjoyable for all users including myself. However, for the past several we… |
-| ★★★★★ | 9.1.90.2270 | 2026-10-10 |  | the goat |
-| ★★★★★ | 9.1.90.2270 | 2026-10-10 |  | good |
-| ★★★★★ | 9.1.90.2270 | 2026-10-10 |  | I just like using Spotify |
-| ★★ | 9.1.80.2221 | 2026-10-10 |  | TOOOOOOOOOOO much ads!!!☹️ |
+| ★★★★ | 9.1.92.3058 | 2026-10-26 |  | Updating my review after Spotify responded promptly to my feedback and provided guidance on managing ad preferences. I appreciate the quick … |
+| ★★★★★ | 9.1.92.3058 | 2026-10-26 |  | semma 😍🥰❤️👍 |
+| ★★★★★ | 9.1.92.3058 | 2026-10-26 |  | great |
+| ★ | 9.1.88.2204 | 2026-10-26 |  | relax with your ads and stop adding on more ads already or else you going to lose lots of users because not everyone is as rich like you tho… |
+| ★★★★★ | 9.1.92.3058 | 2026-10-26 |  | Glitchy lately. Playbar goes away. Cuts in and out (with good signal) . |
 
 _(first 5 of 100 shown)_
 
@@ -850,119 +843,113 @@ _(first 5 of 100 shown)_
   "count": 100,
   "reviews": [
     {
-      "id": "27458088-8bb3-4508-acf8-e9f0cd7ae0d0",
-      "author": "Eden",
-      "rating": 2,
-      "title": "",
-      "body": "I love spotify. Even without paid subscriptions, the app is still enjoyable for all users including myself. However, for the past several weeks it simply has stopped functioning properly. Ads cause the ENTIRE app to stop working. Music plays fine, but most of the time when an ad plays it freezes the entire app. All media stops playing. The only way to fix it is to close the app and reopen it, which has made it impossible to walk away from my phone while listening to music. Please fix this!!!",
-      "version": "9.1.90.2270",
-      "date": "2026-10-10T21:42:19.000Z",
-      "helpfulVotes": 2,
-      "totalVotes": 2,
-      "developerReply": "Hi. Thanks for sharing this with us. For the app's behavior, you can try a quick reinstall. If that doesn't help, we'd recommend reaching out to our Customer Service at support.spotify.com. Just search \"Contact Us\", and they'll be happy to help."
-    },
-    {
-      "id": "69efe0a6-ee66-424f-b442-67a5077e89b5",
-      "author": "Ben Andreassen",
-      "rating": 5,
-      "title": "",
-      "body": "the goat",
-      "version": "9.1.90.2270",
-      "date": "2026-10-10T21:42:13.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "45f648c3-7efa-47f8-afe0-271aa32539d8",
-      "author": "Love Elias",
-      "rating": 5,
-      "title": "",
-      "body": "good",
-      "version": "9.1.90.2270",
-      "date": "2026-10-10T21:41:20.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "ff970640-22ad-4bd7-8c02-de4fda5289e1",
-      "author": "Morrison Maxwell",
-      "rating": 5,
-      "title": "",
-      "body": "I just like using Spotify",
-      "version": "9.1.90.2270",
-      "date": "2026-10-10T21:38:32.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "abf0ad6b-fdac-462e-9458-5abf098b67de",
-      "author": "Jenna Kim",
-      "rating": 2,
-      "title": "",
-      "body": "TOOOOOOOOOOO much ads!!!☹️",
-      "version": "9.1.80.2221",
-      "date": "2026-10-10T21:36:39.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0,
-      "developerReply": "Hi. We appreciate your feedback, and we'll pass it along to the Ads team. For an ad-free experience, we'd recommend checking out our Premium plans at spotify.com/premium. If you've never had Premium before, you should be eligible for our trial."
-    },
-    {
-      "id": "76448e0a-675c-40c7-b29b-5797800482ee",
-      "author": "Gabriel Ortega",
-      "rating": 5,
-      "title": "",
-      "body": "App muy funcional y en cuanto a la calidad no me importa si no es Lossless, funciona muy bien en todos los dispositivos.",
-      "version": "9.1.88.2204",
-      "date": "2026-10-10T21:32:26.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "a4509930-93b8-4a40-894d-784e8ed1c5ea",
-      "author": "Evan Gibbs",
-      "rating": 5,
-      "title": "",
-      "body": "I love this app",
-      "version": "9.1.90.2270",
-      "date": "2026-10-10T21:31:33.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "6ecb1783-f463-4857-ae62-6305b3e9af7a",
-      "author": "Hilary Gwilt",
-      "rating": 5,
-      "title": "",
-      "body": "my experience with Spotify has been great so far meaning that; a few months ago I noticed that one of my playlist was not working properly. I contacted Spotify via email. and they were very helpful in fixing the problem due to a lot of bugs on their end too.",
-      "version": "9.1.90.2270",
-      "date": "2026-10-10T21:30:08.000Z",
-      "helpfulVotes": 0,
-      "totalVotes": 0
-    },
-    {
-      "id": "59ca9929-8275-44a1-9f38-56b0320911a3",
-      "author": "Soumya Gupta",
+      "id": "cc1f333e-a00f-4a51-a295-653cf219beba",
+      "author": "Erick Miguel",
       "rating": 4,
       "title": "",
-      "body": "
-… (truncated, 37475 more chars — see transcript.json)
+      "body": "Updating my review after Spotify responded promptly to my feedback and provided guidance on managing ad preferences. I appreciate the quick response and willingness to help! My concern about explicit ads potentially reaching children remains, but good customer service deserves recognition. Hopefully, these controls help improve the experience. Raising my rating to 4 stars in appreciation of their response.",
+      "version": "9.1.92.3058",
+      "date": "2026-10-26T22:10:35.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0,
+      "developerReply": "Hi. Thanks for feedback. You can now update your ad preferences. Just check out \"Managing your ad preferences\" at support.spotify.com or manage in-app by liking and disliking ads. If that doesn't help, we'd recommend reaching out to our Customer Service by searching for \"Contact Us\" on the same site."
+    },
+    {
+      "id": "abe39806-a14f-4e19-bbb5-27ce8af13a1a",
+      "author": "Sankar Muthu",
+      "rating": 5,
+      "title": "",
+      "body": "semma 😍🥰❤️👍",
+      "version": "9.1.92.3058",
+      "date": "2026-10-26T22:00:40.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "52566833-a2ee-49a3-a266-5e4a40dc4940",
+      "author": "German Vazquez",
+      "rating": 5,
+      "title": "",
+      "body": "great",
+      "version": "9.1.92.3058",
+      "date": "2026-10-26T21:57:04.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "e267219d-b9d3-4a3a-89af-510cb32a53fe",
+      "author": "Cyndi ʕ•ᴥ•ʔ",
+      "rating": 1,
+      "title": "",
+      "body": "relax with your ads and stop adding on more ads already or else you going to lose lots of users because not everyone is as rich like you thought to subscribe every month. 🙄",
+      "version": "9.1.88.2204",
+      "date": "2026-10-26T21:56:15.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "ce37543b-bc23-47ee-aa4f-37e9202b7bc1",
+      "author": "L. Aerin",
+      "rating": 5,
+      "title": "",
+      "body": "Glitchy lately. Playbar goes away. Cuts in and out (with good signal) .",
+      "version": "9.1.92.3058",
+      "date": "2026-10-26T21:55:26.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0,
+      "developerReply": "Hi. Thanks for sharing your experience. Have you tried a quick reinstall? If that doesn't help, you can get in touch with our Customer Service by heading to support.spotify.com and searching \"Contact us\"."
+    },
+    {
+      "id": "c2506b8a-7ed0-4993-9653-0d88f0147b9c",
+      "author": "Laurene Johansson",
+      "rating": 5,
+      "title": "",
+      "body": "best Music app in my Opinion",
+      "version": "9.1.92.3058",
+      "date": "2026-10-26T21:54:23.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "e7fbc8de-cd73-4a4a-a5c7-a295ec1cc0c3",
+      "author": "Meek Mike",
+      "rating": 5,
+      "title": "",
+      "body": "Spotify is the best for me",
+      "version": "9.1.90.2270",
+      "date": "2026-10-26T21:47:41.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0
+    },
+    {
+      "id": "62e9d9cf-41b9-4852-a490-1100b3758b82",
+      "author": "Surya Putta",
+      "rating": 3,
+      "title": "",
+      "body": "As Spotify’s library has grown, the app on my Pixel has become increasingly slow, laggy, and glitchy. Despite frequent updates, loading times remain frustratingly long, making for a poor user experience.",
+      "version": "9.1.92.3058",
+      "date": "2026-10-26T21:46:50.000Z",
+      "helpfulVotes": 0,
+      "totalVotes": 0,
+      "developerReply": "Hi there. We appreciate you bringing this to our attention. Have you tried a quick reinstall? If the same issue persists, 
+… (truncated, 38097 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"https://play.google.com/store/apps/details?id=com.instagram.android&hl=en","sort":"mosthelpful"}` · 127 ms
+Arguments: `{"app_id":"https://play.google.com/store/apps/details?id=com.instagram.android&hl=en","sort":"mosthelpful"}` · 194 ms
 
 App **com.instagram.android** (google) · us · sort=mosthelpful · pages fetched 1/1 · **50 reviews**
 
 | rating | version | date | title | body |
 |---|---|---|---|---|
 | ★★ | 434.0.0.44.74 | 2026-09-19 |  | It will not let you see the content you want. I have changed my algorithm 20 times and it absolutely will not show me art. I get cats and ra… |
-| ★ | 362.0.0.33.241 | 2025-01-12 |  | The new update is so buggy. Let's say I am going to post 5 photos, and I select to zoom them out so they aren't so close to my face. I can o… |
 | ★ | 378.0.0.52.68 | 2025-05-04 |  | if you send someone a link to a post now, it will have your profile attached to it, even if it wasn't your post. they get a popup with whate… |
 | ★★ | 388.0.0.34.75 | 2025-07-16 |  | The video calling on this app is hardly worth using. Each time I've used it, the video quality gets super pixilated and grainy anytime the s… |
 | ★ | 361.0.0.46.88 | 2024-12-19 |  | Every time I start using Instagram again I remember why I don't. Every single time I'm on reels and scrolling, eventually the videos will on… |
+| ★ | 447.0.0.55.81 | 2026-09-18 |  | With the latest update, you can no longer be logged in to more than one account. I've seen no improvements with the last few updates other t… |
 
 _(first 5 of 50 shown)_
 
@@ -986,19 +973,8 @@ _(first 5 of 50 shown)_
       "body": "It will not let you see the content you want. I have changed my algorithm 20 times and it absolutely will not show me art. I get cats and random people and stuff I'm not interested in. it's annoying. Even when you search \"art\" after you scroll once its back to stuff I don't want. I'm over it.",
       "version": "434.0.0.44.74",
       "date": "2026-09-19T02:25:39.000Z",
-      "helpfulVotes": 7,
-      "totalVotes": 7
-    },
-    {
-      "id": "045b1b4e-b207-40f7-8a9e-d4e81664965e",
-      "author": "Logan Chesley",
-      "rating": 1,
-      "title": "",
-      "body": "The new update is so buggy. Let's say I am going to post 5 photos, and I select to zoom them out so they aren't so close to my face. I can only zoom out one, and if I select more than 1 photo, it unzooms all of them. It has never done this before. The comments and notifications are weird as well. They glitch out, and when I go to click on the notification in the app, it doesn't let me, or it takes multiple times for it to work and bring me to where I need to be. Hope they fix this soon.",
-      "version": "362.0.0.33.241",
-      "date": "2025-01-12T22:37:55.000Z",
-      "helpfulVotes": 10200,
-      "totalVotes": 10200
+      "helpfulVotes": 103,
+      "totalVotes": 103
     },
     {
       "id": "6616cf3d-e733-4afc-8d45-19fd62888615",
@@ -1008,8 +984,8 @@ _(first 5 of 50 shown)_
       "body": "if you send someone a link to a post now, it will have your profile attached to it, even if it wasn't your post. they get a popup with whatever account you were logged in to prompting them to follow it. instagram made this change without any notification. details of your profile should not be attached when you copy / paste a link to a post that wasn't even yours, especially when you have all options to make your account visible to contacts / searchable by email disabled.",
       "version": "378.0.0.52.68",
       "date": "2025-05-04T22:46:55.000Z",
-      "helpfulVotes": 11326,
-      "totalVotes": 11326
+      "helpfulVotes": 12109,
+      "totalVotes": 12109
     },
     {
       "id": "6b217418-8595-40e4-bab1-ebdccb12e377",
@@ -1019,8 +995,8 @@ _(first 5 of 50 shown)_
       "body": "The video calling on this app is hardly worth using. Each time I've used it, the video quality gets super pixilated and grainy anytime the service isn't exactly *perfect*. The calls also take way too much battery power, quickly heat up the phone, and have overheated the phone before. Having video call functionality is great, but when it's so cumbersome and not worth using, what's the point?",
       "version": "388.0.0.34.75",
       "date": "2025-07-16T17:41:55.000Z",
-      "helpfulVotes": 12092,
-      "totalVotes": 12092
+      "helpfulVotes": 12440,
+      "totalVotes": 12440
     },
     {
       "id": "451f3c87-6d30-4399-8c7f-e22e2fd9f458",
@@ -1030,90 +1006,101 @@ _(first 5 of 50 shown)_
       "body": "Every time I start using Instagram again I remember why I don't. Every single time I'm on reels and scrolling, eventually the videos will only play halfway and then don't play the rest of the video. It's not a connection issue and I've been dealing with this ever since reels came out. I don't want to watch half a video just for it to cut off.",
       "version": "361.0.0.46.88",
       "date": "2024-12-19T21:56:09.000Z",
-      "helpfulVotes": 3946,
-      "totalVotes": 3946
+      "helpfulVotes": 4347,
+      "totalVotes": 4347
     },
     {
       "id": "f7bfc0af-c905-4533-8ce5-94222cc61161",
       "author": "Kyle Nichols",
       "rating": 1,
       "title": "",
-      "body": "With the latest update, you can no longer be logged in to more than one account. I've seen no improvements with the last few updates other than the layout, which didn't need fixing, and the logo change. The app used to scroll through my feed smoother too, a thing of t
-… (truncated, 31352 more chars — see transcript.json)
+      "body": "With the latest update, you can no longer be logged in to more than one account. I've seen no improvements with the last few updates other than the layout, which didn't need fixing, and the logo change. The app used to scroll through my feed smoother too, a thing of the past. It used to work well, but now I might just uninstall it since I have to log in every time anyway. Might as well save the space on my phone for an app that works. Galaxy S5 update: it's now even worse.",
+      "version": "447.0.0.55.81",
+      "date": "2026-09-18T14:54:57.000Z",
+      "helpfulVotes": 261,
+      "totalVotes": 261
+    },
+    {
+      "id": "17c46112-c8ce-408e-b961-53d1a095ff63",
+      "author": "Warren Abbott",
+      "rating": 3,
+      "title": "",
+      "body": "They push a lot of silly stuff onto you, and the ads are often just slightly off. Like, yes, I'm interested in this, but not in the way the algorithm seems to think. Otherwise, it's nice to share personal photos and animal pics/vids with people I love. Yet, I find myself thinking of
+… (truncated, 31036 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `review_insights` 
 
-Arguments: `{"app_id":"284882215","countries":["us","gb"],"pages":3}` · 691 ms
+Arguments: `{"app_id":"284882215","countries":["us","gb"],"pages":3}` · 611 ms
 
-**Facebook** (284882215, apple) — sample of 300 recent reviews {"us":150,"gb":150}, 2026-10-01 → 2026-10-10
+**Facebook** (284882215, apple) — sample of 300 recent reviews {"us":150,"gb":150}, 2026-10-18 → 2026-10-26
 
-Store rating: **4.53** over 28,709,088 ratings · Sample average: **2.93**
+Store rating: **4.53** over 28,928,101 ratings · Sample average: **2.93**
 
 | ★ | count | % |
 |---|---|---|
-| 5 | 114 | 38% |
-| 4 | 16 | 5.3% |
-| 3 | 23 | 7.7% |
-| 2 | 28 | 9.3% |
-| 1 | 119 | 39.7% |
+| 5 | 130 | 43.3% |
+| 4 | 3 | 1% |
+| 3 | 19 | 6.3% |
+| 2 | 11 | 3.7% |
+| 1 | 137 | 45.7% |
 
 **Average rating by version (newest first)**
 
 | version | reviews | avg | % negative |
 |---|---|---|---|
-| 582.0.0 | 203 | 3.1 | 43.8% |
-| 581.0.0 | 97 | 2.57 | 59.8% |
+| 584.1 | 237 | 2.9 | 50.2% |
+| 584.0.0 | 63 | 3.03 | 46.0% |
 
-**What changed (basis: version, confidence: high)** — Version 582.0.0 (203 reviews) average 3.10★ vs 2.57★ for previous version 581.0.0 (97 reviews), +0.53; negative share 43.8% vs 59.8% (−16 pp). Rising complaints: "ads" (+10.4 pp, 22.5% of negative reviews), "feed" (+7.3 pp, 9% of negative reviews), "watch" (new, 5.6% of negative reviews).
+**What changed (basis: version, confidence: medium)** — Version 584.1 (237 reviews) average 2.90★ vs 3.03★ for previous version 584.0.0 (63 reviews), −0.13; negative share 50.2% vs 46% (+4.2 pp). Rising complaints: "election" (new, 12.6% of negative reviews), "democracy" (new, 11.8% of negative reviews), "está" (new, 10.1% of negative reviews).
 
 
 | rising complaint | status | latest share | previous share | change | example |
 |---|---|---|---|---|---|
-| ads | increased | 22.5% | 12.1% | +10.4 pp | Trash. Yet another app that has gone to trash. Hundreds of ads instead of seeing what my friends post. I went down and down and down on my feed and could not find one post from a friend or anything bu |
-| feed | increased | 9.0% | 1.7% | +7.3 pp | Too many ads. Unsolicited ads and people in feed not interested in! |
-| watch | new | 5.6% | 0.0% | +5.6 pp | …world only to find out fb can take over your phone and listen and watch everything you do is not right. To try and find out where to go to turn it all of is next to impossible too. Why can’t things be |
-| comments | increased | 6.7% | 1.7% | +5.0 pp | …ted them and Facebook said they didn’t see a reason to take their comments down! Also i’ve had harassing comments from Muslims and Facebook said they didn’t find any wrongdoings and will not take thei |
-| account | increased | 10.1% | 5.2% | +4.9 pp | …ey on words which they often misinterpret, leading to unwarranted account restrictions, based on the rules cited. When a user appeals the ruling, the decision is rarely rescinded. |
-| view | new | 4.5% | 0.0% | +4.5 pp | …ngs. They have removed or hidden the feature for me to filter and view only local only listings. The user interface is slick and is nothing less than what I would expect from a multi billion dollar co |
-| amount | new | 4.5% | 0.0% | +4.5 pp | Aggressive ads. Recently implemented an aggressive amount of ads every 30 seconds while watching videos. |
-| happens | new | 4.5% | 0.0% | +4.5 pp | …uidelines against anything hateful, but try reporting and nothing happens |
+| election | new | 12.6% | 0.0% | +12.6 pp | Election meddling. Meta has been trying to rig the Brazil election. |
+| democracy | new | 11.8% | 0.0% | +11.8 pp | Meta interferes with democracy. This company has been proven to manipulate elections across the world by promoting certain narratives while preventing others from being shared |
+| está | new | 10.1% | 0.0% | +10.1 pp | Comportamento Ilegal. Está interferindo no processo eleitoral do meu país e prejudicando a democracia, aumentando a visibilidade de candidatos com discurso de ódio de forma parcial, enviesada e manipu |
+| eleitoral | new | 10.1% | 0.0% | +10.1 pp | LIXO. Está interferindo no processo eleitoral do meu país e prejudicando nossa democracia, aumentando a visibilidade de candidatos com discursos de ódio de forma parcial, enviesada e manipuladora. |
+| brazilian | new | 10.1% | 0.0% | +10.1 pp | …spread hate, unfairly influencing Brazil’s electoral debate. As a Brazilian, I find this deeply concerning. A company with this much control over what people see owes its users transparency, accountab |
+| interfering | new | 10.1% | 0.0% | +10.1 pp | Anti democratic. It is interfering in my country’s electoral process and harming our democracy by increasing the visibility of candidates who use hate speech—in a partial, biased, and manipulative man |
+| democracia | new | 8.4% | 0.0% | +8.4 pp | Esta interferindo no processo eleitoral do meu país e prejudicando a democracia. Está interferindo no processo eleitoral do meu país e prejudicando a democracia |
+| algorithm | new | 7.6% | 0.0% | +7.6 pp | Meta interfered in Brazil’s elections. Rotten algorithm that suppressed a democratic candidate and promoted a fascist. But Brazilians won this battle. Boycott meta ✊⭐️ |
 
-**Top complaint keywords (1–2★, n=147)**
+**Top complaint keywords (1–2★, n=148)**
 
 | phrase | reviews | share | example |
 |---|---|---|---|
-| ads | 27 | 18.4% | Trash. Yet another app that has gone to trash. Hundreds of ads instead of seeing what my friends post. I went down and down and down on my feed and could not find one post from a friend or anything bu |
-| post | 26 | 17.7% | Why is there no option when making a post on your phone to tag a person???. Bbb |
-| friends | 19 | 12.9% | …that has gone to trash. Hundreds of ads instead of seeing what my friends post. I went down and down and down on my feed and could not find one post from a friend or anything but ads. Not like they ca |
-| videos | 16 | 10.9% | Propaganda. Es muy aburrido ver los videos porque siempre son interrumpidos por publicidad!!! Y video tras video lo mismo. |
-| reels | 15 | 10.2% | …I don’t want to have to search for my normal feed. Why start with reels of people I don’t know or care about. The constant ads are bad enough this may be the thing that makes me delete this app. |
-| ai | 13 | 8.8% | Grumpy old man. AI slop |
-| account | 12 | 8.2% | …ey on words which they often misinterpret, leading to unwarranted account restrictions, based on the rules cited. When a user appeals the ruling, the decision is rarely rescinded. |
-| content | 11 | 7.5% | TrashBook. Fraud Employees that are ruining good content for their own selfish gain |
-| page | 9 | 6.1% | …Z. do not even show YOUR FRIENDS anymore you have to go to their Page if you want to see them OR they stuff show up DAYS LATER, so TACKY so I am not happy with Facebook at all 😡😡😡😡😡🤬🤬🤬🤬🤬🤬� |
-| feed | 9 | 6.1% | …seeing what my friends post. I went down and down and down on my feed and could not find one post from a friend or anything but ads. Not like they care enough to change it either. So disappointing. |
-| marketplace | 8 | 5.4% | Selling Activity tab on FB marketplace Defective. I mainly use this app for buying and selling on the marketplace. Lately, when I select the 'Selling Activity' tab, all of the content there disappears |
-| stop | 8 | 5.4% | Stop auto refresh. Stop auto refreshing my feeds |
-| experience | 8 | 5.4% | …pect from a multi billion dollar company. With that said the user experience leaves a lot to be desired. This app is a soft 1.7 or maybe a 2 at best out of five. |
-| feel | 8 | 5.4% | FACEBOOK. I don’t feel safe Facebook has turned this , mean , so called “BE FREE” world into a I can’t even describe. That is all I’m going now GOD BLESS US ALL. |
-| comments | 7 | 4.8% | …ted them and Facebook said they didn’t see a reason to take their comments down! Also i’ve had harassing comments from Muslims and Facebook said they didn’t find any wrongdoings and will not take thei |
+| ai | 21 | 14.2% | …d I don’t talk to minors nor associate myself with them this meta ai system they have is trash and sooner or later the whole Facebook population will be zero bc of how careless Facebook and meta ai’s |
+| ads | 17 | 11.5% | Nuisance ads. Nuisance ads |
+| account | 16 | 10.8% | Meta. Worst I’ve lost my Facebook account since 2008 because they say I look younger in my ID. Worst night mate I’ve lost all my pic with my lost ones |
+| election | 15 | 10.1% | Election meddling. Meta has been trying to rig the Brazil election. |
+| posts | 14 | 9.5% | Sharing posts sucks. You have to tap on 3 different things to share a post to your timeline. It use to be one tap |
+| democracy | 14 | 9.5% | Meta interferes with democracy. This company has been proven to manipulate elections across the world by promoting certain narratives while preventing others from being shared |
+| brazilian | 12 | 8.1% | …spread hate, unfairly influencing Brazil’s electoral debate. As a Brazilian, I find this deeply concerning. A company with this much control over what people see owes its users transparency, accountab |
+| eleitoral | 12 | 8.1% | Comportamento Ilegal. Está interferindo no processo eleitoral do meu país e prejudicando a democracia, aumentando a visibilidade de candidatos com discurso de ódio de forma parcial, enviesada e manipu |
+| está | 12 | 8.1% | Comportamento Ilegal. Está interferindo no processo eleitoral do meu país e prejudicando a democracia, aumentando a visibilidade de candidatos com discurso de ódio de forma parcial, enviesada e manipu |
+| interfering | 12 | 8.1% | …s with foreign elections for extreme right wing candidates. It is interfering in my country’s electoral process and undermining democracy by trying to force the election of someone who will refuse to |
+| stop | 11 | 7.4% | Stop adding things to my Facebook. I am tired of having to go through and ask to remove sites I have not joined. Please STOP! |
+| years | 11 | 7.4% | Garbage. Literally the worst thing that’s happened to humanity in the past 25 years. Go play in traffic. |
+| company | 11 | 7.4% | …a warning. I am distraught beyond words. I cannot recommend this company to anyone because of their customer support, which is none existent. |
+| democracia | 10 | 6.8% | …á interferindo no processo eleitoral do meu país e prejudicando a democracia, aumentando a visibilidade de candidatos com discurso de ódio de forma parcial, enviesada e manipuladora |
+| processo eleitoral | 7 | 4.7% | Comportamento Ilegal. Está interferindo no processo eleitoral do meu país e prejudicando a democracia, aumentando a visibilidade de candidatos com discurso de ódio de forma parcial, enviesada e manipu |
 
 **Sample quotes**
 
-> ★ **Thought police** — Facebook uses algorithms which key on words which they often misinterpret, leading to unwarranted account restrictions, based on the rules cited. When a user appeals the ruling, the decision is rarely rescinded. _(v582.0.0, us, 2026-10-10)_
+> ★ **Meta** — Worst I’ve lost my Facebook account since 2008 because they say I look younger in my ID. Worst night mate I’ve lost all my pic with my lost ones _(v584.0.0, gb, 2026-10-20)_
 >
-> ★ **Trash** — Yet another app that has gone to trash. Hundreds of ads instead of seeing what my friends post. I went down and down and down on my feed and could not find one post from a friend or anything but ads. Not like they care enough to change it either. So disappointing. _(v582.0.0, us, 2026-10-10)_
+> ★ **Ban acc cmm** — Thề mà cái acc đang dùng ngon tự dưng ban cmn acc là thế nào? Sống hãm l thế, bộ kh biết nhìn lại cái mình làm à? Ở đó mà xét duyệt tài khoản cái dais, gửi cho cũng có mở đ đâu, toàn đ duyệt xong ban cmn acc vĩnh viễn. _(v584.1, us, 2026-10-26)_
 >
-> ★ **Usefulness** — It seems to me Facebook started out as a unique way to stay in communication with people you wanted to stay and communication with. But it has increasingly become a means of people you don’t want to communicate with communicating with you. It has become almost as useless and… _(v582.0.0, us, 2026-10-10)_
+> ★ **Never Ending Interruption and Irrelevanance** — I just want to catch up with Friends and follow my interests. However, Facebook bombards the user with constant advertising and irrelevant reels etc. you have to be a masochist to get on this app because it punishes you the entire time you use it and even after. _(v584.1, us, 2026-10-26)_
 >
-> ★★★★ **Facebook v2?** — For years it was just friends but suddenly it’s all about organisations I’ve never heard of or care about _(v582.0.0, gb, 2026-10-07)_
+> ★★★★★ **Highly recommended** — Have never listen to any therapist who explains symptoms and solutions on such ground level . Highly recommended a true soul person and therapist 💓💓 _(v584.1, us, 2026-10-26)_
 >
-> ★★★★★ **Me Encanta Facebook** — Es una plataforma con muchas opciones para una gran variedad de personas con un muy buen contenido muy recomendado 👌💯 _(v582.0.0, us, 2026-10-10)_
+> ★★★★★ **Opportunity to be a fool or just angry.** — My moment of glory made when where there nothing else to say some fool always say it. _(v584.1, gb, 2026-10-26)_
 >
-> ★★★★★ **People oriented** — DoorDash has connected me with a lot of family members and friends that I would not know how to find if it was not for Facebook. I have found family members that have been looking for me and looking for other family members and it’s wonderful. Also, I’m still connected with a… _(v582.0.0, us, 2026-10-10)_
+> ★★★★★ **Thank you** — Thank you for allowing the rest of the world to use you guys‘s platform, which helps spray information gang information and keep families connected. Thank you very much. _(v584.1, us, 2026-10-26)_
 >
 
 <details><summary>Raw response</summary>
@@ -1126,228 +1113,211 @@ Store rating: **4.53** over 28,709,088 ratings · Sample average: **2.93**
     "developer": "Meta Platforms, Inc.",
     "genre": "Social Networking",
     "averageRating": 4.53,
-    "ratingCount": 28709088,
-    "version": "582.0.0",
-    "currentVersionReleaseDate": "2026-10-07T14:52:01Z",
+    "ratingCount": 28928101,
+    "version": "584.1",
+    "currentVersionReleaseDate": "2026-10-23T09:58:23Z",
     "url": "https://apps.apple.com/us/app/facebook/id284882215"
   },
   "store": "apple",
   "sample": {
     "reviews": 300,
-    "negativeReviews": 147,
-    "positiveReviews": 130,
+    "negativeReviews": 148,
+    "positiveReviews": 133,
     "pagesFetched": 6,
+    "emptyPages": 0,
     "byCountry": {
       "us": 150,
       "gb": 150
     },
     "dateRange": {
-      "from": "2026-10-01T03:35:29-07:00",
-      "to": "2026-10-10T09:26:21-07:00"
+      "from": "2026-10-18T16:06:00-07:00",
+      "to": "2026-10-26T06:55:52-07:00"
     },
     "note": "Sample = most recent written reviews from Apple's RSS feed; it is not the full store rating population."
   },
   "ratingDistribution": {
     "counts": {
-      "1": 119,
-      "2": 28,
-      "3": 23,
-      "4": 16,
-      "5": 114
+      "1": 137,
+      "2": 11,
+      "3": 19,
+      "4": 3,
+      "5": 130
     },
     "percent": {
-      "1": 39.7,
-      "2": 9.3,
-      "3": 7.7,
-      "4": 5.3,
-      "5": 38
+      "1": 45.7,
+      "2": 3.7,
+      "3": 6.3,
+      "4": 1,
+      "5": 43.3
     },
     "average": 2.93,
     "total": 300
   },
   "storeRating": {
     "averageRating": 4.53,
-    "ratingCount": 28709088
+    "ratingCount": 28928101
   },
   "ratingByVersion": [
     {
-      "version": "582.0.0",
-      "reviews": 203,
-      "averageRating": 3.1,
-      "negativeShare": 0.438,
-      "firstSeen": "2026-10-07T07:56:17-07:00",
-      "lastSeen": "2026-10-10T09:26:21-07:00"
+      "version": "584.1",
+      "reviews": 237,
+      "averageRating": 2.9,
+      "negativeShare": 0.502,
+      "firstSeen": "2026-10-23T04:41:40-07:00",
+      "lastSeen": "2026-10-26T06:55:52-07:00"
     },
     {
-      "version": "581.0.0",
-      "reviews": 97,
-      "averageRating": 2.57,
-      "negativeShare": 0.598,
-      "firstSeen": "2026-10-01T03:35:29-07:00",
-      "lastSeen": "2026-10-07T06:26:32-07:00"
+      "version": "584.0.0",
+      "reviews": 63,
+      "averageRating": 3.03,
+      "negativeShare": 0.46,
+      "firstSeen": "2026-10-18T16:06:00-07:00",
+      "lastSeen": "2026-10-23T01:35:58-07:00"
     }
   ],
   "versionDeltas": {
     "basis": "version",
     "latest": {
-      "label": "582.0.0",
+      "label": "584.1",
       "versions": [
-        "582.0.0"
+        "584.1"
       ],
-      "reviews": 203,
-      "negativeReviews": 89,
-      "averageRating": 3.1,
-      "negativeShare": 0.438,
+      "reviews": 237,
+      "negativeReviews": 119,
+      "averageRating": 2.9,
+      "negativeShare": 0.502,
       "dateRange": {
-        "from": "2026-10-07T07:56:17-07:00",
-        "to": "2026-10-10T09:26:21-07:00"
+        "from": "2026-10-23T04:41:40-07:00",
+        "to": "2026-10-26T06:55:52-07:00"
       }
     },
     "previous": {
-      "label": "previous version 581.0.0",
+      "label": "previous version 584.0.0",
       "versions": [
-        "581.0.0"
+        "584.0.0"
       ],
-      "reviews": 97,
-      "negativeReviews": 58,
-      "averageRating": 2.57,
-      "negativeShare": 0.598,
+      "reviews": 63,
+      "negativeReviews": 29,
+      "averageRating": 3.03,
+      "negativeShare": 0.46,
       "dateRange": {
-        "from": "2026-10-01T03:35:29-07:00",
-        "to": "2026-10-07T06:26:32-07:00"
+        "from": "2026-10-18T16:06:00-07:00",
+        "to": "2026-10-23T01:35:58-07:00"
       }
     },
     "change": {
-      "averageRating": 0.53,
-      "negativeShare": -0.16
+      "averageRating": -0.13,
+      "negativeShare": 0.042
     },
     "whatGotWorse": [
       {
-        "phrase": "ads",
-        "status": "increased",
-        "latestShare": 0.225,
-        "previousShare": 0.121,
-        "change": 0.104,
-        "latestReviews": 20,
-        "previousReviews": 7,
+        "phrase": "election",
+        "status": "new",
+        "latestShare": 0.126,
+        "previousShare": 0,
+        "change": 0.126,
+        "latestReviews": 15,
+        "previousReviews": 0,
         "examples": [
           {
             "rating": 1,
-            "title": "Trash",
-            "text": "Trash. Yet another app that has gone to trash. Hundreds of ads instead of seeing what my friends post. I went down and down and down on my feed and could not find one post from a friend or anything bu",
-            "author": "MLninenine",
-            "version": "582.0.0",
-            "date": "2026-10-10T08:14:24-07:00",
+            "title": "Election meddling",
+            "text": "Election meddling. Meta has been trying to rig the Brazil election.",
+            "author": "Kindulas",
+            "version": "584.1",
+            "date": "2026-10-25T14:26:04-07:00",
             "country": "us"
           },
           {
-            "rating": 2,
-            "title": "Impersonal",
-            "text": "Impersonal. I get so many ads & far fewer feeds from FB friends!",
-            "author": "Plus drugs",
-            "version": "582.0.0",
-            "date": "2026-10-10T07:07:39-07:00",
+            "rating": 1,
+            "title": "Structural Violence & the Rise of Fascism",
+            "text": "…Violence & the Rise of Fascism. Meta as a company is complicit in election interference in Brazil. USA colonialism is alive and well and Meta is a facet of it. Another conglomeration of rich white so-",
+            "author": "Like pages",
+            "version": "584.1",
+            "date": "2026-10-25T13:34:01-07:00",
             "country": "us"
           }
         ]
       },
       {
-        "phrase": "feed",
-        "status": "increased",
-        "latestShare": 0.09,
-        "previousShare": 0.017,
-        "change": 0.073,
-        "latestReviews": 8,
-        "previousReviews": 1,
+        "phrase": "democracy",
+        "status": "new",
+        "latestShare": 0.118,
+        "previousShare": 0,
+        "change": 0.118,
+        "latestReviews": 14,
+        "previousReviews": 0,
         "examples": [
           {
             "rating": 1,
-            "title": "Too many ads",
-            "text": "Too many ads. Unsolicited ads and people in feed not interested in!",
-            "author": "SEATHROUGHHEART",
-            "version": "582.0.0",
-            "date": "2026-10-10T06:34:20-07:00",
-            "country": "us"
-          },
-          {
-            "rating": 1
-… (truncated, 15448 more chars — see transcript.json)
+            "title": "Meta interferes with democracy",
+            "text": "Meta interferes with democracy. This company has been proven to manipulate elections across the world by promoting certain narratives while preventing others from being shared",
+            "author": "Ruby K
+… (truncated, 15558 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `review_insights` 
 
-Arguments: `{"app_id":"389801252","countries":["us","gb"],"pages":3}` · 922 ms
+Arguments: `{"app_id":"389801252","countries":["us","gb"],"pages":3}` · 802 ms
 
-**Instagram** (389801252, apple) — sample of 300 recent reviews {"us":150,"gb":150}, 2026-09-26 → 2026-10-10
+**Instagram** (389801252, apple) — sample of 300 recent reviews {"us":150,"gb":150}, 2026-10-24 → 2026-10-26
 
-Store rating: **4.69** over 29,583,259 ratings · Sample average: **2.42**
+Store rating: **4.69** over 29,644,344 ratings · Sample average: **1.56**
 
 | ★ | count | % |
 |---|---|---|
-| 5 | 86 | 28.7% |
-| 4 | 9 | 3% |
-| 3 | 17 | 5.7% |
-| 2 | 20 | 6.7% |
-| 1 | 168 | 56% |
+| 5 | 33 | 11% |
+| 4 | 1 | 0.3% |
+| 3 | 10 | 3.3% |
+| 2 | 12 | 4% |
+| 1 | 244 | 81.3% |
 
 **Average rating by version (newest first)**
 
 | version | reviews | avg | % negative |
 |---|---|---|---|
-| 450.1.0 | 210 | 2.17 | 69.5% |
-| 450.0.0 | 4 | 3.25 | 50.0% |
-| 449.0.0 | 21 | 3.57 | 28.6% |
-| 448.0.0 | 65 | 2.8 | 52.3% |
+| 453.0 | 8 | 3.13 | 50.0% |
+| 452.0.0 | 291 | 1.52 | 86.3% |
+| 410.1.0 | 1 | 1 | 100.0% |
 
-**What changed (basis: version, confidence: high)** — Version 450.1.0 (210 reviews) average 2.17★ vs 3.00★ for previous versions 448.0.0–450.0.0 (90 reviews), −0.83; negative share 69.5% vs 46.7% (+22.8 pp). Rising complaints: "ipad" (new, 24% of negative reviews), "reels" (+18.6 pp, 28.1% of negative reviews), "screen" (+17.5 pp, 19.9% of negative reviews).
+**What changed (basis: version, confidence: low)** — Version 453.0 (8 reviews) average 3.13★ vs 1.52★ for previous version 452.0.0 (291 reviews), +1.61; negative share 50% vs 86.3% (−36.3 pp). No complaint phrase rose by 3+ percentage points. Low confidence: few negative reviews in one of the periods.
 
 
-| rising complaint | status | latest share | previous share | change | example |
-|---|---|---|---|---|---|
-| ipad | new | 24.0% | 0.0% | +24.0 pp | iPad Update Ruined Reels. Tiny, unchangeable aspect ratio that hovers over the search page? Horrible UI and experience. Half the time they don’t even load and it’s just a black screen. |
-| reels | increased | 28.1% | 9.5% | +18.6 pp | Fix the display of reels. Why did Instagram change display of reels from full screen to cropped square display? I guess they’re testing methods to keep people from doom-scrolling, because now I don’t |
-| screen | increased | 19.9% | 2.4% | +17.5 pp | …search come up as pop up squares rather than the entire vertical screen. Now I can’t see the reel in its entirety. A really poor update decision. |
-| full screen | new | 11.0% | 0.0% | +11.0 pp | …te ruins video viewing on iPad. Instead of playing videos cleanly full-screen, it opens them in a small floating box overlay where comment previews and text boxes float right over the video itself. It |
-| video | increased | 17.8% | 7.1% | +10.7 pp | …wnloaded it the saved stuff keeps popping up every time I saved a video and it’s starting to get annoying please can you fix it |
-| square | new | 8.9% | 0.0% | +8.9 pp | …t update, when I search from the home page, reels open as a small square pop-up in the middle of the screen, with the posts still visible behind it. I can't see the whole reel, and it's cropped. Befor |
-| watch | new | 7.5% | 0.0% | +7.5 pp | …video viewing option on Instagram. Currently, there is no way to watch videos in full screen, which takes away from the viewing experience. Adding this feature would make it much easier to enjoy vide |
-| search | new | 7.5% | 0.0% | +7.5 pp | Fix search for iPad. Search in the iPad app has become unusable. Reels a placed in a small window that cuts off the top and bottom and some don’t even load. |
-
-**Top complaint keywords (1–2★, n=188)**
+**Top complaint keywords (1–2★, n=256)**
 
 | phrase | reviews | share | example |
 |---|---|---|---|
-| reels | 45 | 23.9% | iPad Update Ruined Reels. Tiny, unchangeable aspect ratio that hovers over the search page? Horrible UI and experience. Half the time they don’t even load and it’s just a black screen. |
-| ipad | 35 | 18.6% | iPad Update Ruined Reels. Tiny, unchangeable aspect ratio that hovers over the search page? Horrible UI and experience. Half the time they don’t even load and it’s just a black screen. |
-| account | 34 | 18.1% | …hilds app. Everything thats even a bit edgy gets flagged and your account is shadow banned. It doesnt even have to include any explicit material. Stupid af, it fell off hard. Same think with Diktok. |
-| screen | 30 | 16.0% | iPad Update Ruined Reels. Tiny, unchangeable aspect ratio that hovers over the search page? Horrible UI and experience. Half the time they don’t even load and it’s just a black screen. |
-| video | 29 | 15.4% | …wnloaded it the saved stuff keeps popping up every time I saved a video and it’s starting to get annoying please can you fix it |
-| posts | 25 | 13.3% | …smaller screen. Please fix. Also, please add a tab that separates posts from reels from profiles we follow. Sometimes seeing too many reels back to back is overstimulating |
-| full screen | 16 | 8.5% | …display of reels. Why did Instagram change display of reels from full screen to cropped square display? I guess they’re testing methods to keep people from doom-scrolling, because now I don’t want to |
-| reason | 18 | 9.6% | This app sucks. You keep getting suspended for no reason There are weird people stalking and follow you People get into your accounts |
-| ai | 14 | 7.4% | AI and Ads. ENOUGH ITS UNUSABLE |
-| window | 14 | 7.4% | New ui is bad. Modal window views of post is glitchy and annoying. Revert revert revert |
-| content | 13 | 6.9% | …rience. It is an awful, poorly optimized design change that makes content impossible to look at comfortably and smaller. Because of this terrible layout, I have officially stopped using the app |
-| small | 13 | 6.9% | …cant Improvement. I hate how on the iPad now, the reels open in a small, screen when I click on them. Before, it would full screen. Not the reels get cut off in the smaller screen. Please fix. Also, p |
-| square | 13 | 6.9% | Latest update is awful. The latest update for iPad is terrible, opened reels in a tiny square aspect and ruins the whole experience. This needs to be fixed asap |
-| platform | 12 | 6.4% | …ut that is the trap. They make it difficult to keep people on the platform for their shareholders to profit from. Look for alternatives asap |
-| change | 12 | 6.4% | Fix the display of reels. Why did Instagram change display of reels from full screen to cropped square display? I guess they’re testing methods to keep people from doom-scrolling, because now I don’t |
+| elections | 69 | 27.0% | Tried to intervene in my country’s democracy. This app is vicious. Clearly tried to block posts from candidates in my country in the middle of the elections. But we have won in the end. |
+| meta | 63 | 24.6% | …OUNT. Instagram used to be a perfect app and every since they had meta ai accounts been getting banned a lot for no reason. I contact them plenty of times and still aint get my accounts back im offici |
+| ai | 55 | 21.5% | Ai suggested search is a privacy invasion. The ai suggested search under a reel now shows the location which reduces privacy. There is no way to turn it off and I don’t want everyone knowing my potent |
+| interfering | 52 | 20.3% | interfering with elections. they’re interfering with the brazilian elections, they’re suspending american accounts that protest the current government, and they enforce the unethical use of ai onto ev |
+| está interferindo | 35 | 13.7% | Anti democracia. o instagram está interferindo nas eleições do Brasil |
+| account | 44 | 17.2% | 🫩. It doesn’t let me create an account, when ever I one, they suspend it. Without doing anything wrong |
+| brazil | 38 | 14.8% | …layed an inappropriate role in shaping political discourse during Brazil's 2026 presidential election. The company should provide more transparency about how political content is promoted, restricted, |
+| country | 32 | 12.5% | Tried to intervene in my country’s democracy. This app is vicious. Clearly tried to block posts from candidates in my country in the middle of the elections. But we have won in the end. |
+| democracy | 30 | 11.7% | Tried to intervene in my country’s democracy. This app is vicious. Clearly tried to block posts from candidates in my country in the middle of the elections. But we have won in the end. |
+| meu país | 23 | 9.0% | not good. está interferindo no processo eleitoral do meu país e prejudicando a democracia ****** is interfering in my country’s electoral process and harming democracy |
+| está interferindo nas | 18 | 7.0% | Anti democracia. o instagram está interferindo nas eleições do Brasil |
+| democracia | 28 | 10.9% | Anti democracia. o instagram está interferindo nas eleições do Brasil |
+| processo eleitoral | 20 | 7.8% | not good. está interferindo no processo eleitoral do meu país e prejudicando a democracia ****** is interfering in my country’s electoral process and harming democracy |
+| content | 25 | 9.8% | …d on friday with little reason besides a link to policy on sexual content. my two posts are a selfie and the ocean. its been 3 days since i same-day appealed it and im still waiting for it to be revie |
+| interference | 22 | 8.6% | Shameful election interference. Meta gave ample advantages for a candidate in the Brazilian elections of 2026, their candidate didn’t succeed, now they have a whole country on the fence of using Meta’ |
 
 **Sample quotes**
 
-> ★ **iPad Update Ruined Reels** — Tiny, unchangeable aspect ratio that hovers over the search page? Horrible UI and experience. Half the time they don’t even load and it’s just a black screen. _(v450.1.0, us, 2026-10-09)_
+> ★ **🫩** — It doesn’t let me create an account, when ever I one, they suspend it. Without doing anything wrong _(v452.0.0, us, 2026-10-25)_
 >
-> ★ **Latest update is awful** — The latest update for iPad is terrible, opened reels in a tiny square aspect and ruins the whole experience. This needs to be fixed asap _(v450.1.0, us, 2026-10-09)_
+> ★★ **Duo optimization only** — I hope that what has been put out isn’t the final optimization for instagram on the duo. The bar on the right side of the screen is terrible and when opened in horizontal mode there’s so much wasted space. _(v453.0, us, 2026-10-26)_
 >
-> ★ **Fix the display of reels** — Why did Instagram change display of reels from full screen to cropped square display? I guess they’re testing methods to keep people from doom-scrolling, because now I don’t want to use Instagram anymore. Well done! _(v450.1.0, us, 2026-10-09)_
+> ★ **Ai suggested search is a privacy invasion** — The ai suggested search under a reel now shows the location which reduces privacy. There is no way to turn it off and I don’t want everyone knowing my potential location. _(v452.0.0, us, 2026-10-26)_
 >
-> ★★★★★ **Best app** — codes_gotthekeys followed me I will follow back instantly and let’s grow anyone that see this please help me get followers _(v450.1.0, us, 2026-10-10)_
+> ★★★★★ **Adding More Profile Pictures** — why did you delete this feature?? it is the best thing ever. please add it back. im begging _(v453.0, us, 2026-10-26)_
 >
-> ★★★★ **I’m irritated** — I have not gotten instants or any updates of the new updates and half the time I’m straight up just not able to repost 🫩🫩 _(v450.1.0, us, 2026-10-10)_
+> ★★★★★ **Thankful , Thank You Guys** — I just think it’s a lifestyle ya know !! & if you treat it right it will in due time adapt & it’s your world whatever you put your mind to it comes to life Instagram been apart of a lot of journeys thanks for the support and memories and love _(v453.0, us, 2026-10-26)_
 >
-> ★★★★ **Glitchy** — I wish The Gram would fix some of the glitches on the REELS section, and be more open to fixing fraud! _(v450.1.0, us, 2026-10-10)_
+> ★★★★★ **Great website.** — I really enjoy Instagram, connect humanity in a way that we could’ve never dreamed _(v452.0.0, us, 2026-10-25)_
 >
 
 <details><summary>Raw response</summary>
@@ -1360,228 +1330,240 @@ Store rating: **4.69** over 29,583,259 ratings · Sample average: **2.42**
     "developer": "Instagram, Inc.",
     "genre": "Photo & Video",
     "averageRating": 4.69,
-    "ratingCount": 29583259,
-    "version": "450.1.0",
-    "currentVersionReleaseDate": "2026-10-06T12:29:07Z",
+    "ratingCount": 29644344,
+    "version": "453.0",
+    "currentVersionReleaseDate": "2026-10-26T12:40:24Z",
     "url": "https://apps.apple.com/us/app/instagram/id389801252"
   },
   "store": "apple",
   "sample": {
     "reviews": 300,
-    "negativeReviews": 188,
-    "positiveReviews": 95,
+    "negativeReviews": 256,
+    "positiveReviews": 34,
     "pagesFetched": 6,
+    "emptyPages": 0,
     "byCountry": {
       "us": 150,
       "gb": 150
     },
     "dateRange": {
-      "from": "2026-09-26T13:04:44-07:00",
-      "to": "2026-10-10T09:26:18-07:00"
+      "from": "2026-10-24T00:34:31-07:00",
+      "to": "2026-10-26T06:57:04-07:00"
     },
     "note": "Sample = most recent written reviews from Apple's RSS feed; it is not the full store rating population."
   },
   "ratingDistribution": {
     "counts": {
-      "1": 168,
-      "2": 20,
-      "3": 17,
-      "4": 9,
-      "5": 86
+      "1": 244,
+      "2": 12,
+      "3": 10,
+      "4": 1,
+      "5": 33
     },
     "percent": {
-      "1": 56,
-      "2": 6.7,
-      "3": 5.7,
-      "4": 3,
-      "5": 28.7
+      "1": 81.3,
+      "2": 4,
+      "3": 3.3,
+      "4": 0.3,
+      "5": 11
     },
-    "average": 2.42,
+    "average": 1.56,
     "total": 300
   },
   "storeRating": {
     "averageRating": 4.69,
-    "ratingCount": 29583259
+    "ratingCount": 29644344
   },
   "ratingByVersion": [
     {
-      "version": "450.1.0",
-      "reviews": 210,
-      "averageRating": 2.17,
-      "negativeShare": 0.695,
-      "firstSeen": "2026-10-06T06:12:33-07:00",
-      "lastSeen": "2026-10-10T09:26:18-07:00"
-    },
-    {
-      "version": "450.0.0",
-      "reviews": 4,
-      "averageRating": 3.25,
+      "version": "453.0",
+      "reviews": 8,
+      "averageRating": 3.13,
       "negativeShare": 0.5,
-      "firstSeen": "2026-10-05T08:25:42-07:00",
-      "lastSeen": "2026-10-06T03:52:26-07:00"
+      "firstSeen": "2026-10-26T05:53:28-07:00",
+      "lastSeen": "2026-10-26T06:57:04-07:00"
     },
     {
-      "version": "449.0.0",
-      "reviews": 21,
-      "averageRating": 3.57,
-      "negativeShare": 0.286,
-      "firstSeen": "2026-10-02T22:09:28-07:00",
-      "lastSeen": "2026-10-05T03:46:08-07:00"
+      "version": "452.0.0",
+      "reviews": 291,
+      "averageRating": 1.52,
+      "negativeShare": 0.863,
+      "firstSeen": "2026-10-24T00:34:31-07:00",
+      "lastSeen": "2026-10-26T06:26:27-07:00"
     },
     {
-      "version": "448.0.0",
-      "reviews": 65,
-      "averageRating": 2.8,
-      "negativeShare": 0.523,
-      "firstSeen": "2026-09-26T13:04:44-07:00",
-      "lastSeen": "2026-10-02T12:39:54-07:00"
+      "version": "410.1.0",
+      "reviews": 1,
+      "averageRating": 1,
+      "negativeShare": 1,
+      "firstSeen": "2026-10-25T12:04:56-07:00",
+      "lastSeen": "2026-10-25T12:04:56-07:00"
     }
   ],
   "versionDeltas": {
     "basis": "version",
     "latest": {
-      "label": "450.1.0",
+      "label": "453.0",
       "versions": [
-        "450.1.0"
+        "453.0"
       ],
-      "reviews": 210,
-      "negativeReviews": 146,
-      "averageRating": 2.17,
-      "negativeShare": 0.695,
+      "reviews": 8,
+      "negativeReviews": 4,
+      "averageRating": 3.13,
+      "negativeShare": 0.5,
       "dateRange": {
-        "from": "2026-10-06T06:12:33-07:00",
-        "to": "2026-10-10T09:26:18-07:00"
+        "from": "2026-10-26T05:53:28-07:00",
+        "to": "2026-10-26T06:57:04-07:00"
       }
     },
     "previous": {
-      "label": "previous versions 448.0.0–450.0.0",
+      "label": "previous version 452.0.0",
       "versions": [
-        "450.0.0",
-        "449.0.0",
-        "448.0.0"
+        "452.0.0"
       ],
-      "reviews": 90,
-      "negativeReviews": 42,
-      "averageRating": 3,
-      "negativeShare": 0.467,
+      "reviews": 291,
+      "negativeReviews": 251,
+      "averageRating": 1.52,
+      "negativeShare": 0.863,
       "dateRange": {
-        "from": "2026-09-26T13:04:44-07:00",
-        "to": "2026-10-06T03:52:26-07:00"
+        "from": "2026-10-24T00:34:31-07:00",
+        "to": "2026-10-26T06:26:27-07:00"
       }
     },
     "change": {
-      "averageRating": -0.83,
-      "negativeShare": 0.228
+      "averageRating": 1.61,
+      "negativeShare": -0.363
     },
-    "whatGotWorse": [
+    "whatGotWorse": [],
+    "whatImproved": [
       {
-        "phrase": "ipad",
-        "status": "new",
-        "latestShare": 0.24,
-        "previousShare": 0,
-        "change": 0.24,
-        "latestReviews": 35,
-        "previousReviews": 0,
-        "examples": [
-          {
-            "rating": 1,
-            "title": "iPad Update Ruined Reels",
-            "text": "iPad Update Ruined Reels. Tiny, unchangeable aspect ratio that hovers over the search page? Horrible UI and experience. Half the time they don’t even load and it’s just a black screen.",
-            "author": "Sad iPad User lol",
-            "version": "450.1.0",
-            "date": "2026-10-09T13:38:21-07:00",
-            "country": "us"
-          },
-          {
-            "rating": 1,
-            "title": "Latest update is awful",
-            "text": "Latest update is awful. The latest update for iPad is terrible, opened reels in a tiny square aspect and ruins the whole experience. This needs to be fixed asap",
-            "author": "Allupinyuhmc79",
-            "version": "450.1.0",
-            "date": "2026-10-09T10:16:01-07:00",
-            "country": "us"
-          }
-        ]
+        "phrase": "elections",
+        "status": "gone",
+        "latestShare": 0,
+        "previousShare": 0.275,
+        "change": -0.275,
+        "latestReviews": 0,
+        "previousReviews": 69
       },
       {
-        "phrase
-… (truncated, 16126 more chars — see transcript.json)
+        "phrase": "meta",
+        "status": "gone",
+        "latestShare": 0,
+        "previousShare": 0.251,
+        "change": -0.251,
+        "latestReviews": 0,
+        "previousReviews": 63
+      },
+      {
+        "phrase": "ai",
+        "status": "gone",
+        "latestShare": 0,
+        "previousShare": 0.219,
+        "change": -0.219,
+        "latestReviews": 0,
+        "previousReviews": 55
+      },
+      {
+        "phrase": "interfering",
+        "status": "gone",
+        "latestShare": 0,
+        "previousShare": 0.207,
+        "change": -0.207,
+        "latestReviews": 0,
+        "previousReviews": 52
+      },
+      {
+        "phrase": "account",
+        "status": "gone",
+        "latestShare": 0,
+        "previousShare": 0.175,
+        "change": -0.175,
+        "latestReviews": 0,
+        "previousReviews": 44
+      }
+    ],
+    "confidence": "low",
+    "summary": "Version 453.0 (8 reviews) average 3.13★ vs 1.52★ for previous version 452.0.0 (291 reviews), +1.61; negative share 50% vs 86.3% (−36.3 pp). No complaint phrase rose by 3+ percentage points. Low confidence: few negative reviews in one of the periods.",
+    "notes": []
+  },
+
+… (truncated, 6818 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `review_insights` 
 
-Arguments: `{"app_id":"com.instagram.android","pages":6,"quotes":2}` · 751 ms
+Arguments: `{"app_id":"com.instagram.android","pages":6,"quotes":2}` · 624 ms
 
-**Instagram** (com.instagram.android, google) — sample of 300 recent reviews {"us":300}, 2026-10-08 → 2026-10-08
+**Instagram** (com.instagram.android, google) — sample of 300 recent reviews {"us":300}, 2026-10-13 → 2026-10-14
 
-Store rating: **3.99** over 169,625,581 ratings · Sample average: **4.02**
+Store rating: **3.99** over 169,486,506 ratings · Sample average: **3.74**
 
 | ★ | count | % |
 |---|---|---|
-| 5 | 202 | 67.3% |
-| 4 | 21 | 7% |
-| 3 | 11 | 3.7% |
-| 2 | 13 | 4.3% |
-| 1 | 53 | 17.7% |
+| 5 | 181 | 60.3% |
+| 4 | 23 | 7.7% |
+| 3 | 7 | 2.3% |
+| 2 | 14 | 4.7% |
+| 1 | 75 | 25% |
 
 **Average rating by version (newest first)**
 
 | version | reviews | avg | % negative |
 |---|---|---|---|
-| 451.0.0.0.64 | 1 | 1 | 100.0% |
-| 450.0.0.50.77 | 88 | 3.73 | 29.5% |
-| 449.0.0.52.84 | 37 | 4.3 | 13.5% |
-| 448.0.0.52.84 | 16 | 4.31 | 12.5% |
-| 447.0.0.55.81 | 8 | 4.75 | 0.0% |
-| 446.0.0.49.77 | 8 | 4.5 | 12.5% |
-| 445.0.0.45.83 | 4 | 5 | 0.0% |
-| 444.0.0.46.85 | 5 | 3.2 | 40.0% |
+| 452.0.0.0.31 | 1 | 4 | 0.0% |
+| 451.0.0.53.80 | 43 | 3.05 | 48.8% |
+| 451.0.0.41.80 | 1 | 5 | 0.0% |
+| 450.0.0.50.77 | 95 | 3.72 | 29.5% |
+| 449.0.0.52.84 | 13 | 4.23 | 7.7% |
+| 448.0.0.52.84 | 9 | 4.56 | 11.1% |
+| 447.0.0.55.81 | 3 | 4.67 | 0.0% |
+| 446.0.0.49.77 | 1 | 1 | 100.0% |
 
-**What changed (basis: version, confidence: low)** — Version 450.0.0.50.77 and newer (89 reviews) average 3.70★ vs 4.30★ for previous version 449.0.0.52.84 (37 reviews), −0.60; negative share 30.3% vs 13.5% (+16.8 pp). Rising complaints: "post" (new, 14.8% of negative reviews), "request" (new, 11.1% of negative reviews), "suspended" (new, 11.1% of negative reviews). Low confidence: few negative reviews in one of the periods.
+**What changed (basis: version, confidence: medium)** — Version 451.0.0.53.80 and newer (44 reviews) average 3.07★ vs 3.73★ for previous versions 450.0.0.50.77–451.0.0.41.80 (96 reviews), −0.66; negative share 47.7% vs 29.2% (+18.5 pp). Rising complaints: "account" (+36.9 pp, 61.9% of negative reviews), "suspended" (+29.8 pp, 33.3% of negative reviews), "wrong" (new, 14.3% of negative reviews).
 
 
 | rising complaint | status | latest share | previous share | change | example |
 |---|---|---|---|---|---|
-| post | new | 14.8% | 0.0% | +14.8 pp | …onsistently upheld Instagram’s Community Standards. The content I post consists solely of personal life updates, which are cross-posted to Facebook without any violations or policy warnings. ​I reques |
-| request | new | 11.1% | 0.0% | +11.1 pp | …ear problem sir okay time is 12:25 this today evening or tomorrow request the account give me sir thank you 🥲 |
-| suspended | new | 11.1% | 0.0% | +11.1 pp | …s it suspends my account without any reason.in 4 5 days instagram suspended my 4 ID's without any valid reason however I am following all the guidelines and community terms and conditions. very bad. t |
-| video | new | 11.1% | 0.0% | +11.1 pp | Device banned my iQOO phone for 2 months. Video selfie done. All help forms removed. @moolchandkumar123 Meta AI bot useless. Fix IMEI blacklist. |
-| community | new | 11.1% | 0.0% | +11.1 pp | …ut any valid reason however I am following all the guidelines and community terms and conditions. very bad. thing is this |
-| disabled | new | 11.1% | 0.0% | +11.1 pp | Instagram just disabled my account, and honestly, it hurts so much. I put a lot of time and effort into building that account, making it look good, and creating so many memories there. It wasn't just |
-| bugs | new | 7.4% | 0.0% | +7.4 pp | has a lot of bugs |
-| name | new | 7.4% | 0.0% | +7.4 pp | My account has deactivated please reactivate it soon id name (mr_classy____07) |
+| account | increased | 61.9% | 25.0% | +36.9 pp | …persistent issue using it on my phone. Every time I create a new account, it gets banned for no apparent reason. Recently, when I tried editing my profile to switch to a business account so I could p |
+| suspended | increased | 33.3% | 3.6% | +29.8 pp | …cing major technical issues with Instagram lately. My account was suspended 2 days before, and while I attempted to appeal the decision, I now I'm completely locked out. Even the 'forgotten password' |
+| wrong | new | 14.3% | 0.0% | +14.3 pp | …account was suspended without any clear explanation of what I did wrong. My account was restored once, but it was suspended again within just a few hours. I have not violated any Community Standards o |
+| reason | increased | 23.8% | 10.7% | +13.1 pp | For some reason, drains 40%+ of my battery with 1hr 14m of usage on a new Pixel 10 Pro. Absurd. |
+| support | increased | 14.3% | 3.6% | +10.7 pp | horrible customer support i try to go get my old account back cause I got locked out of my account cause I don't have access to my authenticator app so I go to support and it's freaking Ai trying to h |
+| request | increased | 14.3% | 3.6% | +10.7 pp | …he instragram guide line but instragram suspended my accountso my request is if your ai or team is not working properly then please supervise it thanks !! 😤 |
+| major technical issue | new | 9.5% | 0.0% | +9.5 pp | i am having a major technical issue from Instagram. you have been suspending my accounts without any reason. i simply just talk share reels with my friends and the next day i find out my id is suspend |
+| kar diya gaya | new | 9.5% | 0.0% | +9.5 pp | meri dushri id band kar diya gaya hai jo mey 6 sal purana id thA |
 
-**Top complaint keywords (1–2★, n=66)**
+**Top complaint keywords (1–2★, n=89)**
 
 | phrase | reviews | share | example |
 |---|---|---|---|
-| account | 23 | 34.8% | ❗️❗️instagram became a bad app for me I can't log into my account it's why? I don't know they just wrote we disabled your account what's fault,I'm just wanted to clear my account from a human who i wa |
-| suspended | 10 | 15.2% | …s it suspends my account without any reason.in 4 5 days instagram suspended my 4 ID's without any valid reason however I am following all the guidelines and community terms and conditions. very bad. t |
-| suspend | 7 | 10.6% | my account many time suspend please take action and slove my issue |
-| disabled | 6 | 9.1% | …n't log into my account it's why? I don't know they just wrote we disabled your account what's fault,I'm just wanted to clear my account from a human who i wanted to unfollow that is i unfollowed,inst |
-| reason | 6 | 9.1% | …lication. every two three days it suspends my account without any reason.in 4 5 days instagram suspended my 4 ID's without any valid reason however I am following all the guidelines and community term |
-| issue | 5 | 7.6% | …and gives me a chance to get it back. Please report/ review this issue because I don't want to lose everything I worked so hard for. harsh_jhanginiya11 |
-| years | 5 | 7.6% | …in sudden action without proper verification. An account can hold years of memories, photos, and personal effort. Please ensure a fair review to identify who is actually at fault and protect genuine u |
-| users | 5 | 7.6% | …r review to identify who is actually at fault and protect genuine users from wrongful suspension or deletion. |
-| meta | 5 | 7.6% | Device banned my iQOO phone for 2 months. Video selfie done. All help forms removed. @moolchandkumar123 Meta AI bot useless. Fix IMEI blacklist. |
-| post | 4 | 6.1% | …onsistently upheld Instagram’s Community Standards. The content I post consists solely of personal life updates, which are cross-posted to Facebook without any violations or policy warnings. ​I reques |
-| request | 4 | 6.1% | …-posted to Facebook without any violations or policy warnings. ​I request a manual review by an actual human specialist. An authentic check of my posts. |
-| action | 4 | 6.1% | my account many time suspend please take action and slove my issue |
-| problem | 4 | 6.1% | …account sir and very important work and family or friend s shear problem sir okay time is 12:25 this today evening or tomorrow request the account give me sir thank you 🥲 |
-| ai | 4 | 6.1% | bad app they disable my all id's and if this is their service when i haven't did anything wrong still banning my id they should change it there is huge glitch in their AI!!!!! i'm very disappointed😡 |
-| community guidelines | 3 | 4.5% | …ch not sharing anything that violets instagram privacy policy and community guidelines,but this stupid system sending me restriction in every 2 days. My previous account was suspended and i create a n |
+| account | 28 | 31.5% | Instagram epitomizes the dead internet theory - I made a new account and yet everything I see on the feed/reels is rehashed content I've already seen numerous times originally posted months ago. The a |
+| reason | 14 | 15.7% | …Every time I create a new account, it gets banned for no apparent reason. Recently, when I tried editing my profile to switch to a business account so I could promote my business online, the account w |
+| suspended | 13 | 14.6% | …t so I could promote my business online, the account was suddenly suspended just for making edits. This has happened multiple times now, and I really hope the developers can look into this and fix it. |
+| banned | 7 | 7.9% | …using it on my phone. Every time I create a new account, it gets banned for no apparent reason. Recently, when I tried editing my profile to switch to a business account so I could promote my busines |
+| community guidelines | 5 | 5.6% | …pologize for any mistake and I am willing to follow all Instagram Community Guidelines and Terms of Use going forward. This account is important to me, and I kindly request you to review my account an |
+| reels | 6 | 6.7% | …heory - I made a new account and yet everything I see on the feed/reels is rehashed content I've already seen numerous times originally posted months ago. The algorithm is ridiculously lazy too. It's |
+| request | 6 | 6.7% | …,887 My Instagram account has been suspended, and I would like to request a manual review of my account. I understand that I may have violated one or more of Instagram's rules unintentionally. I since |
+| disabled | 6 | 6.7% | …tting a video selfie for verification, my account was permanently disabled, and I was told I could not request another review. |
+| email | 5 | 5.6% | …r did anything wrong. and if u can make up hers my id mayank29_13 email-mayank2937383 |
+| support | 5 | 5.6% | Hello Instagram Support, 4,887 My Instagram account has been suspended, and I would like to request a manual review of my account. I understand that I may have violated one or more of Instagram's rule |
+| kar | 5 | 5.6% | bina matlab ke id suspend kar raha |
+| violated | 5 | 5.6% | …quest a manual review of my account. I understand that I may have violated one or more of Instagram's rules unintentionally. I sincerely apologize for any mistake and I am willing to follow all Instag |
+| wrong | 5 | 5.6% | …it then ig i should stop using Instagram cuz I never did anything wrong. and if u can make up hers my id mayank29_13 email-mayank2937383 |
+| hai | 4 | 4.5% | Instagram bahot hi badhiya aap hai mera fevret aap hai Instagram bahot badhiya 🙋😘😘 |
+| suspend | 4 | 4.5% | bina matlab ke id suspend kar raha |
 
 **Sample quotes**
 
-> ★ ❗️❗️instagram became a bad app for me I can't log into my account it's why? I don't know they just wrote we disabled your account what's fault,I'm just wanted to clear my account from a human who i wanted to unfollow that is i unfollowed,instagram disabled my account there's no… _(v444.0.0.46.85, us, 2026-10-08)_
+> ★ Instagram epitomizes the dead internet theory - I made a new account and yet everything I see on the feed/reels is rehashed content I've already seen numerous times originally posted months ago. The algorithm is ridiculously lazy too. It's not refreshing, it's far from "SOCIAL… _(v450.0.0.50.77, us, 2026-10-14)_
 >
-> ★ Instagram just disabled my account, and honestly, it hurts so much. I put a lot of time and effort into building that account, making it look good, and creating so many memories there. It wasn't just an account to me-it had so many moments, photos conversations, and memories… _(v450.0.0.50.77, us, 2026-10-08)_
+> ★ BRING BACK SQUARE GRIDS. 2x speed thing or make it so sliding back up undoes it because I always slide down to get my thumb out the way of the reel. IG should store a list of pinned messages the way it does with links or media. I can't read the reels if I can't hold down to… _(v450.0.0.50.77, us, 2026-10-13)_
 >
-> ★★★★★ Instagram is one of the best social media platforms out there! It is user-friendly, visually appealing, and constantly evolving with interesting features. I love Stories, Reels and IGTV options for sharing content. Also, the explore page helps me discover new and interesting… _(v440.0.0.46.86, us, 2026-10-08)_
+> ★★★★★ my insta id delete kiya to voh vapis do jald My Instagram account has been suspended, and I would like to request a manual review of my account. I understand that I may have violated one or more of Instagram’s rules unintentionally. I sincerely apologize for any mistake and I… _(v450.0.0.50.77, us, 2026-10-14)_
 >
-> ★★★★★ mera I'd bina koi reason ke saspend kar diya gya hai to please mera I'd recover kar do I'd name x4_Shakib_69 _(v450.0.0.50.77, us, 2026-10-08)_
+> ★★★★★ Dear Instagram Team, my account (mr.x.harshit008) has been deactivated. I believe this is a mistake as I have always followed all community guidelines and terms of service. I request you to please review my account and reactivate it as soon as possible. Thank you for your time… _(v?, us, 2026-10-14)_
 >
 
 <details><summary>Raw response</summary>
@@ -1594,183 +1576,184 @@ Store rating: **3.99** over 169,625,581 ratings · Sample average: **4.02**
     "developer": "Instagram",
     "genre": "Social",
     "averageRating": 3.99,
-    "ratingCount": 169625581,
+    "ratingCount": 169486506,
     "version": null,
-    "currentVersionReleaseDate": "2026-10-05T12:58:25.000Z",
+    "currentVersionReleaseDate": "2026-10-26T16:50:51.000Z",
     "installs": "5,000,000,000+",
     "url": "https://play.google.com/store/apps/details?id=com.instagram.android"
   },
   "store": "google",
   "sample": {
     "reviews": 300,
-    "negativeReviews": 66,
-    "positiveReviews": 223,
+    "negativeReviews": 89,
+    "positiveReviews": 204,
     "pagesFetched": 6,
     "byCountry": {
       "us": 300
     },
     "dateRange": {
-      "from": "2026-10-08T04:31:32.000Z",
-      "to": "2026-10-08T07:10:02.000Z"
+      "from": "2026-10-13T18:40:27.000Z",
+      "to": "2026-10-14T01:24:05.000Z"
     },
     "note": "Sample = most recent written reviews from Google Play in the requested language; it is not the full store rating population."
   },
   "ratingDistribution": {
     "counts": {
-      "1": 53,
-      "2": 13,
-      "3": 11,
-      "4": 21,
-      "5": 202
+      "1": 75,
+      "2": 14,
+      "3": 7,
+      "4": 23,
+      "5": 181
     },
     "percent": {
-      "1": 17.7,
-      "2": 4.3,
-      "3": 3.7,
-      "4": 7,
-      "5": 67.3
+      "1": 25,
+      "2": 4.7,
+      "3": 2.3,
+      "4": 7.7,
+      "5": 60.3
     },
-    "average": 4.02,
+    "average": 3.74,
     "total": 300
   },
   "storeRating": {
     "averageRating": 3.99,
-    "ratingCount": 169625581
+    "ratingCount": 169486506
   },
   "ratingByVersion": [
     {
-      "version": "451.0.0.0.64",
+      "version": "452.0.0.0.31",
       "reviews": 1,
-      "averageRating": 1,
-      "negativeShare": 1,
-      "firstSeen": "2026-10-08T05:13:08.000Z",
-      "lastSeen": "2026-10-08T05:13:08.000Z"
+      "averageRating": 4,
+      "negativeShare": 0,
+      "firstSeen": "2026-10-13T22:12:23.000Z",
+      "lastSeen": "2026-10-13T22:12:23.000Z"
+    },
+    {
+      "version": "451.0.0.53.80",
+      "reviews": 43,
+      "averageRating": 3.05,
+      "negativeShare": 0.488,
+      "firstSeen": "2026-10-13T18:42:49.000Z",
+      "lastSeen": "2026-10-14T01:18:42.000Z"
+    },
+    {
+      "version": "451.0.0.41.80",
+      "reviews": 1,
+      "averageRating": 5,
+      "negativeShare": 0,
+      "firstSeen": "2026-10-13T20:47:00.000Z",
+      "lastSeen": "2026-10-13T20:47:00.000Z"
     },
     {
       "version": "450.0.0.50.77",
-      "reviews": 88,
-      "averageRating": 3.73,
+      "reviews": 95,
+      "averageRating": 3.72,
       "negativeShare": 0.295,
-      "firstSeen": "2026-10-08T04:34:01.000Z",
-      "lastSeen": "2026-10-08T07:10:02.000Z"
+      "firstSeen": "2026-10-13T18:40:27.000Z",
+      "lastSeen": "2026-10-14T01:24:05.000Z"
     },
     {
       "version": "449.0.0.52.84",
-      "reviews": 37,
-      "averageRating": 4.3,
-      "negativeShare": 0.135,
-      "firstSeen": "2026-10-08T04:34:27.000Z",
-      "lastSeen": "2026-10-08T07:06:57.000Z"
+      "reviews": 13,
+      "averageRating": 4.23,
+      "negativeShare": 0.077,
+      "firstSeen": "2026-10-13T18:57:44.000Z",
+      "lastSeen": "2026-10-14T01:23:42.000Z"
     },
     {
       "version": "448.0.0.52.84",
-      "reviews": 16,
-      "averageRating": 4.31,
-      "negativeShare": 0.125,
-      "firstSeen": "2026-10-08T04:46:03.000Z",
-      "lastSeen": "2026-10-08T07:04:01.000Z"
+      "reviews": 9,
+      "averageRating": 4.56,
+      "negativeShare": 0.111,
+      "firstSeen": "2026-10-13T18:41:44.000Z",
+      "lastSeen": "2026-10-14T01:15:00.000Z"
     },
     {
       "version": "447.0.0.55.81",
-      "reviews": 8,
-      "averageRating": 4.75,
+      "reviews": 3,
+      "averageRating": 4.67,
       "negativeShare": 0,
-      "firstSeen": "2026-10-08T04:35:02.000Z",
-      "lastSeen": "2026-10-08T07:07:30.000Z"
+      "firstSeen": "2026-10-13T19:26:59.000Z",
+      "lastSeen": "2026-10-13T23:23:03.000Z"
     },
     {
       "version": "446.0.0.49.77",
-      "reviews": 8,
-      "averageRating": 4.5,
-      "negativeShare": 0.125,
-      "firstSeen": "2026-10-08T04:33:09.000Z",
-      "lastSeen": "2026-10-08T06:09:02.000Z"
+      "reviews": 1,
+      "averageRating": 1,
+      "negativeShare": 1,
+      "firstSeen": "2026-10-13T23:57:52.000Z",
+      "lastSeen": "2026-10-13T23:57:52.000Z"
     },
     {
       "version": "445.0.0.45.83",
-      "reviews": 4,
+      "reviews": 3,
       "averageRating": 5,
       "negativeShare": 0,
-      "firstSeen": "2026-10-08T05:27:52.000Z",
-      "lastSeen": "2026-10-08T06:57:15.000Z"
+      "firstSeen": "2026-10-13T18:54:18.000Z",
+      "lastSeen": "2026-10-14T00:17:43.000Z"
     },
     {
       "version": "444.0.0.46.85",
-      "reviews": 5,
-      "averageRating": 3.2,
-      "negativeShare": 0.4,
-      "firstSeen": "2026-10-08T04:36:55.000Z",
-      "lastSeen": "2026-10-08T06:53:43.000Z"
+      "reviews": 1,
+      "averageRating": 5,
+      "negativeShare": 0,
+      "firstSeen": "2026-10-13T23:36:09.000Z",
+      "lastSeen": "2026-10-13T23:36:09.000Z"
     },
     {
       "version": "443.0.0.48.82",
-      "reviews": 5,
-      "averageRating": 3.4,
-      "negativeShare": 0.4,
-      "firstSeen": "2026-10-08T04:34:56.000Z",
-      "lastSeen": "2026-10-08T07:07:00.000Z"
+      "reviews": 1,
+      "averageRating": 4,
+      "negativeShare": 0,
+      "firstSeen": "2026-10-13T18:57:30.000Z",
+      "lastSeen": "2026-10-13T18:57:30.000Z"
     },
     {
       "version": "442.0.0.46.79",
-      "reviews": 3,
-      "averageRating": 3.67,
-      "negativeShare": 0.333,
-      "firstSeen": "2026-10-08T04:55:14.000Z",
-      "lastSeen": "2026-10-08T07:01:34.000Z"
+      "reviews": 1,
+      "averageRating": 5,
+      "negativeShare": 0,
+      "firstSeen": "2026-10-13T19:57:27.000Z",
+      "lastSeen": "2026-10-13T19:57:27.000Z"
     },
     {
       "version": "441.0.0.43.81",
-      "reviews": 2,
-      "averageRating": 3.5,
-      "negativeShare": 0.5,
-      "firstSeen": "2026-10-08T05:28:49.000Z",
-      "lastSeen": "2026-10-08T07:09:35.000Z"
+      "reviews": 1,
+      "averageRating": 5,
+      "negativeShare": 0,
+      "firstSeen": "2026-10-13T23:29:08.000Z",
+      "lastSeen": "2026-10-13T23:29:08.000Z"
     },
     {
       "version": "440.1.0.46.86",
-      "reviews": 1,
-      "averageRating": 5,
-      "negativeShare": 0,
-      "firstSeen": "2026-10-08T06:09:17.000Z",
-      "lastSeen": "2026-10-08T06:09:17.000Z"
-    },
-    {
-      "version": "440.0.0.46.86",
-      "reviews": 1,
-      "averageRating": 5,
-      "negativeShare": 0,
-      "firstSeen": "2026-10-08T05:32:06.000Z",
-      "lastSeen": "2026-10-08T05:32:06.000Z"
-    },
-    {
-      "version": 
-… (truncated, 18002 more chars — see transcript.json)
+ 
+… (truncated, 19009 more chars — see transcript.json)
 ```
 
 </details>
 
 ### `compare_apps` 
 
-Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 27 ms
+Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 45 ms
 
 | metric | 284882215 (apple) | 389801252 (apple) |
 |---|---|---|
 | name | Facebook | Instagram |
 | developer | Meta Platforms, Inc. | Instagram, Inc. |
 | store rating | 4.53 | 4.69 |
-| store rating count | 28,709,088 | 29,583,259 |
+| store rating count | 28,928,101 | 29,644,344 |
 | installs | – | – |
-| current version | 582.0.0 | 450.1.0 |
-| released | 2026-10-07 | 2026-10-06 |
-| size (MB) | 489.7 | 594.3 |
+| current version | 584.1 | 453.0 |
+| released | 2026-10-23 | 2026-10-26 |
+| size (MB) | 504.8 | 640.6 |
 | recent sample | 100 | 100 |
-| recent avg | 3.02 | 2.07 |
-| % negative (1–2★) | 44.0% | 72.0% |
-| % positive (4–5★) | 46.0% | 25.0% |
-| latest version avg | 3.02 (582.0.0, n=100) | 2.07 (450.1.0, n=100) |
-| top complaints | ads, friends, post, account, feed | reels, ipad, video, screen, account |
+| recent avg | 3.12 | 2.1 |
+| % negative (1–2★) | 45.0% | 71.0% |
+| % positive (4–5★) | 49.0% | 24.0% |
+| latest version avg | 3.12 (584.1, n=100) | 2.86 (453.0, n=7) |
+| top complaints | ads, ai, post, account, help | ai, account, meta, opt, policy |
 
-**Leaders:** storeAverageRating: Instagram (4.69) · storeRatingCount: Instagram (29583259) · recentAverageRating: Facebook (3.02) · lowestRecentNegativeShare: Facebook (0.44) · latestVersionAverageRating: Facebook (3.02)
+**Leaders:** storeAverageRating: Instagram (4.69) · storeRatingCount: Instagram (29644344) · recentAverageRating: Facebook (3.12) · lowestRecentNegativeShare: Facebook (0.45) · latestVersionAverageRating: Facebook (3.12)
 
 <details><summary>Raw response</summary>
 
@@ -1787,53 +1770,53 @@ Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 2
       "genre": "Social Networking",
       "price": "Free",
       "storeAverageRating": 4.53,
-      "storeRatingCount": 28709088,
-      "currentVersion": "582.0.0",
-      "currentVersionReleaseDate": "2026-10-07T14:52:01Z",
-      "sizeMB": 489.7,
+      "storeRatingCount": 28928101,
+      "currentVersion": "584.1",
+      "currentVersionReleaseDate": "2026-10-23T09:58:23Z",
+      "sizeMB": 504.8,
       "recentReviewSample": 100,
-      "recentAverageRating": 3.02,
-      "recentNegativeShare": 0.44,
-      "recentPositiveShare": 0.46,
-      "latestVersion": "582.0.0",
-      "latestVersionAverageRating": 3.02,
+      "recentAverageRating": 3.12,
+      "recentNegativeShare": 0.45,
+      "recentPositiveShare": 0.49,
+      "latestVersion": "584.1",
+      "latestVersionAverageRating": 3.12,
       "latestVersionReviewCount": 100,
       "ratingDistribution": {
-        "1": 39,
+        "1": 40,
         "2": 5,
-        "3": 10,
-        "4": 7,
-        "5": 39
+        "3": 6,
+        "4": 1,
+        "5": 48
       },
       "reviewDateRange": {
-        "from": "2026-10-09T21:01:28-07:00",
-        "to": "2026-10-10T09:26:21-07:00"
+        "from": "2026-10-25T13:06:34-07:00",
+        "to": "2026-10-26T06:55:52-07:00"
       },
       "topComplaints": [
         {
           "phrase": "ads",
-          "reviews": 10,
-          "share": 0.227
+          "reviews": 9,
+          "share": 0.2
         },
         {
-          "phrase": "friends",
-          "reviews": 7,
-          "share": 0.159
+          "phrase": "ai",
+          "reviews": 5,
+          "share": 0.111
         },
         {
           "phrase": "post",
-          "reviews": 6,
-          "share": 0.136
+          "reviews": 4,
+          "share": 0.089
         },
         {
           "phrase": "account",
-          "reviews": 5,
-          "share": 0.114
+          "reviews": 4,
+          "share": 0.089
         },
         {
-          "phrase": "feed",
-          "reviews": 5,
-          "share": 0.114
+          "phrase": "help",
+          "reviews": 4,
+          "share": 0.089
         }
       ]
     },
@@ -1846,53 +1829,53 @@ Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 2
       "genre": "Photo & Video",
       "price": "Free",
       "storeAverageRating": 4.69,
-      "storeRatingCount": 29583259,
-      "currentVersion": "450.1.0",
-      "currentVersionReleaseDate": "2026-10-06T12:29:07Z",
-      "sizeMB": 594.3,
+      "storeRatingCount": 29644344,
+      "currentVersion": "453.0",
+      "currentVersionReleaseDate": "2026-10-26T12:40:24Z",
+      "sizeMB": 640.6,
       "recentReviewSample": 100,
-      "recentAverageRating": 2.07,
-      "recentNegativeShare": 0.72,
-      "recentPositiveShare": 0.25,
-      "latestVersion": "450.1.0",
-      "latestVersionAverageRating": 2.07,
-      "latestVersionReviewCount": 100,
+      "recentAverageRating": 2.1,
+      "recentNegativeShare": 0.71,
+      "recentPositiveShare": 0.24,
+      "latestVersion": "453.0",
+      "latestVersionAverageRating": 2.86,
+      "latestVersionReviewCount": 7,
       "ratingDistribution": {
-        "1": 68,
-        "2": 4,
-        "3": 3,
-        "4": 3,
-        "5": 22
+        "1": 66,
+        "2": 5,
+        "3": 5,
+        "4": 1,
+        "5": 23
       },
       "reviewDateRange": {
-        "from": "2026-10-09T16:48:51-07:00",
-        "to": "2026-10-10T09:26:18-07:00"
+        "from": "2026-10-25T13:57:29-07:00",
+        "to": "2026-10-26T06:57:04-07:00"
       },
       "topComplaints": [
         {
-          "phrase": "reels",
-          "reviews": 25,
-          "share": 0.347
-        },
-        {
-          "phrase": "ipad",
-          "reviews": 20,
-          "share": 0.278
-        },
-        {
-          "phrase": "video",
-          "reviews": 15,
-          "share": 0.208
-        },
-        {
-          "phrase": "screen",
-          "reviews": 14,
-          "share": 0.194
+          "phrase": "ai",
+          "reviews": 28,
+          "share": 0.394
         },
         {
           "phrase": "account",
-          "reviews": 8,
-          "share": 0.111
+          "reviews": 18,
+          "share": 0.254
+        },
+        {
+          "phrase": "meta",
+          "reviews": 17,
+          "share": 0.239
+        },
+        {
+          "phrase": "opt",
+          "reviews": 9,
+          "share": 0.127
+        },
+        {
+          "phrase": "policy",
+          "reviews": 7,
+          "share": 0.099
         }
       ]
     }
@@ -1908,25 +1891,25 @@ Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 2
       "id": "389801252",
       "store": "apple",
       "name": "Instagram",
-      "value": 29583259
+      "value": 29644344
     },
     "recentAverageRating": {
       "id": "284882215",
       "store": "apple",
       "name": "Facebook",
-      "value": 3.02
+      "value": 3.12
     },
     "lowestRecentNegativeShare": {
       "id": "284882215",
       "store": "apple",
       "name": "Facebook",
-      "value": 0.44
+      "value": 0.45
     },
     "latestVersionAverageRating": {
       "id": "284882215",
       "store": "apple",
       "name": "Facebook",
-      "value": 3.02
+      "value": 3.12
     }
   }
 }
@@ -1936,26 +1919,26 @@ Arguments: `{"app_ids":["284882215","389801252"],"country":"us","pages":2}` · 2
 
 ### `compare_apps` 
 
-Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 510 ms
+Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 261 ms
 
 | metric | 324684580 (apple) | com.spotify.music (google) |
 |---|---|---|
 | name | Spotify: Music and Podcasts | Spotify: Music and Podcasts |
 | developer | Spotify | Spotify AB |
 | store rating | 4.77 | 4.35 |
-| store rating count | 42,514,293 | 36,464,797 |
+| store rating count | 42,785,266 | 36,550,214 |
 | installs | – | 1,000,000,000+ |
-| current version | 9.1.90 | – |
-| released | 2026-10-08 | 2026-10-07 |
-| size (MB) | 293.8 | – |
+| current version | 9.1.94 | – |
+| released | 2026-10-23 | 2026-10-23 |
+| size (MB) | 310.1 | – |
 | recent sample | 50 | 50 |
-| recent avg | 4.18 | 3.86 |
-| % negative (1–2★) | 16.0% | 28.0% |
-| % positive (4–5★) | 78.0% | 70.0% |
-| latest version avg | 4.18 (9.1.90, n=50) | 3.77 (9.1.90.2270, n=26) |
-| top complaints | ads, expensive, premium | song, premium, ad, play, subscription |
+| recent avg | 3.96 | 3.68 |
+| % negative (1–2★) | 24.0% | 30.0% |
+| % positive (4–5★) | 70.0% | 66.0% |
+| latest version avg | 3.96 (9.1.94, n=50) | 3.5 (9.1.94.1923, n=2) |
+| top complaints | song, ads, switch, listen, plays | ads, songs, play, premium |
 
-**Leaders:** storeAverageRating: Spotify: Music and Podcasts (4.77) · storeRatingCount: Spotify: Music and Podcasts (42514293) · recentAverageRating: Spotify: Music and Podcasts (4.18) · lowestRecentNegativeShare: Spotify: Music and Podcasts (0.16) · latestVersionAverageRating: Spotify: Music and Podcasts (4.18)
+**Leaders:** storeAverageRating: Spotify: Music and Podcasts (4.77) · storeRatingCount: Spotify: Music and Podcasts (42785266) · recentAverageRating: Spotify: Music and Podcasts (3.96) · lowestRecentNegativeShare: Spotify: Music and Podcasts (0.24) · latestVersionAverageRating: Spotify: Music and Podcasts (3.96)
 
 <details><summary>Raw response</summary>
 
@@ -1972,43 +1955,53 @@ Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 510 ms
       "genre": "Music",
       "price": "Free",
       "storeAverageRating": 4.77,
-      "storeRatingCount": 42514293,
-      "currentVersion": "9.1.90",
-      "currentVersionReleaseDate": "2026-10-08T07:37:17Z",
-      "sizeMB": 293.8,
+      "storeRatingCount": 42785266,
+      "currentVersion": "9.1.94",
+      "currentVersionReleaseDate": "2026-10-23T17:59:53Z",
+      "sizeMB": 310.1,
       "recentReviewSample": 50,
-      "recentAverageRating": 4.18,
-      "recentNegativeShare": 0.16,
-      "recentPositiveShare": 0.78,
-      "latestVersion": "9.1.90",
-      "latestVersionAverageRating": 4.18,
+      "recentAverageRating": 3.96,
+      "recentNegativeShare": 0.24,
+      "recentPositiveShare": 0.7,
+      "latestVersion": "9.1.94",
+      "latestVersionAverageRating": 3.96,
       "latestVersionReviewCount": 50,
       "ratingDistribution": {
-        "1": 6,
-        "2": 2,
+        "1": 7,
+        "2": 5,
         "3": 3,
-        "4": 5,
-        "5": 34
+        "4": 3,
+        "5": 32
       },
       "reviewDateRange": {
-        "from": "2026-10-10T06:35:50-07:00",
-        "to": "2026-10-10T09:25:15-07:00"
+        "from": "2026-10-26T03:19:00-07:00",
+        "to": "2026-10-26T06:55:06-07:00"
       },
       "topComplaints": [
         {
+          "phrase": "song",
+          "reviews": 7,
+          "share": 0.583
+        },
+        {
           "phrase": "ads",
-          "reviews": 2,
+          "reviews": 5,
+          "share": 0.417
+        },
+        {
+          "phrase": "switch",
+          "reviews": 3,
           "share": 0.25
         },
         {
-          "phrase": "expensive",
+          "phrase": "listen",
           "reviews": 2,
-          "share": 0.25
+          "share": 0.167
         },
         {
-          "phrase": "premium",
+          "phrase": "plays",
           "reviews": 2,
-          "share": 0.25
+          "share": 0.167
         }
       ]
     },
@@ -2021,54 +2014,49 @@ Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 510 ms
       "genre": "Music & Audio",
       "price": "Free",
       "storeAverageRating": 4.35,
-      "storeRatingCount": 36464797,
+      "storeRatingCount": 36550214,
       "installs": "1,000,000,000+",
       "currentVersion": null,
-      "currentVersionReleaseDate": "2026-10-07T06:27:03.000Z",
+      "currentVersionReleaseDate": "2026-10-23T12:37:22.000Z",
       "sizeMB": null,
       "recentReviewSample": 50,
-      "recentAverageRating": 3.86,
-      "recentNegativeShare": 0.28,
-      "recentPositiveShare": 0.7,
-      "latestVersion": "9.1.90.2270",
-      "latestVersionAverageRating": 3.77,
-      "latestVersionReviewCount": 26,
+      "recentAverageRating": 3.68,
+      "recentNegativeShare": 0.3,
+      "recentPositiveShare": 0.66,
+      "latestVersion": "9.1.94.1923",
+      "latestVersionAverageRating": 3.5,
+      "latestVersionReviewCount": 2,
       "ratingDistribution": {
-        "1": 9,
-        "2": 5,
-        "3": 1,
+        "1": 13,
+        "2": 2,
+        "3": 2,
         "4": 4,
-        "5": 31
+        "5": 29
       },
       "reviewDateRange": {
-        "from": "2026-10-10T19:34:02.000Z",
-        "to": "2026-10-10T22:08:27.000Z"
+        "from": "2026-10-26T19:35:35.000Z",
+        "to": "2026-10-26T22:10:35.000Z"
       },
       "topComplaints": [
         {
-          "phrase": "song",
-          "reviews": 6,
-          "share": 0.429
-        },
-        {
-          "phrase": "premium",
-          "reviews": 6,
-          "share": 0.429
-        },
-        {
-          "phrase": "ad",
+          "phrase": "ads",
           "reviews": 5,
-          "share": 0.357
+          "share": 0.333
+        },
+        {
+          "phrase": "songs",
+          "reviews": 5,
+          "share": 0.333
         },
         {
           "phrase": "play",
-          "reviews": 4,
-          "share": 0.286
+          "reviews": 3,
+          "share": 0.2
         },
         {
-          "phrase": "subscription",
-          "reviews": 3,
-          "share": 0.214
+          "phrase": "premium",
+          "reviews": 2,
+          "share": 0.133
         }
       ]
     }
@@ -2084,25 +2072,25 @@ Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 510 ms
       "id": "324684580",
       "store": "apple",
       "name": "Spotify: Music and Podcasts",
-      "value": 42514293
+      "value": 42785266
     },
     "recentAverageRating": {
       "id": "324684580",
       "store": "apple",
       "name": "Spotify: Music and Podcasts",
-      "value": 4.18
+      "value": 3.96
     },
     "lowestRecentNegativeShare": {
       "id": "324684580",
       "store": "apple",
       "name": "Spotify: Music and Podcasts",
-      "value": 0.16
+      "value": 0.24
     },
     "latestVersionAverageRating": {
       "id": "324684580",
       "store": "apple",
       "name": "Spotify: Music and Podcasts",
-      "value": 4.18
+      "value": 3.96
     }
   }
 }
@@ -2112,13 +2100,13 @@ Arguments: `{"app_ids":["324684580","com.spotify.music"],"pages":1}` · 510 ms
 
 ### `get_app_reviews` ⚠️ (error)
 
-Arguments: `{"app_id":"not-an-id"}` · 1 ms
+Arguments: `{"app_id":"not-an-id"}` · 2 ms
 
 > Error (invalid_input): Invalid app_id "not-an-id". Use the numeric App Store id (e.g. 284882215) or an apps.apple.com URL.
 
 ### `get_app_reviews` ⚠️ (error)
 
-Arguments: `{"app_id":"284882215","pages":11}` · 1 ms
+Arguments: `{"app_id":"284882215","pages":11}` · 2 ms
 
 > MCP error -32602: Input validation error: Invalid arguments for tool get_app_reviews: Too big: expected number to be <=10 at pages
 
@@ -2130,17 +2118,17 @@ Arguments: `{"term":"x","country":"usa"}` · 1 ms
 
 ### `compare_apps` ⚠️ (error)
 
-Arguments: `{"app_ids":["284882215"]}` · 2 ms
+Arguments: `{"app_ids":["284882215"]}` · 1 ms
 
 > MCP error -32602: Input validation error: Invalid arguments for tool compare_apps: Too small: expected array to have >=2 items at app_ids
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"999999999999"}` · 71 ms
+Arguments: `{"app_id":"999999999999"}` · 316 ms
 
 App **999999999999** (apple) · us · sort=mostrecent · pages fetched 0/1 · **0 reviews**
 
-_No reviews returned. The app may not exist in this storefront or has no written reviews._
+_Apple's public review feed returned empty pages for this app, so the sample is partial (fewer reviews than requested). Otherwise the app may not exist in this storefront._
 
 
 <details><summary>Raw response</summary>
@@ -2154,7 +2142,8 @@ _No reviews returned. The app may not exist in this storefront or has no written
   "pagesRequested": 1,
   "pagesFetched": 0,
   "count": 0,
-  "note": "No reviews returned. The app may not exist in this storefront or has no written reviews.",
+  "emptyPages": 10,
+  "note": "Apple's public review feed returned empty pages for this app, so the sample is partial (fewer reviews than requested). Otherwise the app may not exist in this storefront.",
   "reviews": []
 }
 ```
@@ -2163,7 +2152,7 @@ _No reviews returned. The app may not exist in this storefront or has no written
 
 ### `get_app_reviews` 
 
-Arguments: `{"app_id":"com.example.does.not.exist.zz"}` · 103 ms
+Arguments: `{"app_id":"com.example.does.not.exist.zz"}` · 71 ms
 
 App **com.example.does.not.exist.zz** (google) · us · sort=mostrecent · pages fetched 0/1 · **0 reviews**
 
@@ -2190,13 +2179,13 @@ _No reviews returned. The app may not exist in this storefront or has no written
 
 ### `get_app_reviews` ⚠️ (error)
 
-Arguments: `{"app_id":"com.spotify.music","store":"apple"}` · 2 ms
+Arguments: `{"app_id":"com.spotify.music","store":"apple"}` · 1 ms
 
 > Error (invalid_input): "com.spotify.music" looks like a Google Play package name; use store "google" (or omit store).
 
 ### `review_insights` ⚠️ (error)
 
-Arguments: `{"app_id":"284882215","store":"google"}` · 2 ms
+Arguments: `{"app_id":"284882215","store":"google"}` · 0 ms
 
 > Error (invalid_input): Invalid Google Play app id "284882215". Use the package name (e.g. com.instagram.android) or a play.google.com/store/apps/details?id=… URL.
 
@@ -2204,11 +2193,11 @@ Arguments: `{"app_id":"284882215","store":"google"}` · 2 ms
 
 ```json
 {
-  "url": "http://127.0.0.1:40771/mcp",
+  "url": "http://127.0.0.1:44261/mcp",
   "health": {
     "status": "ok",
     "name": "app-review-intel-mcp",
-    "version": "1.1.0",
+    "version": "1.1.3",
     "endpoint": "/mcp"
   },
   "tools": [
@@ -2255,8 +2244,8 @@ Arguments: `{"app_id":"284882215","store":"google"}` · 2 ms
 - ✅ play disabled: invalid Apple id error stays Apple-only — Error (invalid_input): Invalid app_id "not-an-id". Use the numeric App Store id (e.g. 284882215) or an apps.apple.com URL.
 - ✅ lists 4 tools — compare_apps,get_app_reviews,review_insights,search_apps
 - ✅ every tool has an input schema & description
-- ✅ server version 1.1.0
-- ✅ descriptions stay concise (< 700 chars) — 416,412,585,513
+- ✅ server version 1.1.3
+- ✅ descriptions stay concise (< 700 chars) — 416,412,685,593
 - ✅ every param has a description
 - ✅ app tools accept store + lang
 - ✅ review_insights accepts optional since_version
@@ -2291,26 +2280,26 @@ Arguments: `{"app_id":"284882215","store":"google"}` · 2 ms
 - ✅ review_insights Facebook covers both countries — {"us":150,"gb":150}
 - ✅ review_insights Facebook has version breakdown
 - ✅ review_insights Facebook has complaint keywords
-- ✅ review_insights Facebook keywords exclude stopwords/filler — ads, post, friends, videos, reels, ai, account, content, page, feed, marketplace, stop, experience, feel, comments
+- ✅ review_insights Facebook keywords exclude stopwords/filler — ai, ads, account, election, posts, democracy, brazilian, eleitoral, está, interfering, stop, years, company, democracia, processo eleitoral
 - ✅ review_insights Facebook keywords exclude app name
 - ✅ review_insights Facebook has sample quotes
-- ✅ review_insights Facebook has versionDeltas — Version 582.0.0 (203 reviews) average 3.10★ vs 2.57★ for previous version 581.0.0 (97 reviews), +0.53; negative share 43.8% vs 59.8% (−16 pp). Rising complaints: "ads" (+10.4 pp, 22.5% of negative reviews), "feed" (+7.3 pp, 9% of negative reviews), "watch" (new, 5.6% of negative reviews).
+- ✅ review_insights Facebook has versionDeltas — Version 584.1 (237 reviews) average 2.90★ vs 3.03★ for previous version 584.0.0 (63 reviews), −0.13; negative share 50.2% vs 46% (+4.2 pp). Rising complaints: "election" (new, 12.6% of negative reviews), "democracy" (new, 11.8% of negative reviews), "está" (new, 10.1% of negative reviews).
 - ✅ review_insights Facebook versionDeltas explains or compares
 - ✅ review_insights Instagram ok
 - ✅ review_insights Instagram distribution sums to sample
 - ✅ review_insights Instagram covers both countries — {"us":150,"gb":150}
 - ✅ review_insights Instagram has version breakdown
 - ✅ review_insights Instagram has complaint keywords
-- ✅ review_insights Instagram keywords exclude stopwords/filler — reels, ipad, account, screen, video, posts, full screen, reason, ai, window, content, small, square, platform, change
+- ✅ review_insights Instagram keywords exclude stopwords/filler — elections, meta, ai, interfering, está interferindo, account, brazil, country, democracy, meu país, está interferindo nas, democracia, processo eleitoral, content, interference
 - ✅ review_insights Instagram keywords exclude app name
 - ✅ review_insights Instagram has sample quotes
-- ✅ review_insights Instagram has versionDeltas — Version 450.1.0 (210 reviews) average 2.17★ vs 3.00★ for previous versions 448.0.0–450.0.0 (90 reviews), −0.83; negative share 69.5% vs 46.7% (+22.8 pp). Rising complaints: "ipad" (new, 24% of negative reviews), "reels" (+18.6 pp, 28.1% of negative reviews), "screen" (+17.5 pp, 19.9% of negative reviews).
+- ✅ review_insights Instagram has versionDeltas — Version 453.0 (8 reviews) average 3.13★ vs 1.52★ for previous version 452.0.0 (291 reviews), +1.61; negative share 50% vs 86.3% (−36.3 pp). No complaint phrase rose by 3+ percentage points. Low confidence: few negative reviews in one of the periods.
 - ✅ review_insights Instagram versionDeltas explains or compares
 - ✅ review_insights google ok
 - ✅ review_insights google has app metadata
 - ✅ review_insights google sample size — n=300
-- ✅ review_insights google complaint keywords — account, suspended, suspend, disabled, reason, issue, years, users, meta, post, request, action, problem, ai, community guidelines
-- ✅ review_insights google versionDeltas by version — Version 450.0.0.50.77 and newer (89 reviews) average 3.70★ vs 4.30★ for previous version 449.0.0.52.84 (37 reviews), −0.60; negative share 30.3% vs 13.5% (+16.8 pp). Rising complaints: "post" (new, 14.8% of negative reviews), "request" (new, 11.1% of negative reviews), "suspended" (new, 11.1% of negative reviews). Low confidence: few negative reviews in one of the periods.
+- ✅ review_insights google complaint keywords — account, reason, suspended, banned, community guidelines, reels, request, disabled, email, support, kar, violated, wrong, hai, suspend
+- ✅ review_insights google versionDeltas by version — Version 451.0.0.53.80 and newer (44 reviews) average 3.07★ vs 3.73★ for previous versions 450.0.0.50.77–451.0.0.41.80 (96 reviews), −0.66; negative share 47.7% vs 29.2% (+18.5 pp). Rising complaints: "account" (+36.9 pp, 61.9% of negative reviews), "suspended" (+29.8 pp, 33.3% of negative reviews), "wrong" (new, 14.3% of negative reviews).
 - ✅ review_insights google whatGotWorse entries are well-formed
 - ✅ compare_apps ok
 - ✅ compare_apps returns both apps

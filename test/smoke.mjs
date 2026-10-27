@@ -195,7 +195,7 @@ async function runStdio() {
   const names = tools.map((t) => t.name).sort();
   check("lists 4 tools", JSON.stringify(names) === JSON.stringify(["compare_apps", "get_app_reviews", "review_insights", "search_apps"]), names.join(","));
   check("every tool has an input schema & description", tools.every((t) => t.inputSchema?.type === "object" && t.description));
-  check("server version 1.1.0", transcript.server.version === "1.1.0");
+  check("server version 1.1.3", transcript.server.version === "1.1.3");
   check("descriptions stay concise (< 700 chars)", tools.every((t) => t.description.length < 700), tools.map((t) => t.description.length).join(","));
   check("every param has a description", tools.every((t) => Object.values(t.inputSchema.properties ?? {}).every((p) => p.description)));
   check("app tools accept store + lang", ["get_app_reviews", "review_insights"].every((n) => { const p = tools.find((t) => t.name === n)?.inputSchema.properties ?? {}; return p.store && p.lang; }));

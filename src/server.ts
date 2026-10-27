@@ -33,7 +33,7 @@ import {
 } from "./util.js";
 
 export const SERVER_NAME = "app-review-intel-mcp";
-export const SERVER_VERSION = "1.1.0";
+export const SERVER_VERSION = "1.1.3";
 
 type Store = "apple" | "google";
 

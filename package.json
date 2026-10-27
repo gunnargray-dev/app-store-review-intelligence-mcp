@@ -1,6 +1,6 @@
 {
   "name": "app-review-intel-mcp",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "MCP server for App Store and Google Play reviews: search apps, fetch reviews, surface top complaints and what got worse in the latest version, and compare competitors. No API keys.",
   "type": "module",
   "main": "dist/index.js",
